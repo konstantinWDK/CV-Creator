@@ -24,11 +24,15 @@ export const deleteCV = (id) => {
 
 export const getDefaultCV = () => ({
     id: crypto.randomUUID(),
+    templateId: 'minimal',
     personalInfo: {
         fullName: '',
         email: '',
         phone: '',
         address: '',
+        website: '',
+        photo: null,
+        showQrCode: false,
         summary: '',
     },
     experience: [],
@@ -38,11 +42,15 @@ export const getDefaultCV = () => ({
 
 export const getSampleCV = () => ({
     id: crypto.randomUUID(),
+    templateId: 'minimal',
     personalInfo: {
         fullName: 'Juan Pérez',
         email: 'juan.perez@ejemplo.com',
         phone: '+34 612 345 678',
         address: 'Barcelona, España',
+        website: 'https://github.com/juanperez',
+        photo: null,
+        showQrCode: true,
         summary: 'Desarrollador Full Stack con más de 5 años de experiencia en la creación de aplicaciones web escalables y eficientes. Apasionado por el código limpio, arquitecturas modernas y UI minimalistas.',
     },
     experience: [

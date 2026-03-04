@@ -121,6 +121,18 @@ function App() {
               </option>
             ))}
           </select>
+          <div style={{ marginTop: '10px' }}>
+            <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '4px', display: 'block', fontWeight: 600 }}>Diseño</label>
+            <select
+              className="cv-selector-minimal"
+              style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155' }}
+              value={currentCV.templateId || 'minimal'}
+              onChange={(e) => setCurrentCV({ ...currentCV, templateId: e.target.value })}
+            >
+              <option value="minimal">Minimalista (Blanco)</option>
+              <option value="modern">Moderno (Sidebar Oscuro)</option>
+            </select>
+          </div>
         </div>
 
         <div className="sidebar-content">
