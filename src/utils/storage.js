@@ -25,6 +25,7 @@ export const deleteCV = (id) => {
 export const getDefaultCV = () => ({
     id: crypto.randomUUID(),
     templateId: 'minimal',
+    fontFamily: 'Inter',
     personalInfo: {
         fullName: '',
         email: '',
@@ -43,6 +44,7 @@ export const getDefaultCV = () => ({
 export const getSampleCV = () => ({
     id: crypto.randomUUID(),
     templateId: 'minimal',
+    fontFamily: 'Inter',
     personalInfo: {
         fullName: 'Juan Pérez',
         email: 'juan.perez@ejemplo.com',

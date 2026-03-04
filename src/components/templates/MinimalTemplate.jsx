@@ -5,7 +5,7 @@ const MinimalTemplate = ({ data }) => {
     const { personalInfo, experience, education, skills } = data;
 
     return (
-        <div className="a4-page" id="cv-preview-content">
+        <div className="a4-page" id="cv-preview-content" style={{ padding: '8mm 12mm' }}>
             <div style={{ paddingBottom: '20px', borderBottom: '2px solid var(--accent-color)', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
                     <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1a1d24', margin: 0 }}>

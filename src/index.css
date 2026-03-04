@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&family=Roboto:wght@300;400;500;700&family=Merriweather:wght@300;400;700&family=Courier+Prime:wght@400;700&display=swap');
 
 :root {
   /* Minimal UI Colors */
@@ -446,7 +446,7 @@ textarea:focus {
   min-height: 297mm;
   background-color: white;
   color: #333;
-  padding: 20mm;
+  padding: 0;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   border-radius: 4px;
   transform-origin: top center;
@@ -471,7 +471,7 @@ textarea:focus {
     top: 0;
     width: 210mm;
     margin: 0;
-    padding: 20mm;
+    padding: 0;
     box-shadow: none;
     border-radius: 0;
   }

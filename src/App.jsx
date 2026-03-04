@@ -133,6 +133,21 @@ function App() {
               <option value="modern">Moderno (Sidebar Oscuro)</option>
             </select>
           </div>
+          <div style={{ marginTop: '10px' }}>
+            <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '4px', display: 'block', fontWeight: 600 }}>Fuente</label>
+            <select
+              className="cv-selector-minimal"
+              style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155' }}
+              value={currentCV.fontFamily || 'Inter'}
+              onChange={(e) => setCurrentCV({ ...currentCV, fontFamily: e.target.value })}
+            >
+              <option value="Inter">Inter (Moderna)</option>
+              <option value="Outfit">Outfit (Geométrica)</option>
+              <option value="Roboto">Roboto (Clásica)</option>
+              <option value="Merriweather">Merriweather (Elegante/Serif)</option>
+              <option value="'Courier Prime', monospace">Courier (Máquina de escribir)</option>
+            </select>
+          </div>
         </div>
 
         <div className="sidebar-content">
