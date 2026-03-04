@@ -1,4 +1,6 @@
 import { Plus, Trash2 } from 'lucide-react';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css'; // ES6
 
 const Experience = ({ data = [], onChange }) => {
     const handleAdd = () => {
@@ -67,33 +69,38 @@ const Experience = ({ data = [], onChange }) => {
                             <div className="form-group">
                                 <label>Fecha de Inicio</label>
                                 <input
-                                    type="text"
+                                    type="month"
                                     value={item.startDate}
                                     onChange={(e) => handleChange(item.id, 'startDate', e.target.value)}
-                                    placeholder="Ej. Ene 2020"
                                 />
                             </div>
                             <div className="form-group">
                                 <label>Fecha de Fin</label>
                                 <input
-                                    type="text"
+                                    type="month"
                                     value={item.endDate}
                                     onChange={(e) => handleChange(item.id, 'endDate', e.target.value)}
-                                    placeholder="Ej. Presente"
+                                    title="Dejar en blanco si es el trabajo actual"
                                 />
                             </div>
                         </div>
                         <div className="form-group">
                             <label>
                                 Descripción
-                                <span style={{ fontSize: '0.75rem', fontWeight: 'normal', color: 'var(--text-secondary)', marginLeft: '8px' }}>
-                                    (Puedes usar HTML para subrayar en color, ej: &lt;mark&gt;texto&lt;/mark&gt; o &lt;span style="color:red"&gt;rojo&lt;/span&gt;)
-                                </span>
                             </label>
-                            <textarea
+                            <ReactQuill
+                                theme="snow"
                                 value={item.description}
-                                onChange={(e) => handleChange(item.id, 'description', e.target.value)}
-                                rows="3"
+                                onChange={(content) => handleChange(item.id, 'description', content)}
+                                modules={{
+                                    toolbar: [
+                                        ['bold', 'italic', 'underline', 'strike'],
+                                        [{ 'color': [] }, { 'background': [] }],
+                                        [{ 'list': 'bullet' }],
+                                        ['clean']
+                                    ]
+                                }}
+                                style={{ backgroundColor: '#ffffff', color: '#000000' }}
                                 placeholder="Describe tus responsabilidades y logros..."
                             />
                         </div>

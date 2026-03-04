@@ -37,7 +37,14 @@ const CVPreview = ({ data }) => {
                                     {exp.startDate} - {exp.endDate || 'Present'}
                                 </span>
                             </div>
-                            <p style={{ color: '#334155', fontSize: '0.95rem', lineHeight: 1.5, marginTop: '8px' }} dangerouslySetInnerHTML={{ __html: exp.description }} />
+                            <p style={{
+                                color: '#334155',
+                                fontSize: '0.95rem',
+                                lineHeight: 1.5,
+                                marginTop: '8px',
+                                wordBreak: 'break-word',
+                                overflowWrap: 'break-word'
+                            }} dangerouslySetInnerHTML={{ __html: exp.description }} />
                         </div>
                     ))}
                 </div>
