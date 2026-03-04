@@ -57,15 +57,19 @@ function App() {
           <div className="brand" title="Creador CV">CV</div>
           <button className={`nav-icon ${activeTab === 'personalInfo' ? 'active' : ''}`} onClick={() => setActiveTab('personalInfo')} title="Datos Personales">
             <User size={24} />
+            {activeTab === 'personalInfo' && <span className="active-indicator"></span>}
           </button>
           <button className={`nav-icon ${activeTab === 'experience' ? 'active' : ''}`} onClick={() => setActiveTab('experience')} title="Experiencia">
             <Briefcase size={24} />
+            {activeTab === 'experience' && <span className="active-indicator"></span>}
           </button>
           <button className={`nav-icon ${activeTab === 'education' ? 'active' : ''}`} onClick={() => setActiveTab('education')} title="Educación">
             <GraduationCap size={24} />
+            {activeTab === 'education' && <span className="active-indicator"></span>}
           </button>
           <button className={`nav-icon ${activeTab === 'skills' ? 'active' : ''}`} onClick={() => setActiveTab('skills')} title="Habilidades">
             <Code size={24} />
+            {activeTab === 'skills' && <span className="active-indicator"></span>}
           </button>
         </div>
 

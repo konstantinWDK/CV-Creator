@@ -138,6 +138,53 @@ h6 {
   position: relative;
 }
 
+/* Tooltip (Bocadillo) */
+.nav-icon::after {
+  content: attr(title);
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(10px);
+  background-color: var(--sidebar-primary-bg);
+  color: var(--text-inverse);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 100;
+  box-shadow: var(--shadow-md);
+}
+
+/* Tooltip Arrow */
+.nav-icon::before {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%) translateX(2px);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent var(--sidebar-primary-bg) transparent transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 100;
+}
+
+.nav-icon:hover::after,
+.nav-icon:hover::before {
+  opacity: 1;
+  transform: translateY(-50%) translateX(16px);
+}
+
+.nav-icon:hover::before {
+  transform: translateY(-50%) translateX(4px);
+}
+
 .nav-icon:hover {
   color: var(--text-inverse);
   background: rgba(255, 255, 255, 0.1);
@@ -148,11 +195,10 @@ h6 {
   background: rgba(234, 88, 12, 0.15);
 }
 
-.nav-icon.active::before {
-  content: '';
+/* Custom border highlight to avoid overriding tooltip ::before */
+.nav-icon.active>span.active-indicator {
   position: absolute;
   left: -16px;
-  /* offset to touch the edge */
   top: 50%;
   transform: translateY(-50%);
   width: 4px;
