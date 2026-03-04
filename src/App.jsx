@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Download, Save, Plus, Trash2 } from 'lucide-react';
+import { Download, Save, Plus, Trash2, Eye, X } from 'lucide-react';
 import { getSavedCVs, saveCV, deleteCV, getDefaultCV } from './utils/storage';
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
@@ -8,6 +8,7 @@ import html2pdf from 'html2pdf.js';
 function App() {
   const [cvs, setCvs] = useState([]);
   const [currentCV, setCurrentCV] = useState(getDefaultCV());
+  const [showPreview, setShowPreview] = useState(false);
 
   useEffect(() => {
     const loadedCVs = getSavedCVs();
@@ -64,7 +65,7 @@ function App() {
               const selected = cvs.find(c => c.id === e.target.value);
               if (selected) setCurrentCV(selected);
             }}
-            style={{ padding: '0.5rem', borderRadius: 'var(--radius-md)', background: 'rgba(0,0,0,0.4)', color: '#fff', border: '1px solid var(--glass-border)' }}
+            style={{ padding: '0.5rem', borderRadius: 'var(--radius-md)', background: 'rgba(0,0,0,0.4)', color: '#fff', border: '1px solid var(--glass-border)', outline: 'none' }}
           >
             <option value={currentCV.id} disabled={cvs.some(c => c.id === currentCV.id)}>
               {cvs.some(c => c.id === currentCV.id) ? currentCV.personalInfo?.fullName || 'Untitled CV' : 'New CV'}

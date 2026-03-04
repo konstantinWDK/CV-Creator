@@ -30,13 +30,14 @@ const CVPreview = ({ data }) => {
                     {experience.map(exp => (
                         <div key={exp.id} style={{ marginBottom: '20px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                                <h3 style={{ fontSize: '1.2rem', color: '#0f172a', margin: 0 }}>{exp.position}</h3>
+                                <h3 style={{ fontSize: '1.2rem', color: '#0f172a', margin: 0 }}>
+                                    {exp.position}{exp.company ? ` - ${exp.company}` : ''}
+                                </h3>
                                 <span style={{ color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>
                                     {exp.startDate} - {exp.endDate || 'Present'}
                                 </span>
                             </div>
-                            <h4 style={{ fontSize: '1rem', color: '#475569', margin: '5px 0' }}>{exp.company}</h4>
-                            <p style={{ color: '#334155', fontSize: '0.95rem', lineHeight: 1.5 }}>{exp.description}</p>
+                            <p style={{ color: '#334155', fontSize: '0.95rem', lineHeight: 1.5, marginTop: '8px' }} dangerouslySetInnerHTML={{ __html: exp.description }} />
                         </div>
                     ))}
                 </div>

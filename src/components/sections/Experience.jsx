@@ -84,7 +84,12 @@ const Experience = ({ data = [], onChange }) => {
                             </div>
                         </div>
                         <div className="form-group">
-                            <label>Description</label>
+                            <label>
+                                Description
+                                <span style={{ fontSize: '0.75rem', fontWeight: 'normal', color: 'var(--text-secondary)', marginLeft: '8px' }}>
+                                    (Puedes usar HTML para subrayar en color, ej: &lt;mark&gt;texto&lt;/mark&gt; o &lt;span style="color:red"&gt;rojo&lt;/span&gt;)
+                                </span>
+                            </label>
                             <textarea
                                 value={item.description}
                                 onChange={(e) => handleChange(item.id, 'description', e.target.value)}

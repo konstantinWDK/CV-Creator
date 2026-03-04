@@ -12,7 +12,7 @@
   --accent-gradient: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
   --accent-gradient-hover: linear-gradient(135deg, #4f46e5 0%, #db2777 100%);
   --danger: #ef4444;
-  
+
   /* Tyopgraphy */
   --font-sans: 'Inter', sans-serif;
   --font-heading: 'Outfit', sans-serif;
@@ -53,13 +53,18 @@ body {
   -webkit-font-smoothing: antialiased;
   min-height: 100vh;
   overflow-x: hidden;
-  background-image: 
+  background-image:
     radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
     radial-gradient(at 100% 0%, rgba(236, 72, 153, 0.15) 0px, transparent 50%);
   background-attachment: fixed;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   letter-spacing: -0.02em;
   font-weight: 600;
@@ -68,13 +73,13 @@ h1, h2, h3, h4, h5, h6 {
 /* Base App Layout */
 .app-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
-  overflow: hidden;
 }
 
 .sidebar {
-  width: 50%;
+  width: 450px;
+  flex-shrink: 0;
   height: 100%;
   overflow-y: auto;
   padding: var(--space-8);
@@ -82,10 +87,11 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--glass-bg);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  z-index: 10;
 }
 
 .preview-container {
-  width: 50%;
+  flex-grow: 1;
   height: 100%;
   overflow-y: auto;
   padding: var(--space-8);
@@ -163,7 +169,8 @@ label {
   color: var(--text-secondary);
 }
 
-input, textarea {
+input,
+textarea {
   background: rgba(0, 0, 0, 0.2);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
@@ -174,7 +181,8 @@ input, textarea {
   transition: all 0.2s ease;
 }
 
-input:focus, textarea:focus {
+input:focus,
+textarea:focus {
   outline: none;
   border-color: var(--accent-color);
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
@@ -248,7 +256,7 @@ input:focus, textarea:focus {
   background-color: white;
   color: #333;
   padding: 20mm;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
   border-radius: 4px;
   transform-origin: top center;
   position: relative;
@@ -260,9 +268,12 @@ input:focus, textarea:focus {
   body * {
     visibility: hidden;
   }
-  #cv-preview-content, #cv-preview-content * {
+
+  #cv-preview-content,
+  #cv-preview-content * {
     visibility: visible;
   }
+
   #cv-preview-content {
     position: absolute;
     left: 0;
@@ -279,13 +290,16 @@ input:focus, textarea:focus {
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: rgba(0, 0, 0, 0.1);
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.2);
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
 }
