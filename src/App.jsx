@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Wand2, Linkedin, Github } from 'lucide-react';
+import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Linkedin, Github, Settings, Eye, EyeOff, X } from 'lucide-react';
 import { getSavedCVs, saveCV, deleteCV, getDefaultCV, getSampleCV } from './utils/storage';
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
@@ -9,12 +9,16 @@ function App() {
   const [cvs, setCvs] = useState([]);
   const [currentCV, setCurrentCV] = useState(getDefaultCV());
   const [activeTab, setActiveTab] = useState('personalInfo');
+  const [showMobilePreview, setShowMobilePreview] = useState(false);
 
   useEffect(() => {
     const loadedCVs = getSavedCVs();
     setCvs(loadedCVs);
     if (loadedCVs.length > 0) {
       setCurrentCV(loadedCVs[0]);
+    } else {
+      // First visit: pre-load sample CV so the app feels populated
+      setCurrentCV(getSampleCV());
     }
   }, []);
 
@@ -78,16 +82,17 @@ function App() {
             <Code size={24} />
             {activeTab === 'skills' && <span className="active-indicator"></span>}
           </button>
+          <button className={`nav-icon ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')} title="Configuración Global">
+            <Settings size={24} />
+            {activeTab === 'settings' && <span className="active-indicator"></span>}
+          </button>
         </div>
 
         <div className="nav-bottom">
-          <button className="nav-icon action new" onClick={handleCreateNew} title="Crear Nuevo">
+          <button className="nav-icon action new hide-mobile" onClick={handleCreateNew} title="Crear Nuevo">
             <Plus size={24} />
           </button>
-          <button className="nav-icon action" onClick={handleLoadSample} title="Cargar Datos Prueba" style={{ color: '#8b5cf6' }}>
-            <Wand2 size={24} />
-          </button>
-          <button className="nav-icon action save" onClick={handleSave} title="Guardar">
+          <button className="nav-icon action save hide-mobile" onClick={handleSave} title="Guardar">
             <Save size={24} />
           </button>
           <button className="nav-icon action pdf" onClick={handleDownloadPDF} title="Descargar PDF">
@@ -121,66 +126,102 @@ function App() {
         </div>
       </div>
 
-      {/* Secondary Sidebar (Settings Panel) */}
+      {/* Secondary Sidebar (Form Content) */}
       <div className="secondary-sidebar">
-        <div className="sidebar-header">
-          <select
-            className="cv-selector-minimal"
-            value={currentCV.id}
-            onChange={(e) => {
-              const selected = cvs.find(c => c.id === e.target.value);
-              if (selected) setCurrentCV(selected);
-            }}
-          >
-            <option value={currentCV.id} disabled={cvs.some(c => c.id === currentCV.id)}>
-              {cvs.some(c => c.id === currentCV.id) ? currentCV.personalInfo?.fullName || 'CV sin título' : 'CV Nuevo'}
-            </option>
-            {cvs.map(cv => (
-              <option key={cv.id} value={cv.id}>
-                {cv.personalInfo?.fullName || 'CV sin título'}
-              </option>
-            ))}
-          </select>
-          <div style={{ marginTop: '10px' }}>
-            <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '4px', display: 'block', fontWeight: 600 }}>Diseño</label>
-            <select
-              className="cv-selector-minimal"
-              style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155' }}
-              value={currentCV.templateId || 'minimal'}
-              onChange={(e) => setCurrentCV({ ...currentCV, templateId: e.target.value })}
-            >
-              <option value="minimal">Minimalista (Blanco)</option>
-              <option value="modern">Moderno (Sidebar Oscuro)</option>
-              <option value="minimal-plus">Minimalista Plus (Azul)</option>
-              <option value="professional">Profesional (Dos Columnas)</option>
-              <option value="classic">Clásico (Centrado)</option>
-            </select>
-          </div>
-          <div style={{ marginTop: '10px' }}>
-            <label style={{ fontSize: '0.8rem', color: 'var(--text-secondary)', marginBottom: '4px', display: 'block', fontWeight: 600 }}>Fuente</label>
-            <select
-              className="cv-selector-minimal"
-              style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155' }}
-              value={currentCV.fontFamily || 'Inter'}
-              onChange={(e) => setCurrentCV({ ...currentCV, fontFamily: e.target.value })}
-            >
-              <option value="Inter">Inter (Moderna)</option>
-              <option value="Outfit">Outfit (Geométrica)</option>
-              <option value="Roboto">Roboto (Clásica)</option>
-              <option value="Merriweather">Merriweather (Elegante/Serif)</option>
-              <option value="'Courier Prime', monospace">Courier (Máquina de escribir)</option>
-            </select>
-          </div>
-        </div>
-
         <div className="sidebar-content">
-          <CVForm data={currentCV} onChange={setCurrentCV} activeTab={activeTab} />
+          {activeTab === 'settings' ? (
+            <div className="settings-panel">
+              <h2 className="panel-title">Configuración Global</h2>
+
+              <div className="form-group" style={{ marginBottom: '20px' }}>
+                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>Seleccionar Currículum Guardado</label>
+                <select
+                  className="cv-selector-minimal"
+                  style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
+                  value={currentCV.id}
+                  onChange={(e) => {
+                    const selected = cvs.find(c => c.id === e.target.value);
+                    if (selected) setCurrentCV(selected);
+                  }}
+                >
+                  <option value={currentCV.id} disabled={cvs.some(c => c.id === currentCV.id)}>
+                    {cvs.some(c => c.id === currentCV.id) ? currentCV.personalInfo?.fullName || 'CV sin título' : 'CV Nuevo'}
+                  </option>
+                  {cvs.map(cv => (
+                    <option key={cv.id} value={cv.id}>
+                      {cv.personalInfo?.fullName || 'CV sin título'}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group" style={{ marginBottom: '20px' }}>
+                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>Diseño de la Plantilla</label>
+                <select
+                  className="cv-selector-minimal"
+                  style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
+                  value={currentCV.templateId || 'minimal'}
+                  onChange={(e) => setCurrentCV({ ...currentCV, templateId: e.target.value })}
+                >
+                  <option value="minimal">Minimalista (Blanco)</option>
+                  <option value="modern">Moderno (Sidebar Oscuro)</option>
+                  <option value="minimal-plus">Minimalista Plus (Azul)</option>
+                  <option value="professional">Profesional (Dos Columnas)</option>
+                  <option value="classic">Clásico (Centrado)</option>
+                </select>
+              </div>
+
+              <div className="form-group" style={{ marginBottom: '20px' }}>
+                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>Tipografía Global</label>
+                <select
+                  className="cv-selector-minimal"
+                  style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
+                  value={currentCV.fontFamily || 'Inter'}
+                  onChange={(e) => setCurrentCV({ ...currentCV, fontFamily: e.target.value })}
+                >
+                  <option value="Inter">Inter (Moderna)</option>
+                  <option value="Outfit">Outfit (Geométrica)</option>
+                  <option value="Roboto">Roboto (Clásica)</option>
+                  <option value="Merriweather">Merriweather (Elegante/Serif)</option>
+                  <option value="'Courier Prime', monospace">Courier (Máquina de escribir)</option>
+                </select>
+              </div>
+            </div>
+          ) : (
+            <CVForm data={currentCV} onChange={setCurrentCV} activeTab={activeTab} />
+          )}
         </div>
       </div>
 
-      {/* Preview Container */}
-      <div className="preview-container">
-        <CVPreview data={currentCV} />
+      {/* Preview Container - Hidden on mobile unless showMobilePreview is true */}
+      <div className={`preview-container${showMobilePreview ? ' mobile-preview-open' : ''}`}>
+        <button
+          className="btn-close-preview"
+          onClick={() => setShowMobilePreview(false)}
+          title="Cerrar Vista Previa"
+        >
+          <X size={22} />
+        </button>
+        <div className="preview-scaler">
+          <CVPreview data={currentCV} />
+        </div>
+      </div>
+
+      {/* Mobile Floating Action Bar */}
+      <div className="mobile-floating-actions">
+        <button className="fab-btn fab-new" onClick={handleCreateNew} title="Nuevo CV">
+          <Plus size={20} />
+        </button>
+        <button className="fab-btn fab-save" onClick={handleSave} title="Guardar">
+          <Save size={20} />
+        </button>
+        <button
+          className={`fab-btn fab-preview${showMobilePreview ? ' active' : ''}`}
+          onClick={() => setShowMobilePreview(v => !v)}
+          title={showMobilePreview ? 'Ocultar Vista Previa' : 'Ver CV'}
+        >
+          {showMobilePreview ? <EyeOff size={20} /> : <Eye size={20} />}
+        </button>
       </div>
     </div>
   );
