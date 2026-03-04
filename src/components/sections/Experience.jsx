@@ -26,8 +26,8 @@ const Experience = ({ data = [], onChange }) => {
     return (
         <div className="glass-panel">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 className="panel-title" style={{ marginBottom: 0 }}>Experience</h2>
-                <button className="btn btn-secondary btn-icon-only" onClick={handleAdd} title="Add Experience">
+                <h2 className="panel-title" style={{ marginBottom: 0 }}>Experiencia</h2>
+                <button className="btn btn-secondary btn-icon-only" onClick={handleAdd} title="Añadir Experiencia">
                     <Plus size={18} />
                 </button>
             </div>
@@ -39,53 +39,53 @@ const Experience = ({ data = [], onChange }) => {
                             <button
                                 className="btn btn-danger btn-icon-only"
                                 onClick={() => handleRemove(item.id)}
-                                title="Remove Experience"
+                                title="Eliminar Experiencia"
                             >
                                 <Trash2 size={16} />
                             </button>
                         </div>
 
                         <div className="form-group" style={{ marginBottom: '1rem' }}>
-                            <label>Company</label>
+                            <label>Empresa</label>
                             <input
                                 type="text"
                                 value={item.company}
                                 onChange={(e) => handleChange(item.id, 'company', e.target.value)}
-                                placeholder="e.g. Google"
+                                placeholder="Ej. Google"
                             />
                         </div>
                         <div className="form-group" style={{ marginBottom: '1rem' }}>
-                            <label>Position</label>
+                            <label>Puesto</label>
                             <input
                                 type="text"
                                 value={item.position}
                                 onChange={(e) => handleChange(item.id, 'position', e.target.value)}
-                                placeholder="e.g. Software Engineer"
+                                placeholder="Ej. Desarrollador Web"
                             />
                         </div>
                         <div className="form-row" style={{ marginBottom: '1rem' }}>
                             <div className="form-group">
-                                <label>Start Date</label>
+                                <label>Fecha de Inicio</label>
                                 <input
                                     type="text"
                                     value={item.startDate}
                                     onChange={(e) => handleChange(item.id, 'startDate', e.target.value)}
-                                    placeholder="e.g. Jan 2020"
+                                    placeholder="Ej. Ene 2020"
                                 />
                             </div>
                             <div className="form-group">
-                                <label>End Date</label>
+                                <label>Fecha de Fin</label>
                                 <input
                                     type="text"
                                     value={item.endDate}
                                     onChange={(e) => handleChange(item.id, 'endDate', e.target.value)}
-                                    placeholder="e.g. Present"
+                                    placeholder="Ej. Presente"
                                 />
                             </div>
                         </div>
                         <div className="form-group">
                             <label>
-                                Description
+                                Descripción
                                 <span style={{ fontSize: '0.75rem', fontWeight: 'normal', color: 'var(--text-secondary)', marginLeft: '8px' }}>
                                     (Puedes usar HTML para subrayar en color, ej: &lt;mark&gt;texto&lt;/mark&gt; o &lt;span style="color:red"&gt;rojo&lt;/span&gt;)
                                 </span>
@@ -94,12 +94,12 @@ const Experience = ({ data = [], onChange }) => {
                                 value={item.description}
                                 onChange={(e) => handleChange(item.id, 'description', e.target.value)}
                                 rows="3"
-                                placeholder="Describe your responsibilities and achievements..."
+                                placeholder="Describe tus responsabilidades y logros..."
                             />
                         </div>
                     </div>
                 ))}
-                {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>No experience added. Click + to add one.</p>}
+                {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Aún no hay experiencia. Haz clic en + para añadir.</p>}
             </div>
         </div>
     );

@@ -24,18 +24,18 @@ const Skills = ({ data = [], onChange }) => {
 
     return (
         <div className="glass-panel">
-            <h2 className="panel-title">Skills</h2>
+            <h2 className="panel-title">Habilidades</h2>
 
             <form onSubmit={handleAdd} style={{ display: 'flex', gap: '10px', marginBottom: '1rem' }}>
                 <input
                     type="text"
                     value={newSkill}
                     onChange={(e) => setNewSkill(e.target.value)}
-                    placeholder="e.g. JavaScript, React, Node.js..."
+                    placeholder="Ej. JavaScript, React, Diseño UI..."
                     style={{ flexGrow: 1 }}
                 />
                 <button type="submit" className="btn btn-primary" style={{ padding: '0.5rem 1rem' }}>
-                    Add
+                    Añadir
                 </button>
             </form>
 
@@ -62,7 +62,7 @@ const Skills = ({ data = [], onChange }) => {
                     </div>
                 ))}
             </div>
-            {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '10px' }}>No skills added.</p>}
+            {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '10px' }}>No hay habilidades añadidas.</p>}
         </div>
     );
 };

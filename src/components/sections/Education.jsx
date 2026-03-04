@@ -24,8 +24,8 @@ const Education = ({ data = [], onChange }) => {
     return (
         <div className="glass-panel">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 className="panel-title" style={{ marginBottom: 0 }}>Education</h2>
-                <button className="btn btn-secondary btn-icon-only" onClick={handleAdd} title="Add Education">
+                <h2 className="panel-title" style={{ marginBottom: 0 }}>Educación</h2>
+                <button className="btn btn-secondary btn-icon-only" onClick={handleAdd} title="Añadir Educación">
                     <Plus size={18} />
                 </button>
             </div>
@@ -44,37 +44,37 @@ const Education = ({ data = [], onChange }) => {
                         </div>
 
                         <div className="form-group" style={{ marginBottom: '1rem' }}>
-                            <label>Institution</label>
+                            <label>Institución</label>
                             <input
                                 type="text"
                                 value={item.institution}
                                 onChange={(e) => handleChange(item.id, 'institution', e.target.value)}
-                                placeholder="e.g. University of Hard Knocks"
+                                placeholder="Ej. Universidad Complutense"
                             />
                         </div>
                         <div className="form-row">
                             <div className="form-group">
-                                <label>Degree / Field of Study</label>
+                                <label>Titulación / Área de Estudio</label>
                                 <input
                                     type="text"
                                     value={item.degree}
                                     onChange={(e) => handleChange(item.id, 'degree', e.target.value)}
-                                    placeholder="e.g. B.Sc. Computer Science"
+                                    placeholder="Ej. Grado en Informática"
                                 />
                             </div>
                             <div className="form-group">
-                                <label>Year</label>
+                                <label>Año</label>
                                 <input
                                     type="text"
                                     value={item.year}
                                     onChange={(e) => handleChange(item.id, 'year', e.target.value)}
-                                    placeholder="e.g. 2016 - 2020"
+                                    placeholder="Ej. 2016 - 2020"
                                 />
                             </div>
                         </div>
                     </div>
                 ))}
-                {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>No education added. Click + to add one.</p>}
+                {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Aún no hay estudios. Haz clic en + para añadir.</p>}
             </div>
         </div>
     );

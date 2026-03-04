@@ -24,8 +24,8 @@ const CVPreview = ({ data }) => {
 
             {experience && experience.length > 0 && (
                 <div style={{ marginBottom: '30px' }}>
-                    <h2 style={{ fontSize: '1.5rem', color: '#6366f1', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                        Experience
+                    <h2 style={{ fontSize: '1.5rem', color: '#ea580c', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                        Experiencia
                     </h2>
                     {experience.map(exp => (
                         <div key={exp.id} style={{ marginBottom: '20px' }}>
@@ -45,8 +45,8 @@ const CVPreview = ({ data }) => {
 
             {education && education.length > 0 && (
                 <div style={{ marginBottom: '30px' }}>
-                    <h2 style={{ fontSize: '1.5rem', color: '#6366f1', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                        Education
+                    <h2 style={{ fontSize: '1.5rem', color: '#ea580c', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                        Educación
                     </h2>
                     {education.map(edu => (
                         <div key={edu.id} style={{ marginBottom: '15px' }}>
@@ -62,8 +62,8 @@ const CVPreview = ({ data }) => {
 
             {skills && skills.length > 0 && (
                 <div>
-                    <h2 style={{ fontSize: '1.5rem', color: '#6366f1', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                        Skills
+                    <h2 style={{ fontSize: '1.5rem', color: '#ea580c', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                        Habilidades
                     </h2>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                         {skills.map(skill => (
