@@ -12,6 +12,8 @@ const Experience = ({ data = [], onChange }) => {
                 position: '',
                 startDate: '',
                 endDate: '',
+                isCurrent: false,
+                showDuration: false,
                 description: ''
             }
         ]);
@@ -80,9 +82,42 @@ const Experience = ({ data = [], onChange }) => {
                                     type="month"
                                     value={item.endDate}
                                     onChange={(e) => handleChange(item.id, 'endDate', e.target.value)}
-                                    title="Dejar en blanco si es el trabajo actual"
+                                    disabled={item.isCurrent}
+                                    style={{ opacity: item.isCurrent ? 0.5 : 1, cursor: item.isCurrent ? 'not-allowed' : 'text' }}
                                 />
                             </div>
+                        </div>
+                        <div className="form-group" style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px' }}>
+                            <input
+                                type="checkbox"
+                                id={`current-${item.id}`}
+                                checked={item.isCurrent || false}
+                                onChange={(e) => {
+                                    const isChecked = e.target.checked;
+                                    onChange(data.map(d => {
+                                        if (d.id === item.id) {
+                                            return { ...d, isCurrent: isChecked, endDate: isChecked ? '' : d.endDate };
+                                        }
+                                        return d;
+                                    }));
+                                }}
+                                style={{ width: 'auto', margin: 0 }}
+                            />
+                            <label htmlFor={`current-${item.id}`} style={{ margin: 0, fontWeight: 500 }}>
+                                Sigo activo en este puesto actualmente
+                            </label>
+                        </div>
+                        <div className="form-group" style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px' }}>
+                            <input
+                                type="checkbox"
+                                id={`duration-${item.id}`}
+                                checked={item.showDuration || false}
+                                onChange={(e) => handleChange(item.id, 'showDuration', e.target.checked)}
+                                style={{ width: 'auto', margin: 0 }}
+                            />
+                            <label htmlFor={`duration-${item.id}`} style={{ margin: 0, fontWeight: 500 }}>
+                                Mostrar tiempo calculado (Ej. 1 año y 3 meses) en vez de rango de fechas
+                            </label>
                         </div>
                         <div className="form-group">
                             <label>

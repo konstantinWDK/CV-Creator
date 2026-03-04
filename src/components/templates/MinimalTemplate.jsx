@@ -1,11 +1,12 @@
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { formatPeriod, calculateDuration } from '../../utils/formatDate';
 
 const MinimalTemplate = ({ data }) => {
     const { personalInfo, experience, education, skills } = data;
 
     return (
-        <div className="a4-page" id="cv-preview-content" style={{ padding: '8mm 12mm' }}>
+        <div className="a4-page" id="cv-preview-content" style={{ padding: '6mm 8mm' }}>
             <div style={{ paddingBottom: '20px', borderBottom: '2px solid var(--accent-color)', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
                     <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1a1d24', margin: 0 }}>
@@ -47,7 +48,7 @@ const MinimalTemplate = ({ data }) => {
                                     {exp.position}{exp.company ? ` - ${exp.company}` : ''}
                                 </h3>
                                 <span style={{ color: '#475569', fontSize: '0.9rem', fontWeight: 600 }}>
-                                    {exp.startDate} - {exp.endDate || 'Presente'}
+                                    {exp.showDuration ? calculateDuration(exp.startDate, exp.endDate) : formatPeriod(exp.startDate, exp.endDate)}
                                 </span>
                             </div>
                             <p style={{

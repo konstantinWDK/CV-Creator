@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Wand2 } from 'lucide-react';
+import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Wand2, Linkedin, Github } from 'lucide-react';
 import { getSavedCVs, saveCV, deleteCV, getDefaultCV, getSampleCV } from './utils/storage';
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
@@ -98,6 +98,26 @@ function App() {
               <Trash2 size={24} />
             </button>
           )}
+          <a
+            href="https://www.linkedin.com/jobs/application-settings/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-icon action"
+            title="Subir a LinkedIn"
+            style={{ color: '#0a66c2', marginTop: 'auto' }}
+          >
+            <Linkedin size={24} />
+          </a>
+          <a
+            href="https://github.com/konstantinWDK/CV-Creator"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-icon action"
+            title="Ver código en GitHub"
+            style={{ color: '#ffffff', marginTop: '10px' }}
+          >
+            <Github size={24} />
+          </a>
         </div>
       </div>
 

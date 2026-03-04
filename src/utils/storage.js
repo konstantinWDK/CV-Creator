@@ -60,16 +60,20 @@ export const getSampleCV = () => ({
             id: crypto.randomUUID(),
             company: 'Tech Solutions Inc.',
             position: 'Desarrollador Web Senior',
-            startDate: 'Ene 2021',
-            endDate: 'Presente',
+            startDate: '2021-01',
+            endDate: '',
+            isCurrent: true,
+            showDuration: false,
             description: 'Lideré el desarrollo del frontend usando <mark>React</mark> y <span style="color:#ea580c">Node.js</span>. Mejoré el rendimiento de renderizado en un 40% implementando técnicas avanzadas de paginación.'
         },
         {
             id: crypto.randomUUID(),
             company: 'Agencia Creativa Digital',
             position: 'Desarrollador Frontend',
-            startDate: 'Mar 2018',
-            endDate: 'Dic 2020',
+            startDate: '2018-03',
+            endDate: '2020-12',
+            isCurrent: false,
+            showDuration: false,
             description: 'Creación de interfaces de usuario atractivas. Integración con APIs REST. Trabajo bajo metodologías ágiles (Scrum).'
         }
     ],
