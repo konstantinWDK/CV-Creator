@@ -2,6 +2,7 @@ import React from 'react';
 import MinimalTemplate from './templates/MinimalTemplate';
 import ModernTemplate from './templates/ModernTemplate';
 import MinimalPlusTemplate from './templates/MinimalPlusTemplate';
+import ProfessionalTemplate from './templates/ProfessionalTemplate';
 
 const CVPreview = ({ data }) => {
     // Determine which template to render based on user selection
@@ -11,6 +12,8 @@ const CVPreview = ({ data }) => {
                 return <ModernTemplate data={data} />;
             case 'minimal-plus':
                 return <MinimalPlusTemplate data={data} />;
+            case 'professional':
+                return <ProfessionalTemplate data={data} />;
             case 'minimal':
             default:
                 return <MinimalTemplate data={data} />;

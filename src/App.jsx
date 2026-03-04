@@ -152,6 +152,7 @@ function App() {
               <option value="minimal">Minimalista (Blanco)</option>
               <option value="modern">Moderno (Sidebar Oscuro)</option>
               <option value="minimal-plus">Minimalista Plus (Azul)</option>
+              <option value="professional">Profesional (Dos Columnas)</option>
             </select>
           </div>
           <div style={{ marginTop: '10px' }}>
