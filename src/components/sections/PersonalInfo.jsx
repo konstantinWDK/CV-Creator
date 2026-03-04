@@ -93,7 +93,7 @@ const PersonalInfo = ({ data = {}, onChange }) => {
                     placeholder="https://..."
                 />
             </div>
-            <div className="form-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '10px' }}>
+            <div className="form-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
                 <input
                     type="checkbox"
                     name="showQrCode"
@@ -101,10 +101,26 @@ const PersonalInfo = ({ data = {}, onChange }) => {
                     onChange={handleChange}
                     style={{ width: 'auto', padding: 0 }}
                 />
-                <label style={{ cursor: 'pointer' }} onClick={() => onChange({ ...data, showQrCode: !data.showQrCode })}>
-                    Generar Código QR en el CV (apunta a la Página Web)
+                <label style={{ cursor: 'pointer', margin: 0 }} onClick={() => onChange({ ...data, showQrCode: !data.showQrCode })}>
+                    Generar Código QR en el CV (apunta a la URL)
                 </label>
             </div>
+            {data.showQrCode && (
+                <div className="form-group" style={{ marginBottom: '1rem', paddingLeft: '28px' }}>
+                    <label style={{ fontSize: '0.85rem' }}>Tipo de Enlace</label>
+                    <select
+                        name="qrCodeType"
+                        value={data.qrCodeType || 'link'}
+                        onChange={handleChange}
+                        className="cv-selector-minimal"
+                        style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-primary)' }}
+                    >
+                        <option value="link">Personal (Icono Web)</option>
+                        <option value="github">Repositorio (Icono GitHub)</option>
+                        <option value="linkedin">Perfil Profesional (Icono LinkedIn)</option>
+                    </select>
+                </div>
+            )}
             <div className="form-group">
                 <label>Resumen Profesional</label>
                 <textarea

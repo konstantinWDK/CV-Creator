@@ -1,5 +1,6 @@
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { Globe, Github, Linkedin } from 'lucide-react';
 import { formatPeriod, calculateDuration } from '../../utils/formatDate';
 
 const ModernTemplate = ({ data }) => {
@@ -48,9 +49,11 @@ const ModernTemplate = ({ data }) => {
                 )}
 
                 {personalInfo.showQrCode && personalInfo.website && (
-                    <div style={{ marginTop: 'auto', alignSelf: 'center', background: '#ffffff', padding: '10px', borderRadius: '8px' }}>
-                        <QRCodeSVG value={personalInfo.website} size={90} level="M" />
-                        <p style={{ fontSize: '0.7rem', color: '#0f172a', margin: '5px 0 0 0', fontWeight: 'bold', textAlign: 'center' }}>ESCANEAR</p>
+                    <div style={{ marginTop: 'auto', alignSelf: 'center', background: '#ffffff', padding: '10px', borderRadius: '8px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <QRCodeSVG value={personalInfo.website} size={90} level="M" style={{ marginBottom: '8px' }} />
+                        {(!personalInfo.qrCodeType || personalInfo.qrCodeType === 'link') && <Globe size={18} color="#0f172a" />}
+                        {personalInfo.qrCodeType === 'github' && <Github size={18} color="#0f172a" />}
+                        {personalInfo.qrCodeType === 'linkedin' && <Linkedin size={18} color="#0f172a" />}
                     </div>
                 )}
             </div>

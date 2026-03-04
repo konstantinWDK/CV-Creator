@@ -34,6 +34,7 @@ export const getDefaultCV = () => ({
         website: '',
         photo: null,
         showQrCode: false,
+        qrCodeType: 'link',
         summary: '',
     },
     experience: [],
@@ -53,6 +54,7 @@ export const getSampleCV = () => ({
         website: 'https://github.com/juanperez',
         photo: null,
         showQrCode: true,
+        qrCodeType: 'github',
         summary: 'Desarrollador Full Stack con más de 5 años de experiencia en la creación de aplicaciones web escalables y eficientes. Apasionado por el código limpio, arquitecturas modernas y UI minimalistas.',
     },
     experience: [

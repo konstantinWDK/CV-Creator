@@ -1,12 +1,13 @@
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { Globe, Github, Linkedin } from 'lucide-react';
 import { formatPeriod, calculateDuration } from '../../utils/formatDate';
 
 const MinimalTemplate = ({ data }) => {
     const { personalInfo, experience, education, skills } = data;
 
     return (
-        <div className="a4-page" id="cv-preview-content" style={{ padding: '6mm 8mm' }}>
+        <div className="a4-page" id="cv-preview-content" style={{ padding: '3mm 4mm' }}>
             <div style={{ paddingBottom: '20px', borderBottom: '2px solid var(--accent-color)', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
                     <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1a1d24', margin: 0 }}>
@@ -106,9 +107,11 @@ const MinimalTemplate = ({ data }) => {
 
                 {personalInfo.showQrCode && personalInfo.website && (
                     <div style={{ flexShrink: 0, textAlign: 'center' }}>
-                        <div style={{ padding: '10px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                            <QRCodeSVG value={personalInfo.website} size={80} level="M" />
-                            <p style={{ fontSize: '0.7rem', color: '#64748b', margin: '5px 0 0 0', fontWeight: 'bold' }}>ESCANEAR</p>
+                        <div style={{ padding: '10px', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <QRCodeSVG value={personalInfo.website} size={80} level="M" style={{ marginBottom: '8px' }} />
+                            {(!personalInfo.qrCodeType || personalInfo.qrCodeType === 'link') && <Globe size={18} color="#64748b" />}
+                            {personalInfo.qrCodeType === 'github' && <Github size={18} color="#64748b" />}
+                            {personalInfo.qrCodeType === 'linkedin' && <Linkedin size={18} color="#64748b" />}
                         </div>
                     </div>
                 )}
