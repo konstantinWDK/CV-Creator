@@ -35,3 +35,47 @@ export const getDefaultCV = () => ({
     education: [],
     skills: [],
 });
+
+export const getSampleCV = () => ({
+    id: crypto.randomUUID(),
+    personalInfo: {
+        fullName: 'Juan Pérez',
+        email: 'juan.perez@ejemplo.com',
+        phone: '+34 612 345 678',
+        address: 'Barcelona, España',
+        summary: 'Desarrollador Full Stack con más de 5 años de experiencia en la creación de aplicaciones web escalables y eficientes. Apasionado por el código limpio, arquitecturas modernas y UI minimalistas.',
+    },
+    experience: [
+        {
+            id: crypto.randomUUID(),
+            company: 'Tech Solutions Inc.',
+            position: 'Desarrollador Web Senior',
+            startDate: 'Ene 2021',
+            endDate: 'Presente',
+            description: 'Lideré el desarrollo del frontend usando <mark>React</mark> y <span style="color:#ea580c">Node.js</span>. Mejoré el rendimiento de renderizado en un 40% implementando técnicas avanzadas de paginación.'
+        },
+        {
+            id: crypto.randomUUID(),
+            company: 'Agencia Creativa Digital',
+            position: 'Desarrollador Frontend',
+            startDate: 'Mar 2018',
+            endDate: 'Dic 2020',
+            description: 'Creación de interfaces de usuario atractivas. Integración con APIs REST. Trabajo bajo metodologías ágiles (Scrum).'
+        }
+    ],
+    education: [
+        {
+            id: crypto.randomUUID(),
+            institution: 'Universidad Politécnica de Madrid',
+            degree: 'Grado en Ingeniería Informática',
+            year: '2014 - 2018'
+        }
+    ],
+    skills: [
+        { id: crypto.randomUUID(), name: 'JavaScript' },
+        { id: crypto.randomUUID(), name: 'React' },
+        { id: crypto.randomUUID(), name: 'Node.js' },
+        { id: crypto.randomUUID(), name: 'CSS/SASS' },
+        { id: crypto.randomUUID(), name: 'UI/UX Design' },
+    ],
+});

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code } from 'lucide-react';
-import { getSavedCVs, saveCV, deleteCV, getDefaultCV } from './utils/storage';
+import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Wand2 } from 'lucide-react';
+import { getSavedCVs, saveCV, deleteCV, getDefaultCV, getSampleCV } from './utils/storage';
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
 import html2pdf from 'html2pdf.js';
@@ -26,6 +26,13 @@ function App() {
   const handleCreateNew = () => {
     const newCV = getDefaultCV();
     setCurrentCV(newCV);
+  };
+
+  const handleLoadSample = () => {
+    // We can either generate a new sample and save it, or just inject into current view
+    // Let's create a new CV object populated with sample data
+    const sample = getSampleCV();
+    setCurrentCV(sample);
   };
 
   const handleDelete = (id) => {
@@ -76,6 +83,9 @@ function App() {
         <div className="nav-bottom">
           <button className="nav-icon action new" onClick={handleCreateNew} title="Crear Nuevo">
             <Plus size={24} />
+          </button>
+          <button className="nav-icon action" onClick={handleLoadSample} title="Cargar Datos Prueba" style={{ color: '#8b5cf6' }}>
+            <Wand2 size={24} />
           </button>
           <button className="nav-icon action save" onClick={handleSave} title="Guardar">
             <Save size={24} />
