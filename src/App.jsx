@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Linkedin, Github, Settings, Eye, EyeOff, X } from 'lucide-react';
-import { getSavedCVs, saveCV, deleteCV, getDefaultCV, getSampleCV } from './utils/storage';
+import { getSavedCVs, saveCV, deleteCV, getDefaultCV, getSampleCV, exportAllData, importData } from './utils/storage';
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
 import html2pdf from 'html2pdf.js';
@@ -37,6 +37,34 @@ function App() {
     // Let's create a new CV object populated with sample data
     const sample = getSampleCV();
     setCurrentCV(sample);
+  };
+
+  const handleExport = () => {
+    exportAllData();
+  };
+
+  const handleImport = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const content = event.target.result;
+      const success = importData(content);
+      if (success) {
+        const updatedCVs = getSavedCVs();
+        setCvs(updatedCVs);
+        if (updatedCVs.length > 0) {
+          setCurrentCV(updatedCVs[0]);
+        }
+        alert('Datos importados con éxito.');
+      } else {
+        alert('Error al importar el archivo. Asegúrate de que sea un JSON válido.');
+      }
+    };
+    reader.readAsText(file);
+    // Reset input so it can be used again with the same file if needed
+    e.target.value = '';
   };
 
   const handleDelete = (id) => {
@@ -202,6 +230,33 @@ function App() {
                   </select>
                 </div>
               )}
+
+              <div className="settings-divider" style={{ height: '1px', background: '#e2e8f0', margin: '2rem 0 1rem 0' }}></div>
+
+              <div className="backup-section">
+                <h3 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem', fontWeight: 600 }}>Copia de Seguridad</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={handleExport}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.9rem' }}
+                  >
+                    <Download size={18} /> Exportar Datos (JSON)
+                  </button>
+                  <label className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.9rem', cursor: 'pointer' }}>
+                    <Plus size={18} /> Importar Datos (JSON)
+                    <input
+                      type="file"
+                      accept=".json"
+                      onChange={handleImport}
+                      style={{ display: 'none' }}
+                    />
+                  </label>
+                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '5px' }}>
+                    Utiliza estas opciones para guardar o restaurar todos tus currículums.
+                  </p>
+                </div>
+              </div>
             </div>
           ) : (
             <CVForm data={currentCV} onChange={setCurrentCV} activeTab={activeTab} />

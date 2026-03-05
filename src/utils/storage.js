@@ -95,3 +95,35 @@ export const getSampleCV = () => ({
         { id: crypto.randomUUID(), name: 'UI/UX Design' },
     ],
 });
+
+export const exportAllData = () => {
+    const data = getSavedCVs();
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const date = new Date().toISOString().split('T')[0];
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `cv-backup-${date}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+};
+
+export const importData = (jsonData) => {
+    try {
+        const data = JSON.parse(jsonData);
+        if (!Array.isArray(data)) throw new Error('Invalid format');
+
+        // Simple validation: each item should have an id
+        const valid = data.every(cv => cv.id);
+        if (!valid) throw new Error('Invalid data content');
+
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        return true;
+    } catch (error) {
+        console.error('Error importing data:', error);
+        return false;
+    }
+};
