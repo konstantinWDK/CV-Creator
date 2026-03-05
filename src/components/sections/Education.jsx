@@ -13,13 +13,13 @@ const Education = ({ data = [], onChange }) => {
 
     const handleAdd = () => {
         onChange([
-            ...data,
             {
                 id: crypto.randomUUID(),
                 institution: '',
                 degree: '',
                 year: ''
-            }
+            },
+            ...data
         ]);
     };
 

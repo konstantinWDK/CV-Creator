@@ -9,6 +9,14 @@ import { es } from 'date-fns/locale/es';
 import { parse, format } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
 
+const Quill = ReactQuill.Quill;
+if (Quill) {
+    const ColorStyle = Quill.import('attributors/style/color');
+    const BackgroundStyle = Quill.import('attributors/style/background');
+    Quill.register(ColorStyle, true);
+    Quill.register(BackgroundStyle, true);
+}
+
 registerLocale('es', es);
 
 const Experience = ({ data = [], onChange }) => {
@@ -21,7 +29,6 @@ const Experience = ({ data = [], onChange }) => {
 
     const handleAdd = () => {
         onChange([
-            ...data,
             {
                 id: crypto.randomUUID(),
                 company: '',
@@ -31,7 +38,8 @@ const Experience = ({ data = [], onChange }) => {
                 isCurrent: false,
                 showDuration: false,
                 description: ''
-            }
+            },
+            ...data
         ]);
     };
 

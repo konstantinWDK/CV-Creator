@@ -61,15 +61,9 @@ const MinimalPlusTemplate = ({ data }) => {
                         overflow-wrap: break-word;
                     }
                     /* Styling the 'highlight' look from the image */
-                    .minimal-plus mark, .minimal-plus span[style*="background"] {
+                    .minimal-plus mark {
                         background-color: #dcfce7 !important; /* light green */
                         color: #166534 !important;
-                        padding: 0 4px;
-                        border-radius: 4px;
-                        font-weight: 500;
-                    }
-                    .minimal-plus span[style*="color"] {
-                        background-color: #f1f5f9;
                         padding: 0 4px;
                         border-radius: 4px;
                         font-weight: 500;
