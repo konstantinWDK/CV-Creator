@@ -57,7 +57,7 @@ const MinimalPlusTemplate = ({ data }) => {
                         line-height: 1.45;
                     }
                     .minimal-plus .description-text {
-                        word-break: break-word;
+                        word-break: normal;
                         overflow-wrap: break-word;
                     }
                     /* Styling the 'highlight' look from the image */

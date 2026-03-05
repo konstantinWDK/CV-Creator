@@ -115,7 +115,7 @@ const ClassicTemplate = ({ data }) => {
                         font-size: 0.9rem;
                         line-height: 1.5;
                         color: #111827;
-                        word-break: break-word;
+                        word-break: normal;
                         overflow-wrap: break-word;
                     }
                     .classic-template .description-text p {

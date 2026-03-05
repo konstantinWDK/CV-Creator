@@ -28,10 +28,10 @@ const ModernTemplate = ({ data }) => {
                 <div>
                     <h2 style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #334155', paddingBottom: '8px', marginBottom: '15px', color: '#cbd5e1' }}>Contacto</h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.85rem' }}>
-                        {personalInfo.email && <span style={{ wordBreak: 'break-all' }}>📍 {personalInfo.email}</span>}
+                        {personalInfo.email && <span style={{ wordBreak: 'normal', overflowWrap: 'anywhere' }}>📍 {personalInfo.email}</span>}
                         {personalInfo.phone && <span>📞 {personalInfo.phone}</span>}
                         {personalInfo.address && <span>🏠 {personalInfo.address}</span>}
-                        {personalInfo.website && <span style={{ color: '#ea580c', wordBreak: 'break-all' }}>🔗 {personalInfo.website}</span>}
+                        {personalInfo.website && <span style={{ color: '#ea580c', wordBreak: 'normal', overflowWrap: 'anywhere' }}>🔗 {personalInfo.website}</span>}
                     </div>
                 </div>
 
@@ -86,7 +86,7 @@ const ModernTemplate = ({ data }) => {
                                     fontSize: '0.95rem',
                                     lineHeight: 1.6,
                                     margin: 0,
-                                    wordBreak: 'break-word',
+                                    wordBreak: 'normal',
                                     overflowWrap: 'break-word'
                                 }} dangerouslySetInnerHTML={{ __html: exp.description }} />
                             </div>

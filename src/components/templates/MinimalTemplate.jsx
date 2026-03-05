@@ -57,7 +57,7 @@ const MinimalTemplate = ({ data }) => {
                                 fontSize: '0.95rem',
                                 lineHeight: 1.5,
                                 marginTop: '8px',
-                                wordBreak: 'break-word',
+                                wordBreak: 'normal',
                                 overflowWrap: 'break-word'
                             }} dangerouslySetInnerHTML={{ __html: exp.description }} />
                         </div>

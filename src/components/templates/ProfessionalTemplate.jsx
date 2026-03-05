@@ -115,7 +115,7 @@ const ProfessionalTemplate = ({ data }) => {
                         font-size: 0.85rem;
                         line-height: 1.5;
                         color: #374151;
-                        word-break: break-word;
+                        word-break: normal;
                         overflow-wrap: break-word;
                     }
                     .professional-template .description-text p {
