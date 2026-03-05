@@ -10,6 +10,7 @@ function App() {
   const [currentCV, setCurrentCV] = useState(getDefaultCV());
   const [activeTab, setActiveTab] = useState('personalInfo');
   const [showMobilePreview, setShowMobilePreview] = useState(false);
+  const [showSaveStatus, setShowSaveStatus] = useState(false);
 
   useEffect(() => {
     const loadedCVs = getSavedCVs();
@@ -21,6 +22,33 @@ function App() {
       setCurrentCV(getSampleCV());
     }
   }, []);
+
+  // Debounced Auto-save
+  useEffect(() => {
+    // Avoid saving on initial load
+    if (!currentCV.id) return;
+
+    // We use a separate state to track if we should show the status
+    // to avoid showing it on the very first render of a loaded CV
+    const timer = setTimeout(() => {
+      saveCV(currentCV);
+      setCvs(getSavedCVs());
+      setShowSaveStatus(true);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [currentCV]);
+
+  // Auto-hide Save Notification after 3s
+  useEffect(() => {
+    let timeout;
+    if (showSaveStatus) {
+      timeout = setTimeout(() => {
+        setShowSaveStatus(false);
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [showSaveStatus]);
 
   const handleSave = () => {
     saveCV(currentCV);
@@ -293,6 +321,11 @@ function App() {
         >
           {showMobilePreview ? <EyeOff size={20} /> : <Eye size={20} />}
         </button>
+      </div>
+
+      {/* Save Notification */}
+      <div className={`save-status-indicator ${showSaveStatus ? 'show' : ''}`}>
+        <span className="check-icon">✓</span> Cambios guardados
       </div>
     </div>
   );
