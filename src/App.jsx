@@ -186,6 +186,22 @@ function App() {
                   <option value="'Courier Prime', monospace">Courier (Máquina de escribir)</option>
                 </select>
               </div>
+
+              {currentCV.templateId !== 'modern' && (
+                <div className="form-group" style={{ marginBottom: '20px' }}>
+                  <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>Espaciado (Márgenes de la hoja)</label>
+                  <select
+                    className="cv-selector-minimal"
+                    style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
+                    value={currentCV.paddingLevel || 'normal'}
+                    onChange={(e) => setCurrentCV({ ...currentCV, paddingLevel: e.target.value })}
+                  >
+                    <option value="compact">Un poco</option>
+                    <option value="medium">Un poco más</option>
+                    <option value="normal">Normal</option>
+                  </select>
+                </div>
+              )}
             </div>
           ) : (
             <CVForm data={currentCV} onChange={setCurrentCV} activeTab={activeTab} />

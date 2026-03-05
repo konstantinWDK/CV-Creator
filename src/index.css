@@ -451,6 +451,9 @@ textarea:focus {
   border-radius: 4px;
   transform-origin: top center;
   position: relative;
+  /* Use CSS variables for padding levels, fallback to 0 if not set so inner template padding works or we override wrapper */
+  padding: var(--cv-padding-y, 0) var(--cv-padding-x, 0) !important;
+  box-sizing: border-box;
   /* Add scale logic in React based on container width if needed, or leave to CSS */
 }
 
