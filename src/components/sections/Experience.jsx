@@ -29,7 +29,6 @@ const Experience = ({ data = [], onChange }) => {
 
     const handleAdd = () => {
         onChange([
-            ...data,
             {
                 id: crypto.randomUUID(),
                 company: '',
@@ -39,7 +38,8 @@ const Experience = ({ data = [], onChange }) => {
                 isCurrent: false,
                 showDuration: false,
                 description: ''
-            }
+            },
+            ...data
         ]);
     };
 

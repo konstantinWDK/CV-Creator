@@ -23,11 +23,11 @@ const Skills = ({ data = [], onChange }) => {
         if (newSkill.trim() === '') return;
 
         onChange([
-            ...data,
             {
                 id: crypto.randomUUID(),
                 name: newSkill.trim()
-            }
+            },
+            ...data
         ]);
         setNewSkill('');
     };
