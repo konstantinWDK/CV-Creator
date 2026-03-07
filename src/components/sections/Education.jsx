@@ -2,8 +2,10 @@ import { Plus, Trash2, GripVertical } from 'lucide-react';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { SortableItem } from '../ui/SortableItem';
+import { useTranslation } from 'react-i18next';
 
 const Education = ({ data = [], onChange }) => {
+    const { t } = useTranslation();
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -46,8 +48,8 @@ const Education = ({ data = [], onChange }) => {
     return (
         <div className="glass-panel">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 className="panel-title" style={{ marginBottom: 0 }}>Educación</h2>
-                <button className="btn btn-secondary btn-icon-only" onClick={handleAdd} title="Añadir Educación">
+                <h2 className="panel-title" style={{ marginBottom: 0 }}>{t('forms.education.title')}</h2>
+                <button className="btn btn-secondary btn-icon-only" onClick={handleAdd} title={t('forms.education.add')}>
                     <Plus size={18} />
                 </button>
             </div>
@@ -74,33 +76,33 @@ const Education = ({ data = [], onChange }) => {
                                                 <button
                                                     className="btn btn-danger btn-icon-only"
                                                     onClick={() => handleRemove(item.id)}
-                                                    title="Remove Education"
+                                                    title={t('forms.education.delete')}
                                                 >
                                                     <Trash2 size={16} />
                                                 </button>
                                             </div>
 
                                             <div className="form-group" style={{ marginBottom: '1rem' }}>
-                                                <label>Institución</label>
+                                                <label>{t('forms.education.school')}</label>
                                                 <input
                                                     type="text"
                                                     value={item.institution}
                                                     onChange={(e) => handleChange(item.id, 'institution', e.target.value)}
-                                                    placeholder="Ej. Universidad Complutense"
+                                                    placeholder={t('forms.education.schoolPlaceholder')}
                                                 />
                                             </div>
                                             <div className="form-row">
                                                 <div className="form-group">
-                                                    <label>Titulación / Área de Estudio</label>
+                                                    <label>{t('forms.education.degree')}</label>
                                                     <input
                                                         type="text"
                                                         value={item.degree}
                                                         onChange={(e) => handleChange(item.id, 'degree', e.target.value)}
-                                                        placeholder="Ej. Grado en Informática"
+                                                        placeholder={t('forms.education.degreePlaceholder')}
                                                     />
                                                 </div>
                                                 <div className="form-group">
-                                                    <label>Año</label>
+                                                    <label>{t('forms.education.endDate')}</label>
                                                     <input
                                                         type="text"
                                                         value={item.year}
@@ -116,7 +118,7 @@ const Education = ({ data = [], onChange }) => {
                         })}
                     </SortableContext>
                 </DndContext>
-                {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Aún no hay estudios. Haz clic en + para añadir.</p>}
+                {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{t('forms.education.noEducation')}</p>}
             </div>
         </div>
     );

@@ -1,4 +1,7 @@
+import { useTranslation } from 'react-i18next';
+
 const PersonalInfo = ({ data = {}, onChange }) => {
+    const { t } = useTranslation();
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         onChange({ ...data, [name]: type === 'checkbox' ? checked : value });
@@ -17,9 +20,9 @@ const PersonalInfo = ({ data = {}, onChange }) => {
 
     return (
         <div className="glass-panel">
-            <h2 className="panel-title">Datos Personales</h2>
+            <h2 className="panel-title">{t('forms.personalInfo.title')}</h2>
             <div className="form-group">
-                <label>Foto de Perfil</label>
+                <label>{t('forms.personalInfo.photo')}</label>
                 <input
                     type="file"
                     accept="image/*"
@@ -33,7 +36,7 @@ const PersonalInfo = ({ data = {}, onChange }) => {
                             type="button"
                             className="btn btn-danger btn-icon-only"
                             onClick={() => onChange({ ...data, photo: null })}
-                            title="Eliminar Foto"
+                            title={t('forms.personalInfo.deletePhoto')}
                             style={{ padding: '4px' }}
                         >
                             <span style={{ fontSize: '10px', padding: '0 4px' }}>✕</span>
@@ -42,55 +45,55 @@ const PersonalInfo = ({ data = {}, onChange }) => {
                 )}
             </div>
             <div className="form-group">
-                <label>Nombre Completo</label>
+                <label>{t('forms.personalInfo.fullName')}</label>
                 <input
                     type="text"
                     name="fullName"
                     value={data.fullName || ''}
                     onChange={handleChange}
-                    placeholder="Ej. Juan Pérez"
+                    placeholder={t('forms.personalInfo.fullNamePlaceholder')}
                 />
             </div>
             <div className="form-row">
                 <div className="form-group">
-                    <label>Correo Electrónico</label>
+                    <label>{t('forms.personalInfo.email')}</label>
                     <input
                         type="email"
                         name="email"
                         value={data.email || ''}
                         onChange={handleChange}
-                        placeholder="juan@ejemplo.com"
+                        placeholder={t('forms.personalInfo.emailPlaceholder')}
                     />
                 </div>
                 <div className="form-group">
-                    <label>Teléfono</label>
+                    <label>{t('forms.personalInfo.phone')}</label>
                     <input
                         type="tel"
                         name="phone"
                         value={data.phone || ''}
                         onChange={handleChange}
-                        placeholder="+34 600 000 000"
+                        placeholder={t('forms.personalInfo.phonePlaceholder')}
                     />
                 </div>
             </div>
             <div className="form-group">
-                <label>Dirección</label>
+                <label>{t('forms.personalInfo.address')}</label>
                 <input
                     type="text"
                     name="address"
                     value={data.address || ''}
                     onChange={handleChange}
-                    placeholder="Ciudad, País"
+                    placeholder={t('forms.personalInfo.addressPlaceholder')}
                 />
             </div>
             <div className="form-group">
-                <label>Página Web / GitHub</label>
+                <label>{t('forms.personalInfo.website')}</label>
                 <input
                     type="text"
                     name="website"
                     value={data.website || ''}
                     onChange={handleChange}
-                    placeholder="https://..."
+                    placeholder={t('forms.personalInfo.websitePlaceholder')}
                 />
             </div>
             <div className="form-group" style={{ flexDirection: 'row', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
@@ -102,12 +105,12 @@ const PersonalInfo = ({ data = {}, onChange }) => {
                     style={{ width: 'auto', padding: 0 }}
                 />
                 <label style={{ cursor: 'pointer', margin: 0 }} onClick={() => onChange({ ...data, showQrCode: !data.showQrCode })}>
-                    Generar Código QR en el CV (apunta a la URL)
+                    {t('forms.personalInfo.showQr')}
                 </label>
             </div>
             {data.showQrCode && (
                 <div className="form-group" style={{ marginBottom: '1rem', paddingLeft: '28px' }}>
-                    <label style={{ fontSize: '0.85rem' }}>Tipo de Enlace</label>
+                    <label style={{ fontSize: '0.85rem' }}>{t('forms.personalInfo.qrType')}</label>
                     <select
                         name="qrCodeType"
                         value={data.qrCodeType || 'link'}
@@ -115,20 +118,20 @@ const PersonalInfo = ({ data = {}, onChange }) => {
                         className="cv-selector-minimal"
                         style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-primary)' }}
                     >
-                        <option value="link">Personal (Icono Web)</option>
-                        <option value="github">Repositorio (Icono GitHub)</option>
-                        <option value="linkedin">Perfil Profesional (Icono LinkedIn)</option>
+                        <option value="link">{t('forms.personalInfo.qrLink')}</option>
+                        <option value="github">{t('forms.personalInfo.qrGithub')}</option>
+                        <option value="linkedin">{t('forms.personalInfo.qrLinkedin')}</option>
                     </select>
                 </div>
             )}
             <div className="form-group">
-                <label>Resumen Profesional</label>
+                <label>{t('forms.personalInfo.summary')}</label>
                 <textarea
                     name="summary"
                     value={data.summary || ''}
                     onChange={handleChange}
                     rows="4"
-                    placeholder="Un breve resumen de tu perfil profesional..."
+                    placeholder={t('forms.personalInfo.summaryPlaceholder')}
                 />
             </div>
         </div>

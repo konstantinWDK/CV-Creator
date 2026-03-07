@@ -6,8 +6,10 @@ import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrate
 import { SortableItem } from '../ui/SortableItem';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import { es } from 'date-fns/locale/es';
+import { enUS } from 'date-fns/locale/en-US';
 import { parse, format } from 'date-fns';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useTranslation } from 'react-i18next';
 
 const Quill = ReactQuill.Quill;
 if (Quill) {
@@ -20,6 +22,8 @@ if (Quill) {
 registerLocale('es', es);
 
 const Experience = ({ data = [], onChange }) => {
+    const { t, i18n } = useTranslation();
+    const currentLocale = i18n.language.startsWith('en') ? 'en' : 'es';
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -83,8 +87,8 @@ const Experience = ({ data = [], onChange }) => {
     return (
         <div className="glass-panel">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h2 className="panel-title" style={{ marginBottom: 0 }}>Experiencia</h2>
-                <button className="btn btn-secondary btn-icon-only" onClick={handleAdd} title="Añadir Experiencia">
+                <h2 className="panel-title" style={{ marginBottom: 0 }}>{t('forms.experience.title')}</h2>
+                <button className="btn btn-secondary btn-icon-only" onClick={handleAdd} title={t('forms.experience.add')}>
                     <Plus size={18} />
                 </button>
             </div>
@@ -103,7 +107,7 @@ const Experience = ({ data = [], onChange }) => {
                                                     className="btn btn-secondary btn-icon-only drag-handle"
                                                     {...attributes}
                                                     {...listeners}
-                                                    title="Arrastrar para reordenar"
+                                                    title={t('forms.experience.dragHelp')}
                                                     style={{ cursor: 'grab' }}
                                                 >
                                                     <GripVertical size={16} />
@@ -111,53 +115,53 @@ const Experience = ({ data = [], onChange }) => {
                                                 <button
                                                     className="btn btn-danger btn-icon-only"
                                                     onClick={() => handleRemove(item.id)}
-                                                    title="Eliminar Experiencia"
+                                                    title={t('forms.experience.delete')}
                                                 >
                                                     <Trash2 size={16} />
                                                 </button>
                                             </div>
 
                                             <div className="form-group" style={{ marginBottom: '1rem' }}>
-                                                <label>Empresa</label>
+                                                <label>{t('forms.experience.company')}</label>
                                                 <input
                                                     type="text"
                                                     value={item.company}
                                                     onChange={(e) => handleChange(item.id, 'company', e.target.value)}
-                                                    placeholder="Ej. Google"
+                                                    placeholder={t('forms.experience.companyPlaceholder')}
                                                 />
                                             </div>
                                             <div className="form-group" style={{ marginBottom: '1rem' }}>
-                                                <label>Puesto</label>
+                                                <label>{t('forms.experience.position')}</label>
                                                 <input
                                                     type="text"
                                                     value={item.position}
                                                     onChange={(e) => handleChange(item.id, 'position', e.target.value)}
-                                                    placeholder="Ej. Desarrollador Web"
+                                                    placeholder={t('forms.experience.positionPlaceholder')}
                                                 />
                                             </div>
                                             <div className="form-row" style={{ marginBottom: '1rem' }}>
                                                 <div className="form-group date-picker-group">
-                                                    <label>Fecha de Inicio</label>
+                                                    <label>{t('forms.experience.startDate')}</label>
                                                     <DatePicker
                                                         selected={parseMonthString(item.startDate)}
                                                         onChange={(date) => handleChange(item.id, 'startDate', formatMonthString(date))}
                                                         dateFormat="MM/yyyy"
                                                         showMonthYearPicker
-                                                        locale="es"
-                                                        placeholderText="Seleccionar fecha"
+                                                        locale={currentLocale}
+                                                        placeholderText={t('forms.experience.selectDate')}
                                                         className="w-full"
                                                     />
                                                 </div>
                                                 <div className="form-group date-picker-group">
-                                                    <label>Fecha de Fin</label>
+                                                    <label>{t('forms.experience.endDate')}</label>
                                                     <DatePicker
                                                         selected={parseMonthString(item.endDate)}
                                                         onChange={(date) => handleChange(item.id, 'endDate', formatMonthString(date))}
                                                         dateFormat="MM/yyyy"
                                                         showMonthYearPicker
-                                                        locale="es"
+                                                        locale={currentLocale}
                                                         disabled={item.isCurrent}
-                                                        placeholderText={item.isCurrent ? 'Actualidad' : 'Seleccionar fecha'}
+                                                        placeholderText={item.isCurrent ? t('forms.experience.present') : t('forms.experience.selectDate')}
                                                         className="w-full"
                                                     />
                                                 </div>
@@ -175,7 +179,7 @@ const Experience = ({ data = [], onChange }) => {
                                                     style={{ width: 'auto', margin: 0 }}
                                                 />
                                                 <label htmlFor={`current-${item.id}`} style={{ margin: 0, fontWeight: 500 }}>
-                                                    Sigo activo en este puesto actualmente
+                                                    {t('forms.experience.isCurrent')}
                                                 </label>
                                             </div>
                                             <div className="form-group" style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '8px' }}>
@@ -187,12 +191,12 @@ const Experience = ({ data = [], onChange }) => {
                                                     style={{ width: 'auto', margin: 0 }}
                                                 />
                                                 <label htmlFor={`duration-${item.id}`} style={{ margin: 0, fontWeight: 500 }}>
-                                                    Mostrar tiempo calculado en vez de rango de fechas
+                                                    {t('forms.experience.showDuration')}
                                                 </label>
                                             </div>
                                             <div className="form-group">
                                                 <label>
-                                                    Descripción
+                                                    {t('forms.experience.description')}
                                                 </label>
                                                 <ReactQuill
                                                     theme="snow"
@@ -207,7 +211,7 @@ const Experience = ({ data = [], onChange }) => {
                                                         ]
                                                     }}
                                                     style={{ backgroundColor: '#ffffff', color: '#000000' }}
-                                                    placeholder="Describe tus responsabilidades y logros..."
+                                                    placeholder={t('forms.experience.descriptionPlaceholder')}
                                                 />
                                             </div>
                                         </>
@@ -217,7 +221,7 @@ const Experience = ({ data = [], onChange }) => {
                         })}
                     </SortableContext>
                 </DndContext>
-                {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>Aún no hay experiencia. Haz clic en + para añadir.</p>}
+                {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>{t('forms.experience.noExperience')}</p>}
             </div>
         </div>
     );

@@ -1,8 +1,10 @@
 import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { formatPeriod, calculateDuration } from '../../utils/formatDate';
+import { useTranslation } from 'react-i18next';
 
 const ClassicTemplate = ({ data }) => {
+    const { t } = useTranslation();
     const { personalInfo, experience, education, skills } = data;
 
     // Helper to format contact info into a single line joined by dots •
@@ -174,7 +176,7 @@ const ClassicTemplate = ({ data }) => {
 
             {/* Header */}
             <div className="header-wrapper">
-                <h1 className="main-name">{personalInfo.fullName || 'NOMBRE APELIDOS'}</h1>
+                <h1 className="main-name">{personalInfo.fullName || t('forms.personalInfo.fullNamePlaceholder')}</h1>
 
                 {/* Optional: if there was a specific 'title' field, it would go here. We'll use the summary's first short sentence if available, or just skip it. */}
 
@@ -187,7 +189,7 @@ const ClassicTemplate = ({ data }) => {
             {personalInfo.summary && (
                 <div>
                     <div className="section-title-wrapper">
-                        <h2 className="section-title">Perfil Profesional</h2>
+                        <h2 className="section-title">{t('forms.personalInfo.summary')}</h2>
                     </div>
                     <div className="summary-text" dangerouslySetInnerHTML={{ __html: personalInfo.summary.replace(/\n/g, '<br />') }} />
                 </div>
@@ -197,13 +199,13 @@ const ClassicTemplate = ({ data }) => {
             {experience && experience.length > 0 && (
                 <div>
                     <div className="section-title-wrapper">
-                        <h2 className="section-title">Experiencia</h2>
+                        <h2 className="section-title">{t('preview.experience')}</h2>
                     </div>
                     <div>
                         {experience.map(exp => (
                             <div key={exp.id} className="list-item">
                                 <div className="item-header">
-                                    <h3 className="institution-name">{exp.company || 'Empresa'}</h3>
+                                    <h3 className="institution-name">{exp.company || t('forms.experience.company')}</h3>
                                     {/* Usually location goes here in classic templates, but we don't have location field in exp. Let's put a placeholder or omit.*/}
                                 </div>
                                 <div className="role-row">
@@ -226,7 +228,7 @@ const ClassicTemplate = ({ data }) => {
             {education && education.length > 0 && (
                 <div>
                     <div className="section-title-wrapper">
-                        <h2 className="section-title">Educación</h2>
+                        <h2 className="section-title">{t('preview.education')}</h2>
                     </div>
                     <div>
                         {education.map(edu => (
@@ -248,7 +250,7 @@ const ClassicTemplate = ({ data }) => {
             {skills && skills.length > 0 && (
                 <div>
                     <div className="section-title-wrapper">
-                        <h2 className="section-title">Habilidades</h2>
+                        <h2 className="section-title">{t('preview.skills')}</h2>
                     </div>
                     <div className="skills-inline">
                         {skills.map((skill, index) => (
@@ -267,7 +269,7 @@ const ClassicTemplate = ({ data }) => {
                     <div className="qr-box">
                         <QRCodeSVG value={personalInfo.website} size={70} level="M" style={{ marginBottom: '8px' }} />
                         <span style={{ fontSize: '0.75rem', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                            Escanear Perfil
+                            {t('preview.scanProfile')}
                         </span>
                     </div>
                 </div>

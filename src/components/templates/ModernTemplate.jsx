@@ -2,8 +2,10 @@ import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Globe, Github, Linkedin } from 'lucide-react';
 import { formatPeriod, calculateDuration } from '../../utils/formatDate';
+import { useTranslation } from 'react-i18next';
 
 const ModernTemplate = ({ data }) => {
+    const { t } = useTranslation();
     const { personalInfo, experience, education, skills } = data;
 
     return (
@@ -22,11 +24,11 @@ const ModernTemplate = ({ data }) => {
                             {personalInfo.fullName ? personalInfo.fullName.charAt(0).toUpperCase() : '?'}
                         </div>
                     )}
-                    <h1 style={{ fontSize: '1.8rem', fontWeight: 700, margin: '0 0 5px 0', lineHeight: 1.2 }}>{personalInfo.fullName || 'Tu Nombre'}</h1>
+                    <h1 style={{ fontSize: '1.8rem', fontWeight: 700, margin: '0 0 5px 0', lineHeight: 1.2 }}>{personalInfo.fullName || t('forms.personalInfo.fullNamePlaceholder')}</h1>
                 </div>
 
                 <div>
-                    <h2 style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #334155', paddingBottom: '8px', marginBottom: '15px', color: '#cbd5e1' }}>Contacto</h2>
+                    <h2 style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #334155', paddingBottom: '8px', marginBottom: '15px', color: '#cbd5e1' }}>{t('preview.contact')}</h2>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.85rem' }}>
                         {personalInfo.email && <span style={{ wordBreak: 'normal', overflowWrap: 'anywhere' }}>📍 {personalInfo.email}</span>}
                         {personalInfo.phone && <span>📞 {personalInfo.phone}</span>}
@@ -37,7 +39,7 @@ const ModernTemplate = ({ data }) => {
 
                 {skills && skills.length > 0 && (
                     <div>
-                        <h2 style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #334155', paddingBottom: '8px', marginBottom: '15px', color: '#cbd5e1' }}>Habilidades</h2>
+                        <h2 style={{ fontSize: '1.1rem', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid #334155', paddingBottom: '8px', marginBottom: '15px', color: '#cbd5e1' }}>{t('preview.skills')}</h2>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                             {skills.map(skill => (
                                 <span key={skill.id} style={{ background: '#334155', color: '#f8fafc', padding: '4px 10px', borderRadius: '4px', fontSize: '0.8rem' }}>
@@ -62,14 +64,14 @@ const ModernTemplate = ({ data }) => {
             <div style={{ width: '65%', backgroundColor: '#ffffff', padding: '40px 30px', display: 'flex', flexDirection: 'column', gap: '30px' }}>
                 {personalInfo.summary && (
                     <div style={{ paddingBottom: '20px', borderBottom: '2px solid #ea580c' }}>
-                        <h2 style={{ fontSize: '1.6rem', color: '#0f172a', marginBottom: '10px', textTransform: 'uppercase', fontWeight: 800 }}>Perfil Profesional</h2>
+                        <h2 style={{ fontSize: '1.6rem', color: '#0f172a', marginBottom: '10px', textTransform: 'uppercase', fontWeight: 800 }}>{t('forms.personalInfo.summary')}</h2>
                         <p style={{ color: '#475569', lineHeight: 1.6, fontSize: '0.95rem' }}>{personalInfo.summary}</p>
                     </div>
                 )}
 
                 {experience && experience.length > 0 && (
                     <div>
-                        <h2 style={{ fontSize: '1.6rem', color: '#ea580c', marginBottom: '20px', textTransform: 'uppercase', fontWeight: 800 }}>Experiencia</h2>
+                        <h2 style={{ fontSize: '1.6rem', color: '#ea580c', marginBottom: '20px', textTransform: 'uppercase', fontWeight: 800 }}>{t('preview.experience')}</h2>
                         {experience.map((exp, idx) => (
                             <div key={exp.id} style={{ marginBottom: idx === experience.length - 1 ? '0' : '25px', position: 'relative' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '5px' }}>
@@ -96,7 +98,7 @@ const ModernTemplate = ({ data }) => {
 
                 {education && education.length > 0 && (
                     <div>
-                        <h2 style={{ fontSize: '1.6rem', color: '#ea580c', marginBottom: '20px', textTransform: 'uppercase', fontWeight: 800 }}>Educación</h2>
+                        <h2 style={{ fontSize: '1.6rem', color: '#ea580c', marginBottom: '20px', textTransform: 'uppercase', fontWeight: 800 }}>{t('preview.education')}</h2>
                         {education.map(edu => (
                             <div key={edu.id} style={{ marginBottom: '15px' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>

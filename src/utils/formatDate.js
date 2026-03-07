@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 export const formatMonthYear = (dateString) => {
     if (!dateString) return '';
     const parts = dateString.split('-');
@@ -5,13 +7,14 @@ export const formatMonthYear = (dateString) => {
     const [year, month] = parts;
 
     const date = new Date(year, parseInt(month) - 1);
-    const formatted = date.toLocaleDateString('es-ES', { month: 'long', year: 'numeric' });
+    const locale = i18next.language.startsWith('es') ? 'es-ES' : 'en-US';
+    const formatted = date.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
     return formatted.charAt(0).toUpperCase() + formatted.slice(1);
 };
 
 export const formatPeriod = (start, end) => {
     const s = formatMonthYear(start);
-    const e = end ? formatMonthYear(end) : 'Presente';
+    const e = end ? formatMonthYear(end) : (i18next.language.startsWith('es') ? 'Presente' : 'Present');
     if (!s && !end) return '';
     if (!s) return e;
     return `${s} - ${e}`;
@@ -19,6 +22,7 @@ export const formatPeriod = (start, end) => {
 
 export const calculateDuration = (start, end) => {
     if (!start) return '';
+    const t = i18next.t.bind(i18next);
     try {
         const [startYear, startMonth] = start.split('-');
         if (!startYear || !startMonth) return '';
@@ -42,10 +46,11 @@ export const calculateDuration = (start, end) => {
         const months = totalMonths % 12;
 
         let result = [];
-        if (years > 0) result.push(`${years} ${years === 1 ? 'año' : 'años'}`);
-        if (months > 0) result.push(`${months} ${months === 1 ? 'mes' : 'meses'}`);
+        if (years > 0) result.push(`${years} ${years === 1 ? t('preview.duration.year') : t('preview.duration.years')}`);
+        if (months > 0) result.push(`${months} ${months === 1 ? t('preview.duration.month') : t('preview.duration.months')}`);
 
-        return result.length > 0 ? result.join(' y ') : '';
+        const connector = i18next.language.startsWith('es') ? ' y ' : ' and ';
+        return result.length > 0 ? result.join(connector) : '';
     } catch (e) {
         return '';
     }

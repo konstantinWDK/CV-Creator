@@ -4,13 +4,19 @@ import { getSavedCVs, saveCV, deleteCV, getDefaultCV, getSampleCV, exportAllData
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
 import html2pdf from 'html2pdf.js';
+import { useTranslation } from 'react-i18next';
 
 function App() {
+  const { t, i18n } = useTranslation();
   const [cvs, setCvs] = useState([]);
   const [currentCV, setCurrentCV] = useState(getDefaultCV());
   const [activeTab, setActiveTab] = useState('personalInfo');
   const [showMobilePreview, setShowMobilePreview] = useState(false);
   const [showSaveStatus, setShowSaveStatus] = useState(false);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
 
   useEffect(() => {
     const loadedCVs = getSavedCVs();
@@ -85,9 +91,9 @@ function App() {
         if (updatedCVs.length > 0) {
           setCurrentCV(updatedCVs[0]);
         }
-        alert('Datos importados con éxito.');
+        alert(t('app.importSuccess'));
       } else {
-        alert('Error al importar el archivo. Asegúrate de que sea un JSON válido.');
+        alert(t('app.importError'));
       }
     };
     reader.readAsText(file);
@@ -108,7 +114,7 @@ function App() {
     const element = document.getElementById('cv-preview-content');
     const opt = {
       margin: 0,
-      filename: `${currentCV.personalInfo?.fullName || 'curriculum'}.pdf`,
+      filename: `${currentCV.personalInfo?.fullName || t('settings.cvUntitled')}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: { scale: 2, useCORS: true, windowWidth: 800 },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
@@ -121,41 +127,49 @@ function App() {
       {/* Primary Sidebar (Icons only) */}
       <div className="primary-sidebar">
         <div className="nav-top">
-          <div className="brand" title="Creador CV">CV</div>
-          <button className={`nav-icon ${activeTab === 'personalInfo' ? 'active' : ''}`} onClick={() => setActiveTab('personalInfo')} title="Datos Personales">
+          <div className="brand" title={t('app.title')}>{t('app.brand')}</div>
+          <button className={`nav-icon ${activeTab === 'personalInfo' ? 'active' : ''}`} onClick={() => setActiveTab('personalInfo')} title={t('app.personalInfo')}>
             <User size={24} />
             {activeTab === 'personalInfo' && <span className="active-indicator"></span>}
           </button>
-          <button className={`nav-icon ${activeTab === 'experience' ? 'active' : ''}`} onClick={() => setActiveTab('experience')} title="Experiencia">
+          <button className={`nav-icon ${activeTab === 'experience' ? 'active' : ''}`} onClick={() => setActiveTab('experience')} title={t('app.experience')}>
             <Briefcase size={24} />
             {activeTab === 'experience' && <span className="active-indicator"></span>}
           </button>
-          <button className={`nav-icon ${activeTab === 'education' ? 'active' : ''}`} onClick={() => setActiveTab('education')} title="Educación">
+          <button className={`nav-icon ${activeTab === 'education' ? 'active' : ''}`} onClick={() => setActiveTab('education')} title={t('app.education')}>
             <GraduationCap size={24} />
             {activeTab === 'education' && <span className="active-indicator"></span>}
           </button>
-          <button className={`nav-icon ${activeTab === 'skills' ? 'active' : ''}`} onClick={() => setActiveTab('skills')} title="Habilidades">
+          <button className={`nav-icon ${activeTab === 'skills' ? 'active' : ''}`} onClick={() => setActiveTab('skills')} title={t('app.skills')}>
             <Code size={24} />
             {activeTab === 'skills' && <span className="active-indicator"></span>}
           </button>
-          <button className={`nav-icon ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')} title="Configuración Global">
+          <button className={`nav-icon ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')} title={t('app.settings')}>
             <Settings size={24} />
             {activeTab === 'settings' && <span className="active-indicator"></span>}
+          </button>
+
+          <button
+            className="nav-icon lang-toggle"
+            onClick={() => changeLanguage(i18n.language === 'es' ? 'en' : 'es')}
+            title={t('settings.language')}
+          >
+            {i18n.language.toUpperCase()}
           </button>
         </div>
 
         <div className="nav-bottom">
-          <button className="nav-icon action new hide-mobile" onClick={handleCreateNew} title="Crear Nuevo">
+          <button className="nav-icon action new hide-mobile" onClick={handleCreateNew} title={t('app.createNew')}>
             <Plus size={24} />
           </button>
-          <button className="nav-icon action save hide-mobile" onClick={handleSave} title="Guardar">
+          <button className="nav-icon action save hide-mobile" onClick={handleSave} title={t('app.save')}>
             <Save size={24} />
           </button>
-          <button className="nav-icon action pdf" onClick={handleDownloadPDF} title="Descargar PDF">
+          <button className="nav-icon action pdf" onClick={handleDownloadPDF} title={t('app.downloadPdf')}>
             <Download size={24} />
           </button>
           {cvs.some(c => c.id === currentCV.id) && (
-            <button className="nav-icon action danger" onClick={() => handleDelete(currentCV.id)} title="Borrar CV">
+            <button className="nav-icon action danger" onClick={() => handleDelete(currentCV.id)} title={t('app.deleteCv')}>
               <Trash2 size={24} />
             </button>
           )}
@@ -164,7 +178,7 @@ function App() {
             target="_blank"
             rel="noopener noreferrer"
             className="nav-icon action"
-            title="Subir a LinkedIn"
+            title={t('app.uploadLinkedin')}
             style={{ color: '#0a66c2', marginTop: 'auto' }}
           >
             <Linkedin size={24} />
@@ -174,7 +188,7 @@ function App() {
             target="_blank"
             rel="noopener noreferrer"
             className="nav-icon action"
-            title="Ver código en GitHub"
+            title={t('app.viewGithub')}
             style={{ color: '#ffffff', marginTop: '10px' }}
           >
             <Github size={24} />
@@ -187,10 +201,10 @@ function App() {
         <div className="sidebar-content">
           {activeTab === 'settings' ? (
             <div className="settings-panel">
-              <h2 className="panel-title">Configuración Global</h2>
+              <h2 className="panel-title">{t('settings.title')}</h2>
 
               <div className="form-group" style={{ marginBottom: '20px' }}>
-                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>Seleccionar Currículum Guardado</label>
+                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.selectCv')}</label>
                 <select
                   className="cv-selector-minimal"
                   style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
@@ -201,60 +215,60 @@ function App() {
                   }}
                 >
                   <option value={currentCV.id} disabled={cvs.some(c => c.id === currentCV.id)}>
-                    {cvs.some(c => c.id === currentCV.id) ? currentCV.personalInfo?.fullName || 'CV sin título' : 'CV Nuevo'}
+                    {cvs.some(c => c.id === currentCV.id) ? currentCV.personalInfo?.fullName || t('settings.cvUntitled') : t('settings.cvNew')}
                   </option>
                   {cvs.map(cv => (
                     <option key={cv.id} value={cv.id}>
-                      {cv.personalInfo?.fullName || 'CV sin título'}
+                      {cv.personalInfo?.fullName || t('settings.cvUntitled')}
                     </option>
                   ))}
                 </select>
               </div>
 
               <div className="form-group" style={{ marginBottom: '20px' }}>
-                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>Diseño de la Plantilla</label>
+                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.templateDesign')}</label>
                 <select
                   className="cv-selector-minimal"
                   style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
                   value={currentCV.templateId || 'minimal'}
                   onChange={(e) => setCurrentCV({ ...currentCV, templateId: e.target.value })}
                 >
-                  <option value="minimal">Minimalista (Blanco)</option>
-                  <option value="modern">Moderno (Sidebar Oscuro)</option>
-                  <option value="minimal-plus">Minimalista Plus (Azul)</option>
-                  <option value="professional">Profesional (Dos Columnas)</option>
-                  <option value="classic">Clásico (Centrado)</option>
+                  <option value="minimal">{t('settings.templateMinimal')}</option>
+                  <option value="modern">{t('settings.templateModern')}</option>
+                  <option value="minimal-plus">{t('settings.templateMinimalPlus')}</option>
+                  <option value="professional">{t('settings.templateProfessional')}</option>
+                  <option value="classic">{t('settings.templateClassic')}</option>
                 </select>
               </div>
 
               <div className="form-group" style={{ marginBottom: '20px' }}>
-                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>Tipografía Global</label>
+                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.globalTypography')}</label>
                 <select
                   className="cv-selector-minimal"
                   style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
                   value={currentCV.fontFamily || 'Inter'}
                   onChange={(e) => setCurrentCV({ ...currentCV, fontFamily: e.target.value })}
                 >
-                  <option value="Inter">Inter (Moderna)</option>
-                  <option value="Outfit">Outfit (Geométrica)</option>
-                  <option value="Roboto">Roboto (Clásica)</option>
-                  <option value="Merriweather">Merriweather (Elegante/Serif)</option>
-                  <option value="'Courier Prime', monospace">Courier (Máquina de escribir)</option>
+                  <option value="Inter">{t('settings.fontInter')}</option>
+                  <option value="Outfit">{t('settings.fontOutfit')}</option>
+                  <option value="Roboto">{t('settings.fontRoboto')}</option>
+                  <option value="Merriweather">{t('settings.fontMerriweather')}</option>
+                  <option value="'Courier Prime', monospace">{t('settings.fontCourier')}</option>
                 </select>
               </div>
 
               {currentCV.templateId !== 'modern' && (
                 <div className="form-group" style={{ marginBottom: '20px' }}>
-                  <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>Espaciado (Márgenes de la hoja)</label>
+                  <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.spacing')}</label>
                   <select
                     className="cv-selector-minimal"
                     style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
                     value={currentCV.paddingLevel || 'normal'}
                     onChange={(e) => setCurrentCV({ ...currentCV, paddingLevel: e.target.value })}
                   >
-                    <option value="compact">Un poco</option>
-                    <option value="medium">Un poco más</option>
-                    <option value="normal">Normal</option>
+                    <option value="compact">{t('settings.spacingCompact')}</option>
+                    <option value="medium">{t('settings.spacingMedium')}</option>
+                    <option value="normal">{t('settings.spacingNormal')}</option>
                   </select>
                 </div>
               )}
@@ -262,17 +276,17 @@ function App() {
               <div className="settings-divider" style={{ height: '1px', background: '#e2e8f0', margin: '2rem 0 1rem 0' }}></div>
 
               <div className="backup-section">
-                <h3 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem', fontWeight: 600 }}>Copia de Seguridad</h3>
+                <h3 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem', fontWeight: 600 }}>{t('settings.backup')}</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                   <button
                     className="btn btn-secondary"
                     onClick={handleExport}
                     style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.9rem' }}
                   >
-                    <Download size={18} /> Exportar Datos (JSON)
+                    <Download size={18} /> {t('settings.exportJson')}
                   </button>
                   <label className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.9rem', cursor: 'pointer' }}>
-                    <Plus size={18} /> Importar Datos (JSON)
+                    <Plus size={18} /> {t('settings.importJson')}
                     <input
                       type="file"
                       accept=".json"
@@ -281,7 +295,7 @@ function App() {
                     />
                   </label>
                   <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '5px' }}>
-                    Utiliza estas opciones para guardar o restaurar todos tus currículums.
+                    {t('settings.backupHelp')}
                   </p>
                 </div>
               </div>
@@ -297,7 +311,7 @@ function App() {
         <button
           className="btn-close-preview"
           onClick={() => setShowMobilePreview(false)}
-          title="Cerrar Vista Previa"
+          title={t('app.closePreview')}
         >
           <X size={22} />
         </button>
@@ -308,16 +322,16 @@ function App() {
 
       {/* Mobile Floating Action Bar */}
       <div className="mobile-floating-actions">
-        <button className="fab-btn fab-new" onClick={handleCreateNew} title="Nuevo CV">
+        <button className="fab-btn fab-new" onClick={handleCreateNew} title={t('app.createNew')}>
           <Plus size={20} />
         </button>
-        <button className="fab-btn fab-save" onClick={handleSave} title="Guardar">
+        <button className="fab-btn fab-save" onClick={handleSave} title={t('app.save')}>
           <Save size={20} />
         </button>
         <button
           className={`fab-btn fab-preview${showMobilePreview ? ' active' : ''}`}
           onClick={() => setShowMobilePreview(v => !v)}
-          title={showMobilePreview ? 'Ocultar Vista Previa' : 'Ver CV'}
+          title={showMobilePreview ? t('app.hidePreview') : t('app.viewCv')}
         >
           {showMobilePreview ? <EyeOff size={20} /> : <Eye size={20} />}
         </button>
@@ -325,7 +339,7 @@ function App() {
 
       {/* Save Notification */}
       <div className={`save-status-indicator ${showSaveStatus ? 'show' : ''}`}>
-        <span className="check-icon">✓</span> Cambios guardados
+        <span className="check-icon">✓</span> {t('app.changesSaved')}
       </div>
     </div>
   );

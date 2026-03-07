@@ -2,8 +2,10 @@ import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Globe, Github, Linkedin } from 'lucide-react';
 import { formatPeriod, calculateDuration } from '../../utils/formatDate';
+import { useTranslation } from 'react-i18next';
 
 const MinimalTemplate = ({ data }) => {
+    const { t } = useTranslation();
     const { personalInfo, experience, education, skills } = data;
 
     return (
@@ -11,7 +13,7 @@ const MinimalTemplate = ({ data }) => {
             <div style={{ paddingBottom: '20px', borderBottom: '2px solid var(--accent-color)', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                 <div style={{ flex: 1 }}>
                     <h1 style={{ fontSize: '2.5rem', fontWeight: 800, color: '#1a1d24', margin: 0 }}>
-                        {personalInfo.fullName || 'Tu Nombre'}
+                        {personalInfo.fullName || t('forms.personalInfo.fullNamePlaceholder')}
                     </h1>
                     <div style={{ display: 'flex', gap: '15px', color: '#475569', marginTop: '10px', fontSize: '0.9rem', flexWrap: 'wrap' }}>
                         {personalInfo.email && <span>{personalInfo.email}</span>}
@@ -40,7 +42,7 @@ const MinimalTemplate = ({ data }) => {
             {experience && experience.length > 0 && (
                 <div style={{ marginBottom: '30px' }}>
                     <h2 style={{ fontSize: '1.5rem', color: '#ea580c', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                        Experiencia
+                        {t('preview.experience')}
                     </h2>
                     {experience.map(exp => (
                         <div key={exp.id} style={{ marginBottom: '20px' }}>
@@ -68,7 +70,7 @@ const MinimalTemplate = ({ data }) => {
             {education && education.length > 0 && (
                 <div style={{ marginBottom: '30px' }}>
                     <h2 style={{ fontSize: '1.5rem', color: '#ea580c', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                        Educación
+                        {t('preview.education')}
                     </h2>
                     {education.map(edu => (
                         <div key={edu.id} style={{ marginBottom: '15px' }}>
@@ -86,7 +88,7 @@ const MinimalTemplate = ({ data }) => {
                 {skills && skills.length > 0 && (
                     <div style={{ flex: 1 }}>
                         <h2 style={{ fontSize: '1.5rem', color: '#ea580c', marginBottom: '15px', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                            Habilidades
+                            {t('preview.skills')}
                         </h2>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                             {skills.map(skill => (

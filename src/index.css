@@ -232,12 +232,22 @@ h6 {
   background: rgba(234, 88, 12, 0.15);
 }
 
-.nav-icon.action.danger {
-  color: #ef4444;
-}
-
 .nav-icon.action.danger:hover {
   background: rgba(239, 68, 68, 0.15);
+}
+
+.nav-icon.lang-toggle {
+  font-weight: 800;
+  font-size: 0.7rem;
+  color: #94a3b8;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: var(--space-2);
+}
+
+.nav-icon.lang-toggle:hover {
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+  background: rgba(234, 88, 12, 0.1);
 }
 
 
@@ -651,6 +661,11 @@ textarea:focus {
     height: 40px;
   }
 
+  .nav-icon.lang-toggle {
+    margin-top: 0;
+    margin-left: var(--space-2);
+  }
+
   .nav-icon.active>span.active-indicator {
     left: 50%;
     bottom: -8px;
@@ -854,6 +869,7 @@ textarea:focus {
 .drag-handle:active {
   cursor: grabbing;
 }
+
 /* ========================================= */
 /* SAVE NOTIFICATION                        */
 /* ========================================= */
