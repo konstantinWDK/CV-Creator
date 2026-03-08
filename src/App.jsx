@@ -113,7 +113,6 @@ function App() {
     const timer = setTimeout(() => {
       saveCV(currentCV);
       setCvs(getSavedCVs());
-      setShowSaveStatus(true);
     }, 2000);
 
     return () => clearTimeout(timer);
@@ -121,10 +120,14 @@ function App() {
 
   const handleSave = async () => {
     if (!isAuthenticated) {
-      setShowAuthModal(true);
+      // Guest user: save to localStorage
+      saveCV(currentCV);
+      setCvs(getSavedCVs());
+      setShowSaveStatus(true);
       return;
     }
 
+    // Authenticated user: sync to cloud
     try {
       const response = await fetch(`${API_URL}/api/cvs`, {
         method: 'POST',
