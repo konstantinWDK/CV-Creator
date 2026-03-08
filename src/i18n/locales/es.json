@@ -2,11 +2,11 @@
     "app": {
         "brand": "CV",
         "title": "Creador CV",
-        "personalInfo": "Sobre ti",
+        "personalInfo": "Datos Personales",
         "experience": "Experiencia",
         "education": "Educación",
         "skills": "Habilidades",
-        "settings": "Conf. global",
+        "settings": "Configuración Global",
         "createNew": "Crear Nuevo",
         "save": "Guardar",
         "downloadPdf": "Descargar PDF",
@@ -22,7 +22,7 @@
         "importDemo": "Importar Demo"
     },
     "settings": {
-        "title": "Conf. global",
+        "title": "Configuración Global",
         "selectCv": "Seleccionar Currículum Guardado",
         "cvUntitled": "CV sin título",
         "cvNew": "CV Nuevo",
@@ -43,20 +43,22 @@
         "spacingMedium": "Un poco más",
         "spacingNormal": "Normal",
         "backup": "Copia de Seguridad",
+        "aiTools": "Herramientas de IA",
+        "translateToEn": "Traducir CV al Inglés",
         "exportJson": "Exportar Datos (JSON)",
         "importJson": "Importar Datos (JSON)",
-        "backupHelp": "Utiliza estas opciones para guardar o restaurar todos tus currúculums.",
+        "backupHelp": "Utiliza estas opciones para guardar o restaurar todos tus currículums.",
         "language": "Idioma"
     },
     "forms": {
         "personalInfo": {
-            "title": "Sobre ti",
+            "title": "Datos Personales",
             "photo": "Foto de Perfil",
             "deletePhoto": "Eliminar Foto",
             "fullName": "Nombre Completo",
-            "fullNamePlaceholder": "Ej. John Doe",
+            "fullNamePlaceholder": "Ej. Juan Pérez",
             "email": "Correo Electrónico",
-            "emailPlaceholder": "john@ejemplo.com",
+            "emailPlaceholder": "juan@ejemplo.com",
             "phone": "Teléfono",
             "phonePlaceholder": "+34 600 000 000",
             "address": "Dirección",
@@ -161,6 +163,26 @@
         "tipFull": "¡Tu CV se ve genial! Está listo para descargar.",
         "fieldsMissing": "Campos restantes para mejorar:"
     },
+    "ai": {
+        "title": "Asistente de IA",
+        "subtitle": "Genera tu CV completo a partir de un bloque de información.",
+        "genTitle": "Cargar información",
+        "genDescFull": "Pega aquí toda tu información: experiencia laboral, estudios, habilidades y datos de contacto.",
+        "genPlaceholderFull": "Ej: Mi nombre es Juan Pérez, soy desarrollador con 10 años de experiencia...",
+        "genBtn": "Generar",
+        "transBtnShort": "Traducir actual",
+        "generateSuccess": "CV generado con éxito",
+        "translateSuccess": "CV traducido al inglés con éxito",
+        "loginRequired": "Inicia sesión para usar las funciones de IA."
+    },
+    "templates": {
+        "minimalTitle": "Diseño Minimalista",
+        "modernTitle": "Diseño Moderno",
+        "templateMinimalPlus": "Minimalista Plus",
+        "templateProfessional": "Plantilla Profesional",
+        "templateClassic": "Plantilla Clásica",
+        "templateTry": "Probar esta plantilla"
+    },
     "landing": {
         "metaTitle": "Generador CV 100% Gratis - Creador de CV de Código Abierto",
         "metaDescription": "Crea tu currículum profesional gratis con nuestro generador de código abierto (Open Source). Sin pagos, sin suscripciones, sin registros obligatorios. Exportación PDF gratuita.",
@@ -204,13 +226,13 @@
         "qrPoint2": "Escaneable en segundos con cualquier móvil",
         "qrPoint3": "Beneficia tanto al CV impreso como al digital",
         "qrPoint4": "Aumenta el interés del reclutador al instante",
-        "templatesTitle": "Elige tu Plantilla de Currículum Profesional",
-        "templatesSubtitle": "5 diseños modernos para destacar. Haz clic en cualquier plantilla para probarla al instante con datos de ejemplo, sin registro.",
-        "templateMinimal": "Plantilla Currículum Minimalista",
-        "templateModern": "Plantilla CV Moderno con Barra Lateral",
-        "templateMinimalPlus": "Plantilla Currículum Minimalista Plus",
-        "templateProfessional": "Plantilla CV Profesional",
-        "templateClassic": "Plantilla Currículum Clásico",
-        "templateTry": "Probar esta plantilla"
+        "templatesTitle": "Plantillas Profesionales",
+        "templatesSubtitle": "Diseños listos para impresionar",
+        "templateTry": "Usar esta plantilla",
+        "templateMinimal": "Minimalista",
+        "templateModern": "Moderno",
+        "templateMinimalPlus": "Minimalista Plus",
+        "templateProfessional": "Profesional",
+        "templateClassic": "Clásico"
     }
 }

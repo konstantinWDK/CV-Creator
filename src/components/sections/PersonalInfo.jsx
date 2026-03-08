@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { Sparkles } from 'lucide-react';
 
 const PersonalInfo = ({ data = {}, onChange }) => {
     const { t } = useTranslation();
@@ -108,22 +109,24 @@ const PersonalInfo = ({ data = {}, onChange }) => {
                     {t('forms.personalInfo.showQr')}
                 </label>
             </div>
-            {data.showQrCode && (
-                <div className="form-group" style={{ marginBottom: '1rem', paddingLeft: '28px' }}>
-                    <label style={{ fontSize: '0.85rem' }}>{t('forms.personalInfo.qrType')}</label>
-                    <select
-                        name="qrCodeType"
-                        value={data.qrCodeType || 'link'}
-                        onChange={handleChange}
-                        className="cv-selector-minimal"
-                        style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-primary)' }}
-                    >
-                        <option value="link">{t('forms.personalInfo.qrLink')}</option>
-                        <option value="github">{t('forms.personalInfo.qrGithub')}</option>
-                        <option value="linkedin">{t('forms.personalInfo.qrLinkedin')}</option>
-                    </select>
-                </div>
-            )}
+            {
+                data.showQrCode && (
+                    <div className="form-group" style={{ marginBottom: '1rem', paddingLeft: '28px' }}>
+                        <label style={{ fontSize: '0.85rem' }}>{t('forms.personalInfo.qrType')}</label>
+                        <select
+                            name="qrCodeType"
+                            value={data.qrCodeType || 'link'}
+                            onChange={handleChange}
+                            className="cv-selector-minimal"
+                            style={{ border: '1px solid var(--border-color)', backgroundColor: 'var(--bg-primary)' }}
+                        >
+                            <option value="link">{t('forms.personalInfo.qrLink')}</option>
+                            <option value="github">{t('forms.personalInfo.qrGithub')}</option>
+                            <option value="linkedin">{t('forms.personalInfo.qrLinkedin')}</option>
+                        </select>
+                    </div>
+                )
+            }
             <div className="form-group">
                 <label>{t('forms.personalInfo.summary')}</label>
                 <textarea
@@ -134,7 +137,7 @@ const PersonalInfo = ({ data = {}, onChange }) => {
                     placeholder={t('forms.personalInfo.summaryPlaceholder')}
                 />
             </div>
-        </div>
+        </div >
     );
 };
 

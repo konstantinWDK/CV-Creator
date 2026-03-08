@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useSearchParams } from 'react-router-dom';
-import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Linkedin, Github, Settings, Eye, EyeOff, X, LogOut } from 'lucide-react';
+import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Linkedin, Github, Settings, Eye, EyeOff, X, LogOut, Sparkles } from 'lucide-react';
 import { getSavedCVs, saveCV, deleteCV, getDefaultCV, getSampleCV, exportAllData, importData } from './utils/storage';
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
@@ -10,6 +10,8 @@ import LandingPage from './components/LandingPage';
 import { useAuth } from './context/AuthContext';
 import html2pdf from 'html2pdf.js';
 import { useTranslation } from 'react-i18next';
+import AISection from './components/sections/AISection';
+import { Languages, Loader2 } from 'lucide-react';
 
 const CVCreator = () => {
   const { t, i18n } = useTranslation();
@@ -24,6 +26,7 @@ const CVCreator = () => {
   const { user, token, logout, isAuthenticated } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL || 'https://api.cv-creator.webdesignerk.com';
   const [searchParams] = useSearchParams();
+  const [isTranslating, setIsTranslating] = useState(false);
 
   // Load demo template from URL params (e.g. /app?demo=true&template=modern)
   const isDemoFromUrl = searchParams.get('demo') === 'true';
@@ -218,7 +221,6 @@ const CVCreator = () => {
     setCurrentCV(sample);
     setSampleIndex(sampleIndex === 1 ? 2 : 1);
   };
-
   const handleExport = () => {
     exportAllData();
   };
@@ -229,21 +231,106 @@ const CVCreator = () => {
 
     const reader = new FileReader();
     reader.onload = (event) => {
-      const content = event.target.result;
-      const success = importData(content);
-      if (success) {
-        const updatedCVs = getSavedCVs();
-        setCvs(updatedCVs);
-        if (updatedCVs.length > 0) {
-          setCurrentCV(updatedCVs[0]);
-        }
+      try {
+        const data = JSON.parse(event.target.result);
+        importData(data);
+        setCvs(getSavedCVs());
+        setCurrentCV(getDefaultCV());
         alert(t('app.importSuccess'));
-      } else {
+      } catch (err) {
         alert(t('app.importError'));
       }
     };
     reader.readAsText(file);
     e.target.value = '';
+  };
+
+  const handleAiTranslate = async () => {
+    if (!isAuthenticated || !token) {
+      setShowAuthModal(true);
+      return;
+    }
+
+    setIsTranslating(true);
+    try {
+      const response = await fetch(`${API_URL}/api/ai/translate`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ cvData: currentCV })
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        if (response.status === 429) {
+          throw new Error(data.message || 'Límite diario alcanzado');
+        }
+        throw new Error(data.message || `Server Error (${response.status})`);
+      }
+
+      const data = await response.json();
+      const translatedCV = {
+        ...data,
+        id: Math.random().toString(36).substring(2, 9) + '-' + Date.now().toString(36),
+        dbId: null,
+        templateId: currentCV.templateId,
+        fontFamily: currentCV.fontFamily,
+        paddingLevel: currentCV.paddingLevel
+      };
+
+      if (isAuthenticated) {
+        // Automatically save the new translation to the cloud
+        const saveRes = await fetch(`${API_URL}/api/cvs`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            name: (translatedCV.personalInfo?.fullName || 'Untitled') + ' (EN)',
+            content: { ...translatedCV, id: undefined, dbId: undefined }
+          })
+        });
+
+        if (saveRes.ok) {
+          const resJson = await saveRes.json();
+          translatedCV.id = resJson.cvId;
+          translatedCV.dbId = resJson.cvId;
+
+          // Refresh list from server to ensure consistency
+          const refreshRes = await fetch(`${API_URL}/api/cvs`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const refreshData = await refreshRes.json();
+          const mappedCvs = refreshData.map(dbCv => ({
+            ...dbCv.content,
+            id: dbCv.id,
+            dbId: dbCv.id
+          }));
+          setCvs(mappedCvs);
+          setCurrentCV(translatedCV);
+        }
+      } else {
+        // Guest mode: just add to list and select it
+        const updatedCvs = [...cvs, translatedCV];
+        saveCV(translatedCV);
+        const freshCvs = getSavedCVs();
+        setCvs(freshCvs);
+        setCurrentCV(translatedCV);
+      }
+
+      setShowSaveStatus(true);
+      setTimeout(() => setShowSaveStatus(false), 3000);
+    } catch (err) {
+      console.error('AI Translation Error:', err);
+      alert(err.message === 'Failed to fetch'
+        ? 'No se pudo conectar con el servidor. Verifica que la API esté activa.'
+        : (err.message || 'Error en la traducción por IA'));
+    } finally {
+      setIsTranslating(false);
+    }
   };
 
   const handleDelete = async (id) => {
@@ -316,6 +403,14 @@ const CVCreator = () => {
             <span className="nav-label">{t('app.settings')}</span>
             {activeTab === 'settings' && <span className="active-indicator"></span>}
           </button>
+
+          {isAuthenticated && (
+            <button className={`nav-icon ai-nav ${activeTab === 'ai' ? 'active' : ''}`} onClick={() => setActiveTab('ai')} title="IA Assistant">
+              <Sparkles size={24} className="text-accent" />
+              <span className="nav-label">IA</span>
+              {activeTab === 'ai' && <span className="active-indicator"></span>}
+            </button>
+          )}
         </div>
 
         <div className="nav-bottom">
@@ -402,6 +497,11 @@ const CVCreator = () => {
             <button className="fab-action pdf" onClick={() => { handleDownloadPDF(); setShowFab(false); }} title={t('app.downloadPdf')}>
               <Download size={18} />
             </button>
+            {isAuthenticated && (
+              <button className="fab-action ai-fab" onClick={() => { setActiveTab('ai'); setShowFab(false); }} title="IA Assistant">
+                <Sparkles size={18} className="text-accent" />
+              </button>
+            )}
             <button className="fab-action preview" onClick={() => { setShowMobilePreview(true); setShowFab(false); }} title={t('app.viewCv')}>
               <Eye size={18} />
             </button>
@@ -432,7 +532,8 @@ const CVCreator = () => {
                     style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
                     value={currentCV.id}
                     onChange={(e) => {
-                      const selected = cvs.find(c => c.id === e.target.value);
+                      const selectedId = e.target.value;
+                      const selected = cvs.find(c => String(c.id) === String(selectedId) || String(c.dbId) === String(selectedId));
                       if (selected) setCurrentCV(selected);
                     }}
                   >
@@ -497,6 +598,36 @@ const CVCreator = () => {
 
                 <div className="settings-divider" style={{ height: '1px', background: '#e2e8f0', margin: '2rem 0 1rem 0' }}></div>
 
+                {isAuthenticated && (
+                  <>
+                    <div className="ai-tools-section" style={{ marginBottom: '2rem' }}>
+                      <h3 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <Sparkles size={16} className="text-accent" /> {t('settings.aiTools')}
+                      </h3>
+                      <button
+                        className="btn btn-primary"
+                        onClick={handleAiTranslate}
+                        disabled={isTranslating}
+                        style={{
+                          width: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '10px',
+                          fontSize: '0.9rem',
+                          background: 'linear-gradient(135deg, #ea580c, #f97316)',
+                          border: 'none',
+                          height: '46px'
+                        }}
+                      >
+                        {isTranslating ? <Loader2 size={18} className="animate-spin" /> : <Languages size={18} />}
+                        {t('settings.translateToEn')}
+                      </button>
+                    </div>
+                    <div className="settings-divider" style={{ height: '1px', background: '#e2e8f0', margin: '1rem 0 1rem 0' }}></div>
+                  </>
+                )}
+
                 <div className="backup-section">
                   <h3 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem', fontWeight: 600 }}>{t('settings.backup')}</h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -522,6 +653,8 @@ const CVCreator = () => {
                   </div>
                 </div>
               </div>
+            ) : activeTab === 'ai' ? (
+              <AISection currentCV={currentCV} onChange={setCurrentCV} />
             ) : (
               <CVForm data={currentCV} onChange={setCurrentCV} activeTab={activeTab} />
             )}

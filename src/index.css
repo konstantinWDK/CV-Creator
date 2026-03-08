@@ -117,7 +117,7 @@ h6 {
 .floating-controls-bottom {
   position: absolute;
   bottom: 20px;
-  left: 20px;
+  right: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -303,6 +303,16 @@ h6 {
 
 .nav-label {
   display: none;
+}
+
+.ai-nav {
+  color: var(--accent-color) !important;
+  opacity: 0.8;
+}
+
+.ai-nav.active {
+  opacity: 1;
+  background: rgba(234, 88, 12, 0.1) !important;
 }
 
 /* Tooltip (Bocadillo) */
@@ -997,7 +1007,7 @@ textarea:focus {
 /* Save Status Indicator - Premium Floating Toast */
 .save-status-indicator {
   position: fixed;
-  bottom: 30px;
+  bottom: 85px;
   right: 30px;
   background: #0f172a;
   color: white;
@@ -1328,6 +1338,13 @@ textarea:focus {
 
 
   /* Main FAB circle button (the + / X toggle) */
+  .ai-fab {
+    background: linear-gradient(135deg, #ea580c, #f97316) !important;
+    color: white !important;
+  }
+
+
+
   .fab-main {
     width: 48px;
     height: 48px;
