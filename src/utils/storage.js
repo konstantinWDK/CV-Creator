@@ -22,8 +22,15 @@ export const deleteCV = (id) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(newCvs));
 };
 
+const generateUUID = () => {
+    if (typeof crypto !== 'undefined' && crypto.randomUUID) {
+        return crypto.randomUUID();
+    }
+    return Math.random().toString(36).substring(2, 9) + '-' + Date.now().toString(36);
+};
+
 export const getDefaultCV = () => ({
-    id: crypto.randomUUID(),
+    id: generateUUID(),
     templateId: 'minimal',
     fontFamily: 'Inter',
     personalInfo: {
@@ -43,56 +50,100 @@ export const getDefaultCV = () => ({
 });
 
 export const getSampleCV = () => ({
-    id: crypto.randomUUID(),
+    id: 'demo-1',
     templateId: 'minimal',
     fontFamily: 'Inter',
     personalInfo: {
-        fullName: 'Juan Pérez',
-        email: 'juan.perez@ejemplo.com',
-        phone: '+34 612 345 678',
-        address: 'Barcelona, España',
-        website: 'https://github.com/juanperez',
+        fullName: 'John Doe',
+        email: 'john.doe@example.com',
+        phone: '+1 555 123 4567',
+        address: 'New York, USA',
+        website: 'https://github.com/johndoe',
         photo: null,
         showQrCode: true,
         qrCodeType: 'github',
-        summary: 'Desarrollador Full Stack con más de 5 años de experiencia en la creación de aplicaciones web escalables y eficientes. Apasionado por el código limpio, arquitecturas modernas y UI minimalistas.',
+        summary: 'Senior Full Stack Developer with over 8 years of experience building scalable web applications. Passionate about clean code, modern architectures, and minimalist UI.',
     },
     experience: [
         {
-            id: crypto.randomUUID(),
+            id: generateUUID(),
             company: 'Tech Solutions Inc.',
-            position: 'Desarrollador Web Senior',
+            position: 'Senior Web Developer',
             startDate: '2021-01',
             endDate: '',
             isCurrent: true,
             showDuration: false,
-            description: 'Lideré el desarrollo del frontend usando <mark>React</mark> y <span style="color:#ea580c">Node.js</span>. Mejoré el rendimiento de renderizado en un 40% implementando técnicas avanzadas de paginación.'
+            description: 'Leading frontend development using <mark>React</mark> and <span style="color:#ea580c">Node.js</span>. Improved rendering performance by 40%.'
         },
         {
-            id: crypto.randomUUID(),
-            company: 'Agencia Creativa Digital',
-            position: 'Desarrollador Frontend',
+            id: generateUUID(),
+            company: 'Digital Creative Agency',
+            position: 'Frontend Developer',
             startDate: '2018-03',
             endDate: '2020-12',
             isCurrent: false,
             showDuration: false,
-            description: 'Creación de interfaces de usuario atractivas. Integración con APIs REST. Trabajo bajo metodologías ágiles (Scrum).'
+            description: 'Building engaging user interfaces. Integrating with REST APIs. Working under Agile methodologies.'
         }
     ],
     education: [
         {
-            id: crypto.randomUUID(),
-            institution: 'Universidad Politécnica de Madrid',
-            degree: 'Grado en Ingeniería Informática',
+            id: generateUUID(),
+            institution: 'MIT University',
+            degree: 'Computer Science Degree',
             year: '2014 - 2018'
         }
     ],
     skills: [
-        { id: crypto.randomUUID(), name: 'JavaScript' },
-        { id: crypto.randomUUID(), name: 'React' },
-        { id: crypto.randomUUID(), name: 'Node.js' },
-        { id: crypto.randomUUID(), name: 'CSS/SASS' },
-        { id: crypto.randomUUID(), name: 'UI/UX Design' },
+        { id: generateUUID(), name: 'JavaScript' },
+        { id: generateUUID(), name: 'React' },
+        { id: generateUUID(), name: 'Node.js' },
+        { id: generateUUID(), name: 'Tailwind CSS' },
+        { id: generateUUID(), name: 'UI/UX Design' },
+    ],
+});
+
+export const getSampleCV2 = () => ({
+    id: 'demo-2',
+    templateId: 'modern',
+    fontFamily: 'Outfit',
+    personalInfo: {
+        fullName: 'Sarah Smith',
+        email: 'sarah.design@example.com',
+        phone: '+44 20 7946 0958',
+        address: 'London, UK',
+        website: 'https://behance.net/sarahsmith',
+        photo: null,
+        showQrCode: true,
+        qrCodeType: 'link',
+        summary: 'Creative Graphic Designer with a focus on brand identity and digital experiences. 12+ years of experience working with global brands.',
+    },
+    experience: [
+        {
+            id: generateUUID(),
+            company: 'Global Design Studio',
+            position: 'Art Director',
+            startDate: '2019-06',
+            endDate: '',
+            isCurrent: true,
+            showDuration: false,
+            description: 'Leading creative teams for international marketing campaigns. Specialized in <span style="color:#6366f1">branding</span> and visual storytelling.'
+        }
+    ],
+    education: [
+        {
+            id: generateUUID(),
+            institution: 'Royal College of Art',
+            degree: 'MA Communication Design',
+            year: '2015 - 2017'
+        }
+    ],
+    skills: [
+        { id: generateUUID(), name: 'Adobe Creative Suite' },
+        { id: generateUUID(), name: 'Figma' },
+        { id: generateUUID(), name: 'Brand Identity' },
+        { id: generateUUID(), name: 'Typography' },
+        { id: generateUUID(), name: 'Motion Graphics' },
     ],
 });
 

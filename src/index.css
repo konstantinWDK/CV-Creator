@@ -86,9 +86,171 @@ h6 {
 /* Base App Layout - Double Sidebar */
 .app-container {
   display: flex;
+  flex-direction: row;
+  /* Horizontal: Sidebar | Content */
   height: 100vh;
   width: 100vw;
   overflow: hidden;
+}
+
+.main-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  /* Base for floating children */
+}
+
+/* Floating Controls */
+.floating-controls-top {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+}
+
+.floating-controls-bottom {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 100;
+  background: white;
+  padding: 8px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--glass-border);
+}
+
+.floating-download {
+  background: var(--accent-color) !important;
+  color: white !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px !important;
+  width: auto !important;
+  height: 40px !important;
+  border-radius: var(--radius-lg) !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.floating-auth {
+  background: white;
+  box-shadow: var(--shadow-md);
+}
+
+.lang-toggle-btn {
+  background: white;
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-toggle-btn:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  box-shadow: var(--shadow-md);
+}
+
+.login-btn-header {
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+
+.login-btn-header:hover {
+  background: var(--accent-gradient-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 6px 6px 16px;
+  background: white;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.user-email {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.logout-icon-btn {
+  background: #f8fafc;
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-icon-btn:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: #fef2f2;
+}
+
+.floating-controls-bottom .nav-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.floating-controls-bottom .nav-icon:hover {
+  background: white;
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.floating-controls-bottom .nav-icon.danger:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: #fef2f2;
 }
 
 /* 1. Primary Sidebar (Icons only, Black/Dark Grey) */
@@ -110,8 +272,8 @@ h6 {
   font-weight: 800;
   color: var(--accent-color);
   font-size: 1.5rem;
-  margin-bottom: var(--space-8);
   user-select: none;
+  margin-bottom: var(--space-8);
 }
 
 .nav-top,
@@ -236,18 +398,10 @@ h6 {
   background: rgba(239, 68, 68, 0.15);
 }
 
-.nav-icon.lang-toggle {
-  font-weight: 800;
-  font-size: 0.7rem;
-  color: #94a3b8;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-top: var(--space-2);
-}
-
-.nav-icon.lang-toggle:hover {
-  color: var(--accent-color);
-  border-color: var(--accent-color);
-  background: rgba(234, 88, 12, 0.1);
+/* Remove old styles that moved to header */
+.nav-icon.lang-toggle,
+.auth-user-badge {
+  display: none;
 }
 
 
@@ -549,8 +703,6 @@ textarea:focus {
 /* MOBILE RESPONSIVE LAYOUT                 */
 /* ========================================= */
 @media (max-width: 850px) {
-
-  /* Prevent scrolling body, everything is handled inside containers */
   body {
     overflow: hidden;
   }
@@ -559,116 +711,79 @@ textarea:focus {
     flex-direction: column;
     height: 100vh;
     height: 100dvh;
-    /* For mobile browsers */
   }
 
-  /* Hide duplicated desktop actions on mobile */
-  .nav-icon.hide-mobile {
-    display: none !important;
+  /* Main Layout */
+  .main-layout {
+    flex-direction: column-reverse;
+    flex: 1;
   }
 
-  /* Show floating action bar */
-  .mobile-floating-actions {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 200;
-  }
-
-  .fab-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.22);
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
-  }
-
-  .fab-btn:active {
-    transform: scale(0.93);
-  }
-
-  .fab-new {
-    background-color: var(--accent-color);
-    color: #ffffff;
-  }
-
-  .fab-save {
-    background-color: #10b981;
-    color: #ffffff;
-  }
-
-  .fab-preview {
-    background-color: var(--sidebar-primary-bg);
-    color: #94a3b8;
-    width: 46px;
-    height: 46px;
-    box-shadow: 0 5px 16px rgba(15, 23, 42, 0.4);
-  }
-
-  .fab-preview.active {
-    background-color: var(--accent-color);
-    color: #ffffff;
-  }
-
-  /* 1. Primary Sidebar (Horizontal Top/Bottom Nav) */
+  /* 1. Primary Sidebar (Bottom Tab Bar) */
   .primary-sidebar {
     width: 100%;
-    height: 60px;
+    height: 64px;
     flex-direction: row;
     padding: 0 var(--space-4);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     z-index: 40;
+    order: 2;
+    /* Put at bottom of app-container */
   }
 
-  .brand {
-    margin-bottom: 0;
-    margin-right: var(--space-4);
-    font-size: 1.25rem;
+  .primary-sidebar .brand {
+    display: none;
+    /* Hide brand on mobile sidebar */
+  }
+
+  /* Floating Controls Mobile */
+  .floating-controls-top {
+    top: 10px;
+    right: 10px;
+    gap: 8px;
+  }
+
+  .floating-controls-bottom {
+    bottom: 80px;
+    /* Above mobile tab bar */
+    left: 10px;
+  }
+
+  .floating-download .btn-text {
+    display: none;
+  }
+
+  .floating-download {
+    padding: 0 !important;
+    width: 40px !important;
+    justify-content: center;
   }
 
   .nav-top {
     flex-direction: row;
-    justify-content: flex-start;
-    gap: var(--space-2);
-    width: auto;
+    justify-content: space-around;
+    width: 100%;
+    gap: 0;
   }
 
   .nav-bottom {
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: var(--space-2);
-    width: auto;
-    margin-top: 0;
+    display: none;
+    /* Hide social links on mobile bottom bar */
   }
 
-  /* Fix tooltip bounds and disable them cleanly on small screens */
+  .nav-icon {
+    width: 50px;
+    height: 50px;
+  }
+
   .nav-icon::after,
   .nav-icon::before {
     display: none !important;
   }
 
-  .nav-icon {
-    width: 40px;
-    height: 40px;
-  }
-
-  .nav-icon.lang-toggle {
-    margin-top: 0;
-    margin-left: var(--space-2);
-  }
-
   .nav-icon.active>span.active-indicator {
     left: 50%;
-    bottom: -8px;
+    bottom: 2px;
     top: auto;
     transform: translateX(-50%);
     width: 20px;
@@ -676,39 +791,19 @@ textarea:focus {
     border-radius: 4px 4px 0 0;
   }
 
-  /* Override external links layout */
-  .nav-bottom a {
-    margin-top: 0 !important;
-  }
-
   /* 2. Secondary Sidebar (Form Panel full width) */
   .secondary-sidebar {
     width: 100%;
     flex: 1;
-    /* Takes all remaining space once navbar is accounted for */
     border-right: none;
-    border-bottom: 1px solid var(--glass-border);
-    flex-shrink: 0;
     overflow: hidden;
-  }
-
-  .sidebar-header {
-    padding: var(--space-4);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
   }
 
   .sidebar-content {
     padding: var(--space-4);
   }
 
-  .form-row {
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-  }
-
-  /* 3. Preview Container: HIDDEN by default on mobile */
+  /* 3. Preview Container: Overlay */
   .preview-container {
     display: none;
     position: fixed;
@@ -717,11 +812,8 @@ textarea:focus {
     background-color: var(--bg-primary);
     overflow: auto;
     padding: var(--space-8) var(--space-4) var(--space-4);
-    justify-content: center;
-    align-items: flex-start;
   }
 
-  /* Show when Eye is toggled */
   .preview-container.mobile-preview-open {
     display: flex;
     flex-direction: column;
@@ -912,6 +1004,7 @@ textarea:focus {
     right: 20px;
   }
 }
+
 /* AUTH MODAL STYLES */
 .auth-modal-overlay {
   position: fixed;
@@ -1078,13 +1171,25 @@ textarea:focus {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .auth-user-badge {

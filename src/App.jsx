@@ -25,59 +25,56 @@ function App() {
 
   useEffect(() => {
     const loadData = async () => {
-      if (isAuthenticated) {
+      if (isAuthenticated && token) {
         try {
           const response = await fetch(`${API_URL}/api/cvs`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           const data = await response.json();
           if (response.ok) {
-            setCvs(data);
-            if (data.length > 0) setCurrentCV(data[0]);
-            else setCurrentCV(getSampleCV());
+            // Map content to include the DB id top-level for easier tracking
+            const mappedCvs = data.map(dbCv => ({
+              ...dbCv.content,
+              id: dbCv.id, // Use DB numeric ID
+              dbId: dbCv.id // Keep reference
+            }));
+            setCvs(mappedCvs);
+
+            if (mappedCvs.length > 0) {
+              setCurrentCV(mappedCvs[0]);
+            } else {
+              // Start with a blank CV
+              setCurrentCV(getDefaultCV());
+            }
           }
         } catch (error) {
           console.error('Error fetching CVs:', error);
         }
-      } else {
+      } else if (!isAuthenticated) {
         const loadedCVs = getSavedCVs();
         setCvs(loadedCVs);
         if (loadedCVs.length > 0) {
           setCurrentCV(loadedCVs[0]);
         } else {
-          setCurrentCV(getSampleCV());
+          setCurrentCV(getDefaultCV());
         }
       }
     };
     loadData();
   }, [isAuthenticated, token]);
 
-  // Debounced Auto-save
+  // Debounced Auto-save (Guest mode only)
   useEffect(() => {
-    // Avoid saving on initial load
-    if (!currentCV.id) return;
+    if (!currentCV.id || isAuthenticated) return;
 
-    // We use a separate state to track if we should show the status
-    // to avoid showing it on the very first render of a loaded CV
     const timer = setTimeout(() => {
       saveCV(currentCV);
       setCvs(getSavedCVs());
       setShowSaveStatus(true);
-    }, 1500);
+    }, 2000);
 
     return () => clearTimeout(timer);
-  }, [currentCV]);
-
-  // Auto-hide Save Notification after 3s
-  useEffect(() => {
-    let timeout;
-    if (showSaveStatus) {
-      timeout = setTimeout(() => {
-        setShowSaveStatus(false);
-      }, 3000);
-    }
-    return () => clearTimeout(timeout);
-  }, [showSaveStatus]);
+  }, [currentCV, isAuthenticated]);
 
   const handleSave = async () => {
     if (!isAuthenticated) {
@@ -93,11 +90,13 @@ function App() {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
+          id: currentCV.dbId || (typeof currentCV.id === 'number' ? currentCV.id : null),
           name: currentCV.personalInfo?.fullName || t('settings.cvUntitled'),
-          content: currentCV
+          content: { ...currentCV, id: undefined, dbId: undefined }
         })
       });
 
+      const resData = await response.json();
       if (response.ok) {
         setShowSaveStatus(true);
         // Refresh list
@@ -105,23 +104,46 @@ function App() {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await refreshRes.json();
-        setCvs(data);
+        const mappedCvs = data.map(dbCv => ({
+          ...dbCv.content,
+          id: dbCv.id,
+          dbId: dbCv.id
+        }));
+        setCvs(mappedCvs);
+
+        // Update current CV with the returned DB ID if it's new
+        if (!currentCV.dbId) {
+          const savedCV = mappedCvs.find(c => c.id === resData.cvId);
+          if (savedCV) setCurrentCV(savedCV);
+        }
       }
     } catch (error) {
       console.error('Error saving CV:', error);
     }
   };
 
+  // Auto-hide Save Notification after 3s
+  useEffect(() => {
+    let timeout;
+    if (showSaveStatus) {
+      timeout = setTimeout(() => {
+        setShowSaveStatus(false);
+      }, 3000);
+    }
+    return () => clearTimeout(timeout);
+  }, [showSaveStatus]);
+
   const handleCreateNew = () => {
     const newCV = getDefaultCV();
     setCurrentCV(newCV);
   };
 
+  const [sampleIndex, setSampleIndex] = useState(1);
   const handleLoadSample = () => {
-    // We can either generate a new sample and save it, or just inject into current view
-    // Let's create a new CV object populated with sample data
-    const sample = getSampleCV();
+    // Alternate between the two samples
+    const sample = sampleIndex === 1 ? getSampleCV() : getSampleCV2();
     setCurrentCV(sample);
+    setSampleIndex(sampleIndex === 1 ? 2 : 1);
   };
 
   const handleExport = () => {
@@ -148,30 +170,30 @@ function App() {
       }
     };
     reader.readAsText(file);
-    // Reset input so it can be used again with the same file if needed
     e.target.value = '';
   };
 
   const handleDelete = async (id) => {
+    const idToDelete = currentCV.dbId || id;
     if (isAuthenticated) {
       try {
-        await fetch(`${API_URL}/api/cvs/${id}`, {
+        await fetch(`${API_URL}/api/cvs/${idToDelete}`, {
           method: 'DELETE',
           headers: { 'Authorization': `Bearer ${token}` }
         });
-        const updated = cvs.filter(c => c.id !== id);
+        const updated = cvs.filter(c => (c.dbId || c.id) !== idToDelete);
         setCvs(updated);
-        if (currentCV.id === id) {
+        if ((currentCV.dbId || currentCV.id) === idToDelete) {
           setCurrentCV(updated.length > 0 ? updated[0] : getDefaultCV());
         }
       } catch (error) {
         console.error('Error deleting CV:', error);
       }
     } else {
-      deleteCV(id);
+      deleteCV(idToDelete);
       const updated = getSavedCVs();
       setCvs(updated);
-      if (currentCV.id === id) {
+      if (currentCV.id === idToDelete) {
         setCurrentCV(updated.length > 0 ? updated[0] : getDefaultCV());
       }
     }
@@ -191,10 +213,11 @@ function App() {
 
   return (
     <div className="app-container minimal-theme">
-      {/* Primary Sidebar (Icons only) */}
-      <div className="primary-sidebar">
+      {/* Primary Sidebar - Fixed on the left */}
+      <aside className="primary-sidebar">
         <div className="nav-top">
           <div className="brand" title={t('app.title')}>{t('app.brand')}</div>
+
           <button className={`nav-icon ${activeTab === 'personalInfo' ? 'active' : ''}`} onClick={() => setActiveTab('personalInfo')} title={t('app.personalInfo')}>
             <User size={24} />
             {activeTab === 'personalInfo' && <span className="active-indicator"></span>}
@@ -215,48 +238,16 @@ function App() {
             <Settings size={24} />
             {activeTab === 'settings' && <span className="active-indicator"></span>}
           </button>
-
-          <button
-            className="nav-icon lang-toggle"
-            onClick={() => changeLanguage(i18n.language === 'es' ? 'en' : 'es')}
-            title={t('settings.language')}
-          >
-            {i18n.language.toUpperCase()}
-          </button>
         </div>
 
-        {isAuthenticated ? (
-          <div className="auth-user-badge">
-            <LogOut size={18} className="logout-btn" onClick={logout} title={t('auth.logout')} />
-          </div>
-        ) : (
-          <button className="nav-icon" onClick={() => setShowAuthModal(true)} title={t('auth.loginBtn')}>
-            <User size={24} />
-          </button>
-        )}
-
         <div className="nav-bottom">
-          <button className="nav-icon action new hide-mobile" onClick={handleCreateNew} title={t('app.createNew')}>
-            <Plus size={24} />
-          </button>
-          <button className="nav-icon action save hide-mobile" onClick={handleSave} title={t('app.save')}>
-            <Save size={24} />
-          </button>
-          <button className="nav-icon action pdf" onClick={handleDownloadPDF} title={t('app.downloadPdf')}>
-            <Download size={24} />
-          </button>
-          {cvs.some(c => c.id === currentCV.id) && (
-            <button className="nav-icon action danger" onClick={() => handleDelete(currentCV.id)} title={t('app.deleteCv')}>
-              <Trash2 size={24} />
-            </button>
-          )}
           <a
             href="https://www.linkedin.com/jobs/application-settings/"
             target="_blank"
             rel="noopener noreferrer"
             className="nav-icon action"
             title={t('app.uploadLinkedin')}
-            style={{ color: '#0a66c2', marginTop: 'auto' }}
+            style={{ color: '#0a66c2' }}
           >
             <Linkedin size={24} />
           </a>
@@ -266,153 +257,184 @@ function App() {
             rel="noopener noreferrer"
             className="nav-icon action"
             title={t('app.viewGithub')}
-            style={{ color: '#ffffff', marginTop: '10px' }}
+            style={{ color: '#94a3b8' }}
           >
             <Github size={24} />
           </a>
         </div>
-      </div>
+      </aside>
 
-      {/* Secondary Sidebar (Form Content) */}
-      <div className="secondary-sidebar">
-        <div className="sidebar-content">
-          {activeTab === 'settings' ? (
-            <div className="settings-panel">
-              <h2 className="panel-title">{t('settings.title')}</h2>
+      <main className="main-layout">
+        {/* Floating Controls Top Right */}
+        <div className="floating-controls-top">
+          <button
+            className="lang-toggle-btn"
+            onClick={() => changeLanguage(i18n.language === 'es' ? 'en' : 'es')}
+            title={t('settings.language')}
+          >
+            {i18n.language.toUpperCase()}
+          </button>
 
-              <div className="form-group" style={{ marginBottom: '20px' }}>
-                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.selectCv')}</label>
-                <select
-                  className="cv-selector-minimal"
-                  style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
-                  value={currentCV.id}
-                  onChange={(e) => {
-                    const selected = cvs.find(c => c.id === e.target.value);
-                    if (selected) setCurrentCV(selected);
-                  }}
-                >
-                  <option value={currentCV.id} disabled={cvs.some(c => c.id === currentCV.id)}>
-                    {cvs.some(c => c.id === currentCV.id) ? currentCV.personalInfo?.fullName || t('settings.cvUntitled') : t('settings.cvNew')}
-                  </option>
-                  {cvs.map(cv => (
-                    <option key={cv.id} value={cv.id}>
-                      {cv.personalInfo?.fullName || t('settings.cvUntitled')}
-                    </option>
-                  ))}
-                </select>
-              </div>
+          {isAuthenticated && user ? (
+            <div className="auth-profile floating-auth">
+              <span className="user-email hide-mobile">{user.email}</span>
+              <button className="logout-icon-btn" onClick={logout} title={t('auth.logout')}>
+                <LogOut size={18} />
+              </button>
+            </div>
+          ) : (
+            <button className="login-btn-header floating-auth" onClick={() => setShowAuthModal(true)}>
+              <User size={18} />
+              <span>{t('auth.loginBtn')}</span>
+            </button>
+          )}
+        </div>
 
-              <div className="form-group" style={{ marginBottom: '20px' }}>
-                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.templateDesign')}</label>
-                <select
-                  className="cv-selector-minimal"
-                  style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
-                  value={currentCV.templateId || 'minimal'}
-                  onChange={(e) => setCurrentCV({ ...currentCV, templateId: e.target.value })}
-                >
-                  <option value="minimal">{t('settings.templateMinimal')}</option>
-                  <option value="modern">{t('settings.templateModern')}</option>
-                  <option value="minimal-plus">{t('settings.templateMinimalPlus')}</option>
-                  <option value="professional">{t('settings.templateProfessional')}</option>
-                  <option value="classic">{t('settings.templateClassic')}</option>
-                </select>
-              </div>
+        {/* Floating Controls Bottom Left */}
+        <div className="floating-controls-bottom">
+          <button className="nav-icon action new" onClick={handleCreateNew} title={t('app.createNew')}>
+            <Plus size={20} />
+          </button>
+          <button className="nav-icon action sample" onClick={handleLoadSample} title={t('app.importDemo')}>
+            <Briefcase size={20} />
+          </button>
+          <button className="nav-icon action save" onClick={handleSave} title={t('app.save')}>
+            <Save size={20} />
+          </button>
+          <button className="nav-icon action pdf" onClick={handleDownloadPDF} title={t('app.downloadPdf')}>
+            <Download size={20} />
+          </button>
+          {cvs.some(c => c.id === currentCV.id) && (
+            <button className="nav-icon action danger" onClick={() => handleDelete(currentCV.id)} title={t('app.deleteCv')}>
+              <Trash2 size={20} />
+            </button>
+          )}
+        </div>
 
-              <div className="form-group" style={{ marginBottom: '20px' }}>
-                <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.globalTypography')}</label>
-                <select
-                  className="cv-selector-minimal"
-                  style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
-                  value={currentCV.fontFamily || 'Inter'}
-                  onChange={(e) => setCurrentCV({ ...currentCV, fontFamily: e.target.value })}
-                >
-                  <option value="Inter">{t('settings.fontInter')}</option>
-                  <option value="Outfit">{t('settings.fontOutfit')}</option>
-                  <option value="Roboto">{t('settings.fontRoboto')}</option>
-                  <option value="Merriweather">{t('settings.fontMerriweather')}</option>
-                  <option value="'Courier Prime', monospace">{t('settings.fontCourier')}</option>
-                </select>
-              </div>
+        {/* Secondary Sidebar (Form Content) */}
+        <div className="secondary-sidebar">
+          <div className="sidebar-content">
+            {activeTab === 'settings' ? (
+              <div className="settings-panel">
+                <h2 className="panel-title">{t('settings.title')}</h2>
 
-              {currentCV.templateId !== 'modern' && (
                 <div className="form-group" style={{ marginBottom: '20px' }}>
-                  <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.spacing')}</label>
+                  <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.selectCv')}</label>
                   <select
                     className="cv-selector-minimal"
                     style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
-                    value={currentCV.paddingLevel || 'normal'}
-                    onChange={(e) => setCurrentCV({ ...currentCV, paddingLevel: e.target.value })}
+                    value={currentCV.id}
+                    onChange={(e) => {
+                      const selected = cvs.find(c => c.id === e.target.value);
+                      if (selected) setCurrentCV(selected);
+                    }}
                   >
-                    <option value="compact">{t('settings.spacingCompact')}</option>
-                    <option value="medium">{t('settings.spacingMedium')}</option>
-                    <option value="normal">{t('settings.spacingNormal')}</option>
+                    <option value={currentCV.id} disabled={cvs.some(c => c.id === currentCV.id)}>
+                      {cvs.some(c => c.id === currentCV.id) ? currentCV.personalInfo?.fullName || t('settings.cvUntitled') : t('settings.cvNew')}
+                    </option>
+                    {cvs.map(cv => (
+                      <option key={cv.id} value={cv.id}>
+                        {cv.personalInfo?.fullName || t('settings.cvUntitled')}
+                      </option>
+                    ))}
                   </select>
                 </div>
-              )}
 
-              <div className="settings-divider" style={{ height: '1px', background: '#e2e8f0', margin: '2rem 0 1rem 0' }}></div>
-
-              <div className="backup-section">
-                <h3 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem', fontWeight: 600 }}>{t('settings.backup')}</h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={handleExport}
-                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.9rem' }}
+                <div className="form-group" style={{ marginBottom: '20px' }}>
+                  <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.templateDesign')}</label>
+                  <select
+                    className="cv-selector-minimal"
+                    style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
+                    value={currentCV.templateId || 'minimal'}
+                    onChange={(e) => setCurrentCV({ ...currentCV, templateId: e.target.value })}
                   >
-                    <Download size={18} /> {t('settings.exportJson')}
-                  </button>
-                  <label className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.9rem', cursor: 'pointer' }}>
-                    <Plus size={18} /> {t('settings.importJson')}
-                    <input
-                      type="file"
-                      accept=".json"
-                      onChange={handleImport}
-                      style={{ display: 'none' }}
-                    />
-                  </label>
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '5px' }}>
-                    {t('settings.backupHelp')}
-                  </p>
+                    <option value="minimal">{t('settings.templateMinimal')}</option>
+                    <option value="modern">{t('settings.templateModern')}</option>
+                    <option value="minimal-plus">{t('settings.templateMinimalPlus')}</option>
+                    <option value="professional">{t('settings.templateProfessional')}</option>
+                    <option value="classic">{t('settings.templateClassic')}</option>
+                  </select>
+                </div>
+
+                <div className="form-group" style={{ marginBottom: '20px' }}>
+                  <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.globalTypography')}</label>
+                  <select
+                    className="cv-selector-minimal"
+                    style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
+                    value={currentCV.fontFamily || 'Inter'}
+                    onChange={(e) => setCurrentCV({ ...currentCV, fontFamily: e.target.value })}
+                  >
+                    <option value="Inter">{t('settings.fontInter')}</option>
+                    <option value="Outfit">{t('settings.fontOutfit')}</option>
+                    <option value="Roboto">{t('settings.fontRoboto')}</option>
+                    <option value="Merriweather">{t('settings.fontMerriweather')}</option>
+                    <option value="'Courier Prime', monospace">{t('settings.fontCourier')}</option>
+                  </select>
+                </div>
+
+                {currentCV.templateId !== 'modern' && (
+                  <div className="form-group" style={{ marginBottom: '20px' }}>
+                    <label style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '8px', display: 'block', fontWeight: 600 }}>{t('settings.spacing')}</label>
+                    <select
+                      className="cv-selector-minimal"
+                      style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
+                      value={currentCV.paddingLevel || 'normal'}
+                      onChange={(e) => setCurrentCV({ ...currentCV, paddingLevel: e.target.value })}
+                    >
+                      <option value="compact">{t('settings.spacingCompact')}</option>
+                      <option value="medium">{t('settings.spacingMedium')}</option>
+                      <option value="normal">{t('settings.spacingNormal')}</option>
+                    </select>
+                  </div>
+                )}
+
+                <div className="settings-divider" style={{ height: '1px', background: '#e2e8f0', margin: '2rem 0 1rem 0' }}></div>
+
+                <div className="backup-section">
+                  <h3 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', marginBottom: '1rem', fontWeight: 600 }}>{t('settings.backup')}</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={handleExport}
+                      style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.9rem' }}
+                    >
+                      <Download size={18} /> {t('settings.exportJson')}
+                    </button>
+                    <label className="btn btn-secondary" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', fontSize: '0.9rem', cursor: 'pointer' }}>
+                      <Plus size={18} /> {t('settings.importJson')}
+                      <input
+                        type="file"
+                        accept=".json"
+                        onChange={handleImport}
+                        style={{ display: 'none' }}
+                      />
+                    </label>
+                    <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginTop: '5px' }}>
+                      {t('settings.backupHelp')}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          ) : (
-            <CVForm data={currentCV} onChange={setCurrentCV} activeTab={activeTab} />
-          )}
+            ) : (
+              <CVForm data={currentCV} onChange={setCurrentCV} activeTab={activeTab} />
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Preview Container - Hidden on mobile unless showMobilePreview is true */}
-      <div className={`preview-container${showMobilePreview ? ' mobile-preview-open' : ''}`}>
-        <button
-          className="btn-close-preview"
-          onClick={() => setShowMobilePreview(false)}
-          title={t('app.closePreview')}
-        >
-          <X size={22} />
-        </button>
-        <div className="preview-scaler">
-          <CVPreview data={currentCV} />
+        {/* Preview Container - Hidden on mobile unless showMobilePreview is true */}
+        <div className={`preview-container${showMobilePreview ? ' mobile-preview-open' : ''}`}>
+          <button
+            className="btn-close-preview"
+            onClick={() => setShowMobilePreview(false)}
+            title={t('app.closePreview')}
+          >
+            <X size={22} />
+          </button>
+          <div className="preview-scaler">
+            <CVPreview data={currentCV} />
+          </div>
         </div>
-      </div>
-
-      {/* Mobile Floating Action Bar */}
-      <div className="mobile-floating-actions">
-        <button className="fab-btn fab-new" onClick={handleCreateNew} title={t('app.createNew')}>
-          <Plus size={20} />
-        </button>
-        <button className="fab-btn fab-save" onClick={handleSave} title={t('app.save')}>
-          <Save size={20} />
-        </button>
-        <button
-          className={`fab-btn fab-preview${showMobilePreview ? ' active' : ''}`}
-          onClick={() => setShowMobilePreview(v => !v)}
-          title={showMobilePreview ? t('app.hidePreview') : t('app.viewCv')}
-        >
-          {showMobilePreview ? <EyeOff size={20} /> : <Eye size={20} />}
-        </button>
-      </div>
+      </main>
 
       {/* Auth Modal */}
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} apiUrl={API_URL} />

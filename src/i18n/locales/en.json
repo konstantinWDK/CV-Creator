@@ -18,7 +18,8 @@
         "importError": "Error importing file. Make sure it is a valid JSON.",
         "closePreview": "Close Preview",
         "viewCv": "View CV",
-        "hidePreview": "Hide Preview"
+        "hidePreview": "Hide Preview",
+        "importDemo": "Import Demo"
     },
     "settings": {
         "title": "Global Settings",

@@ -18,7 +18,8 @@
         "importError": "Error al importar el archivo. Asegúrate de que sea un JSON válido.",
         "closePreview": "Cerrar Vista Previa",
         "viewCv": "Ver CV",
-        "hidePreview": "Ocultar Vista Previa"
+        "hidePreview": "Ocultar Vista Previa",
+        "importDemo": "Importar Demo"
     },
     "settings": {
         "title": "Configuración Global",
