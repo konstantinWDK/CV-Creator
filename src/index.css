@@ -89,6 +89,7 @@ h6 {
   flex-direction: row;
   /* Horizontal: Sidebar | Content */
   height: 100vh;
+  min-height: 100dvh;
   width: 100vw;
   overflow: hidden;
 }
@@ -959,7 +960,7 @@ textarea:focus {
     margin-bottom: 2rem;
   }
 
-  .preview-scaler > div {
+  .preview-scaler>div {
     display: flex;
     justify-content: center;
   }
@@ -1268,20 +1269,18 @@ textarea:focus {
   /* Individual action button */
   .fab-action {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 4px;
+    justify-content: center;
     background: white;
     color: #334155;
     border: none;
-    border-radius: 16px;
-    padding: 10px 14px;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
     cursor: pointer;
-    font-size: 0.65rem;
-    font-weight: 600;
     transition: all 0.2s;
-    min-width: 52px;
+    padding: 0;
   }
 
   .fab-action:hover,
@@ -1309,13 +1308,6 @@ textarea:focus {
     color: #dc2626;
   }
 
-  .fab-label {
-    font-size: 0.6rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    line-height: 1;
-  }
 
   /* Main FAB circle button (the + / X toggle) */
   .fab-main {

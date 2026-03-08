@@ -27,7 +27,7 @@ const CVCreator = () => {
 
   // Load demo template from URL params (e.g. /app?demo=true&template=modern)
   const isDemoFromUrl = searchParams.get('demo') === 'true';
-  
+
   useEffect(() => {
     const templateParam = searchParams.get('template');
     const validTemplates = ['minimal', 'modern', 'minimal-plus', 'professional', 'classic'];
@@ -52,7 +52,7 @@ const CVCreator = () => {
   useEffect(() => {
     // Si venimos de un demo, no cargar datos guardados para no sobrescribir
     if (isDemoFromUrl) return;
-    
+
     const loadData = async () => {
       if (isAuthenticated && token) {
         setLoadingContent(true);
@@ -390,24 +390,19 @@ const CVCreator = () => {
           <div className="fab-actions">
             <button className="fab-action new" onClick={() => { handleCreateNew(); setShowFab(false); }} title={t('app.createNew')}>
               <Plus size={18} />
-              <span className="fab-label">Nuevo</span>
             </button>
             <button className="fab-action save" onClick={() => { handleSave(); setShowFab(false); }} title={t('app.save')}>
               <Save size={18} />
-              <span className="fab-label">Guardar</span>
             </button>
             <button className="fab-action pdf" onClick={() => { handleDownloadPDF(); setShowFab(false); }} title={t('app.downloadPdf')}>
               <Download size={18} />
-              <span className="fab-label">Descargar</span>
             </button>
             <button className="fab-action preview" onClick={() => { setShowMobilePreview(true); setShowFab(false); }} title={t('app.viewCv')}>
               <Eye size={18} />
-              <span className="fab-label">Ver</span>
             </button>
             {cvs.some(c => c.id === currentCV.id) && (
               <button className="fab-action danger" onClick={() => { handleDelete(currentCV.id); setShowFab(false); }} title={t('app.deleteCv')}>
                 <Trash2 size={18} />
-                <span className="fab-label">Borrar</span>
               </button>
             )}
           </div>
