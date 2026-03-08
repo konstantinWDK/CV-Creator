@@ -305,6 +305,16 @@ h6 {
   display: none;
 }
 
+.ai-nav {
+  color: var(--accent-color) !important;
+  opacity: 0.8;
+}
+
+.ai-nav.active {
+  opacity: 1;
+  background: rgba(234, 88, 12, 0.1) !important;
+}
+
 /* Tooltip (Bocadillo) */
 .nav-icon::after {
   content: attr(title);
@@ -1328,6 +1338,13 @@ textarea:focus {
 
 
   /* Main FAB circle button (the + / X toggle) */
+  .ai-fab {
+    background: linear-gradient(135deg, #ea580c, #f97316) !important;
+    color: white !important;
+  }
+
+
+
   .fab-main {
     width: 48px;
     height: 48px;

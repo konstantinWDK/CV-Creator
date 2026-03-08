@@ -1,14 +1,17 @@
+const express = require('express');
+const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+require('dotenv').config();
 
 const app = express();
 
 // Security Middleware
 app.use(helmet()); // Sets various security-related HTTP headers
 
-// CORS configuration - Only allow your main domain
+// CORS configuration
 const corsOptions = {
-    origin: 'https://cv-creator.webdesignerk.com',
+    origin: ['https://cv-creator.webdesignerk.com', 'https://www.cv-creator.webdesignerk.com', 'http://localhost:5173'],
     optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
@@ -29,6 +32,7 @@ app.get('/', (req, res) => res.json({ status: 'API is running' }));
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/cvs', require('./routes/cvs'));
+app.use('/api/ai', require('./routes/ai'));
 
 const PORT = process.env.PORT || 5000;
 
