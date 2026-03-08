@@ -325,7 +325,7 @@ html:has(.landing-container) {
 }
 
 /* El CV mantiene su tamaño A4 real */
-.template-preview-wrapper > div {
+.template-preview-wrapper>div {
     width: 210mm !important;
     height: 297mm !important;
 }
@@ -352,7 +352,7 @@ html:has(.landing-container) {
 }
 
 /* Sidebar izquierdo - altura completa y contenido centrado */
-.template-preview-wrapper .a4-page[style*="padding: 0"] > div[style*="width: 35%"] {
+.template-preview-wrapper .a4-page[style*="padding: 0"]>div[style*="width: 35%"] {
     padding: 14mm 10mm !important;
     min-height: 297mm !important;
     height: 100% !important;
@@ -361,12 +361,12 @@ html:has(.landing-container) {
 }
 
 /* La foto/inicial debe estar centrada */
-.template-preview-wrapper .a4-page[style*="padding: 0"] > div[style*="width: 35%"] > div:first-child {
+.template-preview-wrapper .a4-page[style*="padding: 0"]>div[style*="width: 35%"]>div:first-child {
     text-align: center !important;
 }
 
 /* El círculo de la inicial centrado */
-.template-preview-wrapper .a4-page[style*="padding: 0"] > div[style*="width: 35%"] > div:first-child > div {
+.template-preview-wrapper .a4-page[style*="padding: 0"]>div[style*="width: 35%"]>div:first-child>div {
     margin: 0 auto 15px auto !important;
     display: flex !important;
     align-items: center !important;
@@ -374,13 +374,13 @@ html:has(.landing-container) {
 }
 
 /* Contenido principal derecho */
-.template-preview-wrapper .a4-page[style*="padding: 0"] > div[style*="width: 65%"] {
+.template-preview-wrapper .a4-page[style*="padding: 0"]>div[style*="width: 65%"] {
     padding: 14mm 14mm !important;
     min-height: 297mm !important;
 }
 
 /* Forzar que el contenido sea visible y alineado a la izquierda */
-.template-preview-wrapper .a4-page > div {
+.template-preview-wrapper .a4-page>div {
     width: 100% !important;
     height: auto !important;
 }
@@ -413,18 +413,18 @@ html:has(.landing-container) {
 }
 
 /* Ajustes para template Modern - sidebar */
-.template-preview-wrapper .a4-page > div[style*="flex-direction: row"] {
+.template-preview-wrapper .a4-page>div[style*="flex-direction: row"] {
     width: 100% !important;
     height: 100% !important;
     display: flex !important;
 }
 
-.template-preview-wrapper .a4-page > div[style*="width: 35%"] {
+.template-preview-wrapper .a4-page>div[style*="width: 35%"] {
     width: 35% !important;
     height: 100% !important;
 }
 
-.template-preview-wrapper .a4-page > div[style*="width: 65%"] {
+.template-preview-wrapper .a4-page>div[style*="width: 65%"] {
     width: 65% !important;
     height: 100% !important;
 }
@@ -501,6 +501,8 @@ html:has(.landing-container) {
     gap: 1rem;
     margin-top: 1.5rem;
     flex-wrap: wrap;
+    position: relative;
+    z-index: 10;
 }
 
 .slider-btn {
@@ -620,7 +622,7 @@ html:has(.landing-container) {
     line-height: 1.2;
 }
 
-.templates-info > p {
+.templates-info>p {
     font-size: 1.15rem;
     color: var(--text-muted);
     line-height: 1.7;
@@ -685,7 +687,7 @@ html:has(.landing-container) {
         height: 550px;
     }
 
-    .template-preview-wrapper > div {
+    .template-preview-wrapper>div {
         transform: scale(0.5);
     }
 
@@ -729,6 +731,7 @@ html:has(.landing-container) {
         max-width: 320px;
         margin: 0 auto;
         aspect-ratio: 210 / 297;
+        height: 450px;
     }
 
     .template-preview-wrapper {
@@ -780,6 +783,7 @@ html:has(.landing-container) {
 
     .template-slider {
         max-width: 260px;
+        height: 380px;
     }
 
     .template-preview-wrapper {
@@ -792,11 +796,11 @@ html:has(.landing-container) {
         padding: 10mm 12mm !important;
     }
 
-    .template-preview-wrapper .a4-page[style*="padding: 0"] > div[style*="width: 35%"] {
+    .template-preview-wrapper .a4-page[style*="padding: 0"]>div[style*="width: 35%"] {
         padding: 10mm 8mm !important;
     }
 
-    .template-preview-wrapper .a4-page[style*="padding: 0"] > div[style*="width: 65%"] {
+    .template-preview-wrapper .a4-page[style*="padding: 0"]>div[style*="width: 65%"] {
         padding: 10mm 12mm !important;
     }
 
