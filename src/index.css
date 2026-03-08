@@ -117,7 +117,7 @@ h6 {
 .floating-controls-bottom {
   position: absolute;
   bottom: 20px;
-  left: 20px;
+  right: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1007,7 +1007,7 @@ textarea:focus {
 /* Save Status Indicator - Premium Floating Toast */
 .save-status-indicator {
   position: fixed;
-  bottom: 30px;
+  bottom: 85px;
   right: 30px;
   background: #0f172a;
   color: white;
