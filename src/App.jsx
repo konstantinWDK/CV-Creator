@@ -16,6 +16,7 @@ function App() {
   const [showMobilePreview, setShowMobilePreview] = useState(false);
   const [showSaveStatus, setShowSaveStatus] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [loadingContent, setLoadingContent] = useState(false);
   const { user, token, logout, isAuthenticated } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL || 'https://api.cv-creator.webdesignerk.com';
 
@@ -26,29 +27,70 @@ function App() {
   useEffect(() => {
     const loadData = async () => {
       if (isAuthenticated && token) {
+        setLoadingContent(true);
         try {
           const response = await fetch(`${API_URL}/api/cvs`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           const data = await response.json();
-          if (response.ok) {
-            // Map content to include the DB id top-level for easier tracking
-            const mappedCvs = data.map(dbCv => ({
-              ...dbCv.content,
-              id: dbCv.id, // Use DB numeric ID
-              dbId: dbCv.id // Keep reference
-            }));
+          if (response.ok && Array.isArray(data)) {
+            // Map content and handle potential stringified JSON
+            const mappedCvs = data.map(dbCv => {
+              let content = dbCv.content;
+              if (typeof content === 'string') {
+                try { content = JSON.parse(content); } catch (e) { content = {}; }
+              }
+              return {
+                ...content,
+                id: dbCv.id,
+                dbId: dbCv.id
+              };
+            });
+
             setCvs(mappedCvs);
 
             if (mappedCvs.length > 0) {
               setCurrentCV(mappedCvs[0]);
             } else {
-              // Start with a blank CV
-              setCurrentCV(getDefaultCV());
+              // Account is empty, check if we have guest data to migrate
+              const guestCVs = getSavedCVs();
+              if (guestCVs.length > 0) {
+                // Migrate the first guest CV automatically
+                const guestToMigrate = guestCVs[0];
+                const saveRes = await fetch(`${API_URL}/api/cvs`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                  },
+                  body: JSON.stringify({
+                    name: guestToMigrate.personalInfo?.fullName || t('settings.cvUntitled'),
+                    content: { ...guestToMigrate, id: undefined, dbId: undefined }
+                  })
+                });
+
+                if (saveRes.ok) {
+                  const resJson = await saveRes.json();
+                  const migrated = { ...guestToMigrate, id: resJson.cvId, dbId: resJson.cvId };
+                  setCvs([migrated]);
+                  setCurrentCV(migrated);
+                } else {
+                  setCurrentCV(getDefaultCV());
+                }
+              } else {
+                setCurrentCV(getDefaultCV());
+              }
             }
+          } else {
+            // If data is not an array or response not OK
+            setCvs([]);
+            setCurrentCV(getDefaultCV());
           }
         } catch (error) {
           console.error('Error fetching CVs:', error);
+          setCurrentCV(getDefaultCV());
+        } finally {
+          setLoadingContent(false);
         }
       } else if (!isAuthenticated) {
         const loadedCVs = getSavedCVs();
@@ -423,6 +465,11 @@ function App() {
 
         {/* Preview Container - Hidden on mobile unless showMobilePreview is true */}
         <div className={`preview-container${showMobilePreview ? ' mobile-preview-open' : ''}`}>
+          {loadingContent && (
+            <div className="loading-overlay">
+              <div className="spinner"></div>
+            </div>
+          )}
           <button
             className="btn-close-preview"
             onClick={() => setShowMobilePreview(false)}
