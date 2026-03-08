@@ -19,9 +19,9 @@ const ProfessionalTemplate = ({ data }) => {
                         margin: 0;
                     }
                     
-                    /* Header Area */
+                    /* Header Area - Usa variables de padding */
                     .professional-template .header-wrapper {
-                        padding: 12mm 15mm 0mm 15mm;
+                        padding: var(--cv-padding-y, 12mm) var(--cv-padding-x, 15mm) 0mm var(--cv-padding-x, 15mm);
                         margin-bottom: 6mm;
                     }
                     .professional-template .main-name {
@@ -51,11 +51,11 @@ const ProfessionalTemplate = ({ data }) => {
                         color: #2563eb; /* Primary Blue */
                     }
 
-                    /* Main Layout */
+                    /* Main Layout - Usa variables de padding */
                     .professional-template .content-columns {
                         display: flex;
                         flex: 1;
-                        padding: 0 15mm 15mm 15mm;
+                        padding: 0 var(--cv-padding-x, 15mm) var(--cv-padding-y, 15mm) var(--cv-padding-x, 15mm);
                         gap: 8mm;
                     }
 

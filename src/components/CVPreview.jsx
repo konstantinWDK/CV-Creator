@@ -32,13 +32,13 @@ const CVPreview = ({ data }) => {
 
         switch (data.paddingLevel) {
             case 'compact': // "Un poco" (Minimalist original padding)
-                return { '--cv-padding-y': '3mm', '--cv-padding-x': '4mm' };
+                return { '--cv-padding-y': '2mm', '--cv-padding-x': '3mm' };
             case 'medium': // "Un poco más"
-                return { '--cv-padding-y': '8mm', '--cv-padding-x': '10mm' };
+                return { '--cv-padding-y': '5mm', '--cv-padding-x': '6mm' };
             case 'normal':
             default:
-                // "Normal" padding (slightly less than the original 18mm wide padding)
-                return { '--cv-padding-y': '14mm', '--cv-padding-x': '14mm' };
+                // "Normal" padding (más reducido)
+                return { '--cv-padding-y': '6mm', '--cv-padding-x': '8mm' };
         }
     };
 

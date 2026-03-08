@@ -54,9 +54,9 @@
             "photo": "Foto de Perfil",
             "deletePhoto": "Eliminar Foto",
             "fullName": "Nombre Completo",
-            "fullNamePlaceholder": "Ej. Juan Pérez",
+            "fullNamePlaceholder": "Ej. John Doe",
             "email": "Correo Electrónico",
-            "emailPlaceholder": "juan@ejemplo.com",
+            "emailPlaceholder": "john@ejemplo.com",
             "phone": "Teléfono",
             "phonePlaceholder": "+34 600 000 000",
             "address": "Dirección",
@@ -203,6 +203,14 @@
         "qrPoint1": "Enlaza a LinkedIn, portafolio o GitHub",
         "qrPoint2": "Escaneable en segundos con cualquier móvil",
         "qrPoint3": "Beneficia tanto al CV impreso como al digital",
-        "qrPoint4": "Aumenta el interés del reclutador al instante"
+        "qrPoint4": "Aumenta el interés del reclutador al instante",
+        "templatesTitle": "Elige tu Plantilla de Currículum Profesional",
+        "templatesSubtitle": "5 diseños modernos para destacar. Haz clic en cualquier plantilla para probarla al instante con datos de ejemplo, sin registro.",
+        "templateMinimal": "Plantilla Currículum Minimalista",
+        "templateModern": "Plantilla CV Moderno con Barra Lateral",
+        "templateMinimalPlus": "Plantilla Currículum Minimalista Plus",
+        "templateProfessional": "Plantilla CV Profesional",
+        "templateClassic": "Plantilla Currículum Clásico",
+        "templateTry": "Probar esta plantilla"
     }
 }

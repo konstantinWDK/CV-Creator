@@ -203,6 +203,14 @@
         "qrPoint1": "Link to LinkedIn, portfolio or GitHub",
         "qrPoint2": "Scannable in seconds by any smartphone",
         "qrPoint3": "Printed and digital CVs both benefit",
-        "qrPoint4": "Boosts recruiter engagement instantly"
+        "qrPoint4": "Boosts recruiter engagement instantly",
+        "templatesTitle": "Choose Your Professional CV Template",
+        "templatesSubtitle": "5 modern designs to stand out. Click any template to try it instantly with demo data — no registration required.",
+        "templateMinimal": "Minimalist Resume Template",
+        "templateModern": "Modern CV Template with Sidebar",
+        "templateMinimalPlus": "Minimalist Plus Resume Template",
+        "templateProfessional": "Professional CV Template",
+        "templateClassic": "Classic Resume Template",
+        "templateTry": "Try this template"
     }
 }

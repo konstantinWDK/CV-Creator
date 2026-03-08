@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useSearchParams } from 'react-router-dom';
 import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Linkedin, Github, Settings, Eye, EyeOff, X, LogOut } from 'lucide-react';
 import { getSavedCVs, saveCV, deleteCV, getDefaultCV, getSampleCV, exportAllData, importData } from './utils/storage';
 import CVForm from './components/CVForm';
@@ -23,12 +23,36 @@ const CVCreator = () => {
   const [loadingContent, setLoadingContent] = useState(false);
   const { user, token, logout, isAuthenticated } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL || 'https://api.cv-creator.webdesignerk.com';
+  const [searchParams] = useSearchParams();
+
+  // Load demo template from URL params (e.g. /app?demo=true&template=modern)
+  const isDemoFromUrl = searchParams.get('demo') === 'true';
+  
+  useEffect(() => {
+    const templateParam = searchParams.get('template');
+    const validTemplates = ['minimal', 'modern', 'minimal-plus', 'professional', 'classic'];
+    if (isDemoFromUrl) {
+      const sample = getSampleCV();
+      if (templateParam && validTemplates.includes(templateParam)) {
+        sample.templateId = templateParam;
+      }
+      setCurrentCV(sample);
+      // En dispositivos móviles, mostrar preview automáticamente
+      // En desktop, el preview siempre está visible
+      if (window.innerWidth <= 768) {
+        setShowMobilePreview(true);
+      }
+    }
+  }, [searchParams, isDemoFromUrl]);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
 
   useEffect(() => {
+    // Si venimos de un demo, no cargar datos guardados para no sobrescribir
+    if (isDemoFromUrl) return;
+    
     const loadData = async () => {
       if (isAuthenticated && token) {
         setLoadingContent(true);
@@ -107,7 +131,7 @@ const CVCreator = () => {
       }
     };
     loadData();
-  }, [isAuthenticated, token]);
+  }, [isAuthenticated, token, isDemoFromUrl, t, API_URL]);
 
   // Debounced Auto-save (Guest mode only)
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
@@ -12,12 +12,20 @@ import {
     Languages,
     ShieldCheck,
     Code,
-    Github
+    Github,
+    ChevronLeft,
+    ChevronRight
 } from 'lucide-react';
+import MinimalTemplate from './templates/MinimalTemplate';
+import ModernTemplate from './templates/ModernTemplate';
+import MinimalPlusTemplate from './templates/MinimalPlusTemplate';
+import ProfessionalTemplate from './templates/ProfessionalTemplate';
+import ClassicTemplate from './templates/ClassicTemplate';
 import './LandingPage.css';
 
 const LandingPage = () => {
     const { t, i18n } = useTranslation();
+    const [currentTemplate, setCurrentTemplate] = useState(0);
 
     useEffect(() => {
         // Dynamic SEO Metadata
@@ -32,6 +40,76 @@ const LandingPage = () => {
         const nextLang = i18n.language === 'es' ? 'en' : 'es';
         i18n.changeLanguage(nextLang);
     };
+
+    // Datos de ejemplo sincronizados con getSampleCV() de la app
+    const demoData = {
+        templateId: 'minimal',
+        fontFamily: 'Inter',
+        personalInfo: {
+            fullName: 'John Doe',
+            email: 'john.doe@example.com',
+            phone: '+1 555 123 4567',
+            address: 'New York, USA',
+            website: 'https://github.com/johndoe',
+            photo: null,
+            showQrCode: true,
+            qrCodeType: 'github',
+            summary: 'Senior Full Stack Developer with over 8 years of experience building scalable web applications. Passionate about clean code, modern architectures, and minimalist UI.',
+        },
+        experience: [
+            {
+                id: 'demo-exp-1',
+                company: 'Tech Solutions Inc.',
+                position: 'Senior Web Developer',
+                startDate: '2021-01',
+                endDate: '',
+                isCurrent: true,
+                showDuration: false,
+                description: 'Leading frontend development using <mark>React</mark> and <span style="color:#ea580c">Node.js</span>. Improved rendering performance by 40%.'
+            },
+            {
+                id: 'demo-exp-2',
+                company: 'Digital Creative Agency',
+                position: 'Frontend Developer',
+                startDate: '2018-03',
+                endDate: '2020-12',
+                isCurrent: false,
+                showDuration: false,
+                description: 'Building engaging user interfaces. Integrating with REST APIs. Working under Agile methodologies.'
+            }
+        ],
+        education: [
+            {
+                id: 'demo-edu-1',
+                institution: 'MIT University',
+                degree: 'Computer Science Degree',
+                year: '2014 - 2018'
+            }
+        ],
+        skills: [
+            { id: 'demo-skill-1', name: 'JavaScript' },
+            { id: 'demo-skill-2', name: 'React' },
+            { id: 'demo-skill-3', name: 'Node.js' },
+            { id: 'demo-skill-4', name: 'Tailwind CSS' },
+            { id: 'demo-skill-5', name: 'UI/UX Design' },
+        ],
+    };
+
+    const templates = [
+        { id: 'minimal', label: t('landing.templateMinimal'), component: MinimalTemplate },
+        { id: 'modern', label: t('landing.templateModern'), component: ModernTemplate },
+        { id: 'minimal-plus', label: t('landing.templateMinimalPlus'), component: MinimalPlusTemplate },
+        { id: 'professional', label: t('landing.templateProfessional'), component: ProfessionalTemplate },
+        { id: 'classic', label: t('landing.templateClassic'), component: ClassicTemplate },
+    ];
+
+    const getCurrentTemplateData = () => ({
+        ...demoData,
+        templateId: templates[currentTemplate].id,
+        fontFamily: templates[currentTemplate].id === 'modern' ? 'Outfit' : 'Inter'
+    });
+
+    const CurrentTemplateComponent = templates[currentTemplate].component;
 
     const features = [
         {
@@ -50,6 +128,14 @@ const LandingPage = () => {
             desc: t('landing.feature3Desc')
         }
     ];
+
+    const nextTemplate = () => {
+        setCurrentTemplate((prev) => (prev + 1) % templates.length);
+    };
+
+    const prevTemplate = () => {
+        setCurrentTemplate((prev) => (prev - 1 + templates.length) % templates.length);
+    };
 
     return (
         <div className="landing-container">
@@ -95,6 +181,86 @@ const LandingPage = () => {
                     />
                 </div>
             </header>
+
+            {/* Templates Showcase Slider - Layout 1 columna */}
+            <section className="templates-section" id="plantillas">
+                {/* Info arriba */}
+                <div className="templates-info-header">
+                    <div className="info-badge">✨ {t('landing.templatesTitle')}</div>
+                    <h2>{t('landing.templatesSubtitle')}</h2>
+                    <p>
+                        {i18n.language === 'es' 
+                            ? 'Elige entre nuestra colección de plantillas profesionales, diseñadas para destacar tu experiencia y habilidades. Cada plantilla es totalmente personalizable y optimizada para ATS.'
+                            : 'Choose from our collection of professional templates, designed to highlight your experience and skills. Each template is fully customizable and ATS-optimized.'}
+                    </p>
+                </div>
+
+                {/* Slider abajo */}
+                <div className="slider-wrapper">
+                    <div className="template-slider">
+                        <Link
+                            to={`/app?demo=true&template=${templates[currentTemplate].id}`}
+                            className="template-slide"
+                        >
+                            <div className="template-preview-wrapper">
+                                <CurrentTemplateComponent data={getCurrentTemplateData()} />
+                            </div>
+                            <div className="template-slide-overlay">
+                                <span>{t('landing.templateTry')} →</span>
+                            </div>
+                        </Link>
+                        
+                        {/* Controles del slider */}
+                        <button className="slider-btn slider-btn-prev" onClick={prevTemplate} aria-label="Previous template">
+                            <ChevronLeft size={28} />
+                        </button>
+                        <button className="slider-btn slider-btn-next" onClick={nextTemplate} aria-label="Next template">
+                            <ChevronRight size={28} />
+                        </button>
+                        
+                        {/* Indicadores de puntos */}
+                        <div className="slider-dots">
+                            {templates.map((_, index) => (
+                                <button
+                                    key={index}
+                                    className={`slider-dot ${index === currentTemplate ? 'active' : ''}`}
+                                    onClick={() => setCurrentTemplate(index)}
+                                    aria-label={`Go to template ${index + 1}`}
+                                />
+                            ))}
+                        </div>
+                        
+                        {/* Nombre de la plantilla actual */}
+                        <div className="template-name-badge">
+                            {templates[currentTemplate].label}
+                        </div>
+                    </div>
+                </div>
+
+                {/* Features debajo del slider */}
+                <div className="info-features-grid">
+                    <div className="info-feature-item">
+                        <CheckCircle size={20} className="info-icon" />
+                        <span>{i18n.language === 'es' ? 'Diseños modernos y profesionales' : 'Modern and professional designs'}</span>
+                    </div>
+                    <div className="info-feature-item">
+                        <CheckCircle size={20} className="info-icon" />
+                        <span>{i18n.language === 'es' ? 'Optimizado para sistemas ATS' : 'ATS-optimized systems'}</span>
+                    </div>
+                    <div className="info-feature-item">
+                        <CheckCircle size={20} className="info-icon" />
+                        <span>{i18n.language === 'es' ? 'Totalmente personalizables' : 'Fully customizable'}</span>
+                    </div>
+                    <div className="info-feature-item">
+                        <CheckCircle size={20} className="info-icon" />
+                        <span>{i18n.language === 'es' ? 'Exportación en PDF de alta calidad' : 'High-quality PDF export'}</span>
+                    </div>
+                </div>
+
+                <Link to="/app" className="templates-cta">
+                    {t('landing.startNow')} <ArrowRight size={20} />
+                </Link>
+            </section>
 
             <section id="features" className="features-section">
                 <div className="section-header">
