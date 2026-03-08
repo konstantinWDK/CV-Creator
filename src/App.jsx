@@ -280,11 +280,46 @@ const CVCreator = () => {
         paddingLevel: currentCV.paddingLevel
       };
 
-      // Add to list and select it
-      const updatedCvs = [...cvs, translatedCV];
-      saveCV(translatedCV);
-      setCvs(getSavedCVs());
-      setCurrentCV(translatedCV);
+      if (isAuthenticated) {
+        // Automatically save the new translation to the cloud
+        const saveRes = await fetch(`${API_URL}/api/cvs`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            name: (translatedCV.personalInfo?.fullName || 'Untitled') + ' (EN)',
+            content: { ...translatedCV, id: undefined, dbId: undefined }
+          })
+        });
+
+        if (saveRes.ok) {
+          const resJson = await saveRes.json();
+          translatedCV.id = resJson.cvId;
+          translatedCV.dbId = resJson.cvId;
+
+          // Refresh list from server to ensure consistency
+          const refreshRes = await fetch(`${API_URL}/api/cvs`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const refreshData = await refreshRes.json();
+          const mappedCvs = refreshData.map(dbCv => ({
+            ...dbCv.content,
+            id: dbCv.id,
+            dbId: dbCv.id
+          }));
+          setCvs(mappedCvs);
+          setCurrentCV(translatedCV);
+        }
+      } else {
+        // Guest mode: just add to list and select it
+        const updatedCvs = [...cvs, translatedCV];
+        saveCV(translatedCV);
+        const freshCvs = getSavedCVs();
+        setCvs(freshCvs);
+        setCurrentCV(translatedCV);
+      }
 
       setShowSaveStatus(true);
       setTimeout(() => setShowSaveStatus(false), 3000);
@@ -497,7 +532,8 @@ const CVCreator = () => {
                     style={{ backgroundColor: '#f1f5f9', border: '1px solid #e2e8f0', color: '#334155', width: '100%', padding: '0.75rem', borderRadius: '0.5rem' }}
                     value={currentCV.id}
                     onChange={(e) => {
-                      const selected = cvs.find(c => c.id === e.target.value);
+                      const selectedId = e.target.value;
+                      const selected = cvs.find(c => String(c.id) === String(selectedId) || String(c.dbId) === String(selectedId));
                       if (selected) setCurrentCV(selected);
                     }}
                   >
