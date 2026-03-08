@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Linkedin, Github, Settings, Eye, EyeOff, X, LogOut } from 'lucide-react';
 import { getSavedCVs, saveCV, deleteCV, getDefaultCV, getSampleCV, exportAllData, importData } from './utils/storage';
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
 import CVCompletionBar from './components/CVCompletionBar';
 import AuthModal from './components/auth/AuthModal';
+import LandingPage from './components/LandingPage';
 import { useAuth } from './context/AuthContext';
 import html2pdf from 'html2pdf.js';
 import { useTranslation } from 'react-i18next';
 
-function App() {
+const CVCreator = () => {
   const { t, i18n } = useTranslation();
   const [cvs, setCvs] = useState([]);
   const [currentCV, setCurrentCV] = useState(getDefaultCV());
@@ -17,6 +19,7 @@ function App() {
   const [showMobilePreview, setShowMobilePreview] = useState(false);
   const [showSaveStatus, setShowSaveStatus] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [showFab, setShowFab] = useState(false);
   const [loadingContent, setLoadingContent] = useState(false);
   const { user, token, logout, isAuthenticated } = useAuth();
   const API_URL = import.meta.env.VITE_API_URL || 'https://api.cv-creator.webdesignerk.com';
@@ -336,8 +339,8 @@ function App() {
           )}
         </div>
 
-        {/* Floating Controls Bottom Left */}
-        <div className="floating-controls-bottom">
+        {/* Desktop Floating Controls Bottom Left (hidden on mobile) */}
+        <div className="floating-controls-bottom desktop-only">
           <button className="nav-icon action new" onClick={handleCreateNew} title={t('app.createNew')}>
             <Plus size={20} />
           </button>
@@ -355,6 +358,39 @@ function App() {
               <Trash2 size={20} />
             </button>
           )}
+        </div>
+
+        {/* Mobile Speed Dial FAB - Bottom Right */}
+        <div className={`mobile-fab-container${showFab ? ' fab-open' : ''}`}>
+          {/* Action items - expand to the left */}
+          <div className="fab-actions">
+            <button className="fab-action new" onClick={() => { handleCreateNew(); setShowFab(false); }} title={t('app.createNew')}>
+              <Plus size={18} />
+              <span className="fab-label">{t('app.createNew')}</span>
+            </button>
+            <button className="fab-action save" onClick={() => { handleSave(); setShowFab(false); }} title={t('app.save')}>
+              <Save size={18} />
+              <span className="fab-label">{t('app.save')}</span>
+            </button>
+            <button className="fab-action pdf" onClick={() => { handleDownloadPDF(); setShowFab(false); }} title={t('app.downloadPdf')}>
+              <Download size={18} />
+              <span className="fab-label">{t('app.downloadPdf')}</span>
+            </button>
+            <button className="fab-action preview" onClick={() => { setShowMobilePreview(true); setShowFab(false); }} title={t('app.viewCv')}>
+              <Eye size={18} />
+              <span className="fab-label">{t('app.viewCv')}</span>
+            </button>
+            {cvs.some(c => c.id === currentCV.id) && (
+              <button className="fab-action danger" onClick={() => { handleDelete(currentCV.id); setShowFab(false); }} title={t('app.deleteCv')}>
+                <Trash2 size={18} />
+                <span className="fab-label">{t('app.deleteCv')}</span>
+              </button>
+            )}
+          </div>
+          {/* Main FAB toggle button */}
+          <button className="fab-main" onClick={() => setShowFab(!showFab)}>
+            {showFab ? <X size={24} /> : <Plus size={24} />}
+          </button>
         </div>
 
         {/* Secondary Sidebar (Form Content) */}
@@ -496,6 +532,19 @@ function App() {
         <span className="check-icon">✓</span> {t('app.changesSaved')}
       </div>
     </div>
+  );
+};
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/app" element={<CVCreator />} />
+        {/* Redirect any other route to landing */}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

@@ -848,9 +848,11 @@ textarea:focus {
   }
 
   .floating-controls-top {
+    position: fixed;
     top: 10px;
     right: 10px;
     gap: 8px;
+    z-index: 200;
   }
 
   .floating-controls-bottom {
@@ -902,6 +904,8 @@ textarea:focus {
 
   .sidebar-content {
     padding: var(--space-4);
+    padding-top: 60px;
+    /* avoid overlap with fixed floating-controls-top */
   }
 
   .preview-container {
@@ -981,6 +985,7 @@ textarea:focus {
   justify-content: center;
   font-size: 0.75rem;
 }
+
 /* Auth Modal Styles - Premium Minimalist */
 .auth-modal-overlay {
   position: fixed;
@@ -1016,6 +1021,7 @@ textarea:focus {
     opacity: 0;
     transform: translateY(30px) scale(0.95);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -1173,5 +1179,136 @@ textarea:focus {
   .auth-modal {
     padding: 30px 20px;
     border-radius: 20px;
+  }
+}
+
+/* ========================
+   Speed Dial FAB (Mobile)
+   ======================== */
+
+/* Desktop-only class: hides the element on mobile */
+.desktop-only {
+  display: flex;
+}
+
+/* Mobile FAB Container */
+.mobile-fab-container {
+  display: none;
+  /* hidden on desktop */
+}
+
+@media (max-width: 768px) {
+
+  /* Hide the old desktop floating controls on mobile */
+  .floating-controls-bottom.desktop-only {
+    display: none !important;
+  }
+
+  /* Show the Speed Dial FAB on mobile */
+  .mobile-fab-container {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 90px;
+    /* above the bottom nav */
+    right: 16px;
+    z-index: 500;
+    flex-direction: row;
+    /* actions grow to the left, main FAB on the right */
+    gap: 10px;
+  }
+
+  /* The action items row (hidden by default) */
+  .fab-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(20px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  /* When FAB is open, show action items */
+  .mobile-fab-container.fab-open .fab-actions {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(0);
+  }
+
+  /* Individual action button */
+  .fab-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    background: white;
+    color: #334155;
+    border: none;
+    border-radius: 16px;
+    padding: 10px 14px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    font-size: 0.65rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    min-width: 52px;
+  }
+
+  .fab-action:hover,
+  .fab-action:active {
+    transform: scale(1.05);
+  }
+
+  .fab-action.save {
+    color: #2563eb;
+  }
+
+  .fab-action.pdf {
+    color: #16a34a;
+  }
+
+  .fab-action.preview {
+    color: #7c3aed;
+  }
+
+  .fab-action.new {
+    color: #ea580c;
+  }
+
+  .fab-action.danger {
+    color: #dc2626;
+  }
+
+  .fab-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1;
+  }
+
+  /* Main FAB circle button (the + / X toggle) */
+  .fab-main {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--accent-color, #ee7c1b);
+    color: white;
+    border: none;
+    box-shadow: 0 6px 20px rgba(238, 124, 27, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .mobile-fab-container.fab-open .fab-main {
+    background: #334155;
+    transform: rotate(45deg);
+    box-shadow: 0 6px 20px rgba(51, 65, 85, 0.4);
   }
 }
