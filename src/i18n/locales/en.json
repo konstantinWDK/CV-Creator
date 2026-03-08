@@ -2,11 +2,11 @@
     "app": {
         "brand": "CV",
         "title": "CV Creator",
-        "personalInfo": "Personal Info",
+        "personalInfo": "About you",
         "experience": "Experience",
         "education": "Education",
         "skills": "Skills",
-        "settings": "Global Settings",
+        "settings": "Global conf.",
         "createNew": "Create New",
         "save": "Save",
         "downloadPdf": "Download PDF",
@@ -22,7 +22,7 @@
         "importDemo": "Import Demo"
     },
     "settings": {
-        "title": "Global Settings",
+        "title": "Global conf.",
         "selectCv": "Select Saved CV",
         "cvUntitled": "Untitled CV",
         "cvNew": "New CV",
@@ -50,7 +50,7 @@
     },
     "forms": {
         "personalInfo": {
-            "title": "Personal Information",
+            "title": "About you",
             "photo": "Profile Photo",
             "deletePhoto": "Remove Photo",
             "fullName": "Full Name",

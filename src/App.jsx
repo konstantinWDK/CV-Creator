@@ -293,22 +293,27 @@ const CVCreator = () => {
 
           <button className={`nav-icon ${activeTab === 'personalInfo' ? 'active' : ''}`} onClick={() => setActiveTab('personalInfo')} title={t('app.personalInfo')}>
             <User size={24} />
+            <span className="nav-label">{t('app.personalInfo')}</span>
             {activeTab === 'personalInfo' && <span className="active-indicator"></span>}
           </button>
           <button className={`nav-icon ${activeTab === 'experience' ? 'active' : ''}`} onClick={() => setActiveTab('experience')} title={t('app.experience')}>
             <Briefcase size={24} />
+            <span className="nav-label">{t('app.experience')}</span>
             {activeTab === 'experience' && <span className="active-indicator"></span>}
           </button>
           <button className={`nav-icon ${activeTab === 'education' ? 'active' : ''}`} onClick={() => setActiveTab('education')} title={t('app.education')}>
             <GraduationCap size={24} />
+            <span className="nav-label">{t('app.education')}</span>
             {activeTab === 'education' && <span className="active-indicator"></span>}
           </button>
           <button className={`nav-icon ${activeTab === 'skills' ? 'active' : ''}`} onClick={() => setActiveTab('skills')} title={t('app.skills')}>
             <Code size={24} />
+            <span className="nav-label">{t('app.skills')}</span>
             {activeTab === 'skills' && <span className="active-indicator"></span>}
           </button>
           <button className={`nav-icon ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')} title={t('app.settings')}>
             <Settings size={24} />
+            <span className="nav-label">{t('app.settings')}</span>
             {activeTab === 'settings' && <span className="active-indicator"></span>}
           </button>
         </div>

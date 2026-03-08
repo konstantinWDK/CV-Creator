@@ -2,11 +2,11 @@
     "app": {
         "brand": "CV",
         "title": "Creador CV",
-        "personalInfo": "Datos Personales",
+        "personalInfo": "Sobre ti",
         "experience": "Experiencia",
         "education": "Educación",
         "skills": "Habilidades",
-        "settings": "Configuración Global",
+        "settings": "Conf. global",
         "createNew": "Crear Nuevo",
         "save": "Guardar",
         "downloadPdf": "Descargar PDF",
@@ -22,7 +22,7 @@
         "importDemo": "Importar Demo"
     },
     "settings": {
-        "title": "Configuración Global",
+        "title": "Conf. global",
         "selectCv": "Seleccionar Currículum Guardado",
         "cvUntitled": "CV sin título",
         "cvNew": "CV Nuevo",
@@ -50,7 +50,7 @@
     },
     "forms": {
         "personalInfo": {
-            "title": "Datos Personales",
+            "title": "Sobre ti",
             "photo": "Foto de Perfil",
             "deletePhoto": "Eliminar Foto",
             "fullName": "Nombre Completo",

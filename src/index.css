@@ -301,6 +301,10 @@ h6 {
   position: relative;
 }
 
+.nav-label {
+  display: none;
+}
+
 /* Tooltip (Bocadillo) */
 .nav-icon::after {
   content: attr(title);
@@ -836,9 +840,9 @@ textarea:focus {
   /* 1. Primary Sidebar (Bottom Tab Bar) */
   .primary-sidebar {
     width: 100%;
-    height: 64px;
+    height: 72px;
     flex-direction: row;
-    padding: 0 var(--space-4);
+    padding: 0 var(--space-2);
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     z-index: 40;
     order: 2;
@@ -873,8 +877,22 @@ textarea:focus {
   }
 
   .nav-icon {
-    width: 50px;
-    height: 50px;
+    width: auto;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0;
+    border-radius: 0;
+  }
+
+  .nav-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
 
   .nav-icon::after,
