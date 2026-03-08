@@ -190,6 +190,117 @@ html:has(.landing-container) {
     box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
 }
 
+/* AI Marketing Section */
+.ai-marketing-section {
+    padding: 80px 5%;
+    background: #f8fafc;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+    text-align: center;
+}
+
+.ai-marketing-container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.ai-marketing-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(234, 88, 12, 0.1);
+    color: var(--primary);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.ai-marketing-section h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 3.5rem;
+    color: var(--text-main);
+    line-height: 1.2;
+}
+
+.ai-marketing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
+}
+
+.ai-marketing-card {
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    transition: all 0.3s ease;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.ai-marketing-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    border-color: var(--primary);
+}
+
+.ai-card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.ai-card-icon.gen {
+    background: rgba(234, 88, 12, 0.1);
+    color: var(--primary);
+}
+
+.ai-card-icon.trans {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--accent);
+}
+
+.ai-card-icon.opt {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+}
+
+.ai-marketing-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+}
+
+.ai-marketing-card p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+}
+
+@media (max-width: 968px) {
+    .ai-marketing-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .ai-marketing-section h2 {
+        font-size: 2rem;
+    }
+}
+
 /* Open Source Section */
 .open-source-banner {
     background: #0f172a;

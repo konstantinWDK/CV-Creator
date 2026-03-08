@@ -222,6 +222,14 @@
         "templateModern": "Modern",
         "templateMinimalPlus": "Minimalist Plus",
         "templateProfessional": "Professional",
-        "templateClassic": "Classic"
+        "templateClassic": "Classic",
+        "aiSectionBadge": "Powered by Artificial Intelligence",
+        "aiSectionTitle": "Create a Flawless CV with our AI Assistant",
+        "aiSectionSubtitle1": "Full Generation",
+        "aiSectionDesc1": "Paste a summary of your career and the AI will draft a polished professional experience, education, and skills for you.",
+        "aiSectionSubtitle2": "Smart Translation",
+        "aiSectionDesc2": "Translate your CV to English with technical and professional language adapted to the international market in a single click.",
+        "aiSectionSubtitle3": "ATS Optimization",
+        "aiSectionDesc3": "Our algorithms ensure your CV contains the keywords that recruiters and tracking systems look for."
     }
 }

@@ -14,7 +14,8 @@ import {
     Code,
     Github,
     ChevronLeft,
-    ChevronRight
+    ChevronRight,
+    Wand2
 } from 'lucide-react';
 import MinimalTemplate from './templates/MinimalTemplate';
 import ModernTemplate from './templates/ModernTemplate';
@@ -182,6 +183,39 @@ const LandingPage = () => {
                 </div>
             </header>
 
+            {/* AI Information Section */}
+            <section className="ai-marketing-section">
+                <div className="ai-marketing-container">
+                    <div className="ai-marketing-badge">
+                        <Sparkles size={16} /> {t('landing.aiSectionBadge')}
+                    </div>
+                    <h2>{t('landing.aiSectionTitle')}</h2>
+                    <div className="ai-marketing-grid">
+                        <div className="ai-marketing-card">
+                            <div className="ai-card-icon gen">
+                                <Wand2 size={24} />
+                            </div>
+                            <h3>{t('landing.aiSectionSubtitle1')}</h3>
+                            <p>{t('landing.aiSectionDesc1')}</p>
+                        </div>
+                        <div className="ai-marketing-card">
+                            <div className="ai-card-icon trans">
+                                <Languages size={24} />
+                            </div>
+                            <h3>{t('landing.aiSectionSubtitle2')}</h3>
+                            <p>{t('landing.aiSectionDesc2')}</p>
+                        </div>
+                        <div className="ai-marketing-card">
+                            <div className="ai-card-icon opt">
+                                <ShieldCheck size={24} />
+                            </div>
+                            <h3>{t('landing.aiSectionSubtitle3')}</h3>
+                            <p>{t('landing.aiSectionDesc3')}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             {/* Templates Showcase Slider - Layout 1 columna */}
             <section className="templates-section" id="plantillas">
                 {/* Info arriba */}
@@ -189,7 +223,7 @@ const LandingPage = () => {
                     <div className="info-badge">✨ {t('landing.templatesTitle')}</div>
                     <h2>{t('landing.templatesSubtitle')}</h2>
                     <p>
-                        {i18n.language === 'es' 
+                        {i18n.language === 'es'
                             ? 'Elige entre nuestra colección de plantillas profesionales, diseñadas para destacar tu experiencia y habilidades. Cada plantilla es totalmente personalizable y optimizada para ATS.'
                             : 'Choose from our collection of professional templates, designed to highlight your experience and skills. Each template is fully customizable and ATS-optimized.'}
                     </p>
@@ -220,7 +254,7 @@ const LandingPage = () => {
                     <button className="slider-btn slider-btn-prev" onClick={prevTemplate} aria-label="Previous template">
                         <ChevronLeft size={24} />
                     </button>
-                    
+
                     {/* Indicadores de puntos */}
                     <div className="slider-dots">
                         {templates.map((_, index) => (
@@ -232,12 +266,12 @@ const LandingPage = () => {
                             />
                         ))}
                     </div>
-                    
+
                     <button className="slider-btn slider-btn-next" onClick={nextTemplate} aria-label="Next template">
                         <ChevronRight size={24} />
                     </button>
-                    
-                    <Link 
+
+                    <Link
                         to={`/app?demo=true&template=${templates[currentTemplate].id}`}
                         className="slider-use-template-btn"
                     >

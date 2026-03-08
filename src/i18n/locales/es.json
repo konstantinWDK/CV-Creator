@@ -233,6 +233,14 @@
         "templateModern": "Moderno",
         "templateMinimalPlus": "Minimalista Plus",
         "templateProfessional": "Profesional",
-        "templateClassic": "Clásico"
+        "templateClassic": "Clásico",
+        "aiSectionBadge": "Impulsado por Inteligencia Artificial",
+        "aiSectionTitle": "Crea un CV Impecable con nuestro Asistente de IA",
+        "aiSectionSubtitle1": "Generación Completa",
+        "aiSectionDesc1": "Pega un resumen de tu trayectoria y la IA redactará una experiencia profesional pulida, formación y habilidades por ti.",
+        "aiSectionSubtitle2": "Traducción Inteligente",
+        "aiSectionDesc2": "Traduce tu CV al inglés con un lenguaje técnico y profesional adaptado al mercado internacional en un solo clic.",
+        "aiSectionSubtitle3": "Optimización ATS",
+        "aiSectionDesc3": "Nuestros algoritmos aseguran que tu CV contenga las palabras clave que los reclutadores y sistemas de selección buscan."
     }
 }
