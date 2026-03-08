@@ -1,12 +1,30 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// Security Middleware
+app.use(helmet()); // Sets various security-related HTTP headers
+
+// CORS configuration - Only allow your main domain
+const corsOptions = {
+    origin: 'https://cv-creator.webdesignerk.com',
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
+
+// Rate Limiting on Auth routes (max 15 requests per 15 minutes per IP)
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 15,
+    message: { message: 'Too many attempts from this IP, please try again after 15 minutes' }
+});
+app.use('/api/auth', authLimiter);
+
+// Health check
+app.get('/', (req, res) => res.json({ status: 'API is running' }));
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
