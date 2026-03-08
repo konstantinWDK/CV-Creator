@@ -131,5 +131,21 @@
             "month": "mes",
             "months": "meses"
         }
+    },
+    "auth": {
+        "loginTitle": "Bienvenido de nuevo",
+        "loginSubtitle": "Inicia sesión para guardar tus CVs en la nube",
+        "registerTitle": "Crea tu cuenta",
+        "registerSubtitle": "Guarda y accede a tus currículums desde cualquier lugar",
+        "email": "Email",
+        "password": "Contraseña",
+        "loginBtn": "Entrar",
+        "registerBtn": "Registrarse",
+        "noAccount": "¿No tienes cuenta?",
+        "hasAccount": "¿Ya tienes cuenta?",
+        "signup": "Crea una ahora",
+        "signin": "Inicia sesión",
+        "registerSuccess": "¡Cuenta creada! Ya puedes iniciar sesión.",
+        "logout": "Cerrar Sesión"
     }
 }

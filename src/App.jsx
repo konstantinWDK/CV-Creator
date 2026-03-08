@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Linkedin, Github, Settings, Eye, EyeOff, X } from 'lucide-react';
+import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Linkedin, Github, Settings, Eye, EyeOff, X, LogOut } from 'lucide-react';
 import { getSavedCVs, saveCV, deleteCV, getDefaultCV, getSampleCV, exportAllData, importData } from './utils/storage';
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
+import AuthModal from './components/auth/AuthModal';
+import { useAuth } from './context/AuthContext';
 import html2pdf from 'html2pdf.js';
 import { useTranslation } from 'react-i18next';
 
@@ -13,21 +15,42 @@ function App() {
   const [activeTab, setActiveTab] = useState('personalInfo');
   const [showMobilePreview, setShowMobilePreview] = useState(false);
   const [showSaveStatus, setShowSaveStatus] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const { user, token, logout, isAuthenticated } = useAuth();
+  const API_URL = import.meta.env.VITE_API_URL || 'https://api.cv-creator.webdesignerk.com';
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
   };
 
   useEffect(() => {
-    const loadedCVs = getSavedCVs();
-    setCvs(loadedCVs);
-    if (loadedCVs.length > 0) {
-      setCurrentCV(loadedCVs[0]);
-    } else {
-      // First visit: pre-load sample CV so the app feels populated
-      setCurrentCV(getSampleCV());
-    }
-  }, []);
+    const loadData = async () => {
+      if (isAuthenticated) {
+        try {
+          const response = await fetch(`${API_URL}/api/cvs`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await response.json();
+          if (response.ok) {
+            setCvs(data);
+            if (data.length > 0) setCurrentCV(data[0]);
+            else setCurrentCV(getSampleCV());
+          }
+        } catch (error) {
+          console.error('Error fetching CVs:', error);
+        }
+      } else {
+        const loadedCVs = getSavedCVs();
+        setCvs(loadedCVs);
+        if (loadedCVs.length > 0) {
+          setCurrentCV(loadedCVs[0]);
+        } else {
+          setCurrentCV(getSampleCV());
+        }
+      }
+    };
+    loadData();
+  }, [isAuthenticated, token]);
 
   // Debounced Auto-save
   useEffect(() => {
@@ -56,9 +79,37 @@ function App() {
     return () => clearTimeout(timeout);
   }, [showSaveStatus]);
 
-  const handleSave = () => {
-    saveCV(currentCV);
-    setCvs(getSavedCVs());
+  const handleSave = async () => {
+    if (!isAuthenticated) {
+      setShowAuthModal(true);
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_URL}/api/cvs`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          name: currentCV.personalInfo?.fullName || t('settings.cvUntitled'),
+          content: currentCV
+        })
+      });
+
+      if (response.ok) {
+        setShowSaveStatus(true);
+        // Refresh list
+        const refreshRes = await fetch(`${API_URL}/api/cvs`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await refreshRes.json();
+        setCvs(data);
+      }
+    } catch (error) {
+      console.error('Error saving CV:', error);
+    }
   };
 
   const handleCreateNew = () => {
@@ -101,12 +152,28 @@ function App() {
     e.target.value = '';
   };
 
-  const handleDelete = (id) => {
-    deleteCV(id);
-    const updated = getSavedCVs();
-    setCvs(updated);
-    if (currentCV.id === id) {
-      setCurrentCV(updated.length > 0 ? updated[0] : getDefaultCV());
+  const handleDelete = async (id) => {
+    if (isAuthenticated) {
+      try {
+        await fetch(`${API_URL}/api/cvs/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const updated = cvs.filter(c => c.id !== id);
+        setCvs(updated);
+        if (currentCV.id === id) {
+          setCurrentCV(updated.length > 0 ? updated[0] : getDefaultCV());
+        }
+      } catch (error) {
+        console.error('Error deleting CV:', error);
+      }
+    } else {
+      deleteCV(id);
+      const updated = getSavedCVs();
+      setCvs(updated);
+      if (currentCV.id === id) {
+        setCurrentCV(updated.length > 0 ? updated[0] : getDefaultCV());
+      }
     }
   };
 
@@ -157,6 +224,16 @@ function App() {
             {i18n.language.toUpperCase()}
           </button>
         </div>
+
+        {isAuthenticated ? (
+          <div className="auth-user-badge">
+            <LogOut size={18} className="logout-btn" onClick={logout} title={t('auth.logout')} />
+          </div>
+        ) : (
+          <button className="nav-icon" onClick={() => setShowAuthModal(true)} title={t('auth.loginBtn')}>
+            <User size={24} />
+          </button>
+        )}
 
         <div className="nav-bottom">
           <button className="nav-icon action new hide-mobile" onClick={handleCreateNew} title={t('app.createNew')}>
@@ -336,6 +413,9 @@ function App() {
           {showMobilePreview ? <EyeOff size={20} /> : <Eye size={20} />}
         </button>
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} apiUrl={API_URL} />
 
       {/* Save Notification */}
       <div className={`save-status-indicator ${showSaveStatus ? 'show' : ''}`}>
