@@ -51,8 +51,8 @@ const Experience = ({ data = [], onChange }) => {
         onChange(data.filter(item => item.id !== id));
     };
 
-    const handleChange = (id, field, value) => {
-        onChange(data.map(item => item.id === id ? { ...item, [field]: value } : item));
+    const handleChange = (index, field, value) => {
+        onChange(data.map((item, i) => i === index ? { ...item, [field]: value } : item));
     };
 
     const handleDragEnd = (event) => {
@@ -126,7 +126,7 @@ const Experience = ({ data = [], onChange }) => {
                                                 <input
                                                     type="text"
                                                     value={item.company}
-                                                    onChange={(e) => handleChange(item.id, 'company', e.target.value)}
+                                                    onChange={(e) => handleChange(index, 'company', e.target.value)}
                                                     placeholder={t('forms.experience.companyPlaceholder')}
                                                 />
                                             </div>
@@ -135,7 +135,7 @@ const Experience = ({ data = [], onChange }) => {
                                                 <input
                                                     type="text"
                                                     value={item.position}
-                                                    onChange={(e) => handleChange(item.id, 'position', e.target.value)}
+                                                    onChange={(e) => handleChange(index, 'position', e.target.value)}
                                                     placeholder={t('forms.experience.positionPlaceholder')}
                                                 />
                                             </div>
@@ -144,7 +144,7 @@ const Experience = ({ data = [], onChange }) => {
                                                     <label>{t('forms.experience.startDate')}</label>
                                                     <DatePicker
                                                         selected={parseMonthString(item.startDate)}
-                                                        onChange={(date) => handleChange(item.id, 'startDate', formatMonthString(date))}
+                                                        onChange={(date) => handleChange(index, 'startDate', formatMonthString(date))}
                                                         dateFormat="MM/yyyy"
                                                         showMonthYearPicker
                                                         locale={currentLocale}
@@ -156,7 +156,7 @@ const Experience = ({ data = [], onChange }) => {
                                                     <label>{t('forms.experience.endDate')}</label>
                                                     <DatePicker
                                                         selected={parseMonthString(item.endDate)}
-                                                        onChange={(date) => handleChange(item.id, 'endDate', formatMonthString(date))}
+                                                        onChange={(date) => handleChange(index, 'endDate', formatMonthString(date))}
                                                         dateFormat="MM/yyyy"
                                                         showMonthYearPicker
                                                         locale={currentLocale}
@@ -173,8 +173,9 @@ const Experience = ({ data = [], onChange }) => {
                                                     checked={item.isCurrent || false}
                                                     onChange={(e) => {
                                                         const isChecked = e.target.checked;
-                                                        handleChange(item.id, 'isCurrent', isChecked);
-                                                        if (isChecked) handleChange(item.id, 'endDate', '');
+                                                        const updatedItem = { ...item, isCurrent: isChecked };
+                                                        if (isChecked) updatedItem.endDate = '';
+                                                        onChange(data.map((it, i) => i === index ? updatedItem : it));
                                                     }}
                                                     style={{ width: 'auto', margin: 0 }}
                                                 />
@@ -187,7 +188,7 @@ const Experience = ({ data = [], onChange }) => {
                                                     type="checkbox"
                                                     id={`duration-${item.id}`}
                                                     checked={item.showDuration || false}
-                                                    onChange={(e) => handleChange(item.id, 'showDuration', e.target.checked)}
+                                                    onChange={(e) => handleChange(index, 'showDuration', e.target.checked)}
                                                     style={{ width: 'auto', margin: 0 }}
                                                 />
                                                 <label htmlFor={`duration-${item.id}`} style={{ margin: 0, fontWeight: 500 }}>
@@ -201,7 +202,7 @@ const Experience = ({ data = [], onChange }) => {
                                                 <ReactQuill
                                                     theme="snow"
                                                     value={item.description}
-                                                    onChange={(content) => handleChange(item.id, 'description', content)}
+                                                    onChange={(content) => handleChange(index, 'description', content)}
                                                     modules={{
                                                         toolbar: [
                                                             ['bold', 'italic', 'underline', 'strike'],

@@ -34,8 +34,8 @@ const Skills = ({ data = [], onChange }) => {
         setNewSkill('');
     };
 
-    const handleRemove = (id) => {
-        onChange(data.filter(item => item.id !== id));
+    const handleRemove = (index) => {
+        onChange(data.filter((_, i) => i !== index));
     };
 
     const handleDragEnd = (event) => {
@@ -99,7 +99,7 @@ const Skills = ({ data = [], onChange }) => {
                                                 type="button"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    handleRemove(skill.id);
+                                                    handleRemove(index);
                                                 }}
                                                 style={{
                                                     background: 'transparent',

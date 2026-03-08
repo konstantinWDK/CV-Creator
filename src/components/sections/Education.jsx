@@ -29,8 +29,8 @@ const Education = ({ data = [], onChange }) => {
         onChange(data.filter(item => item.id !== id));
     };
 
-    const handleChange = (id, field, value) => {
-        onChange(data.map(item => item.id === id ? { ...item, [field]: value } : item));
+    const handleChange = (index, field, value) => {
+        onChange(data.map((item, i) => i === index ? { ...item, [field]: value } : item));
     };
 
     const handleDragEnd = (event) => {
@@ -87,7 +87,7 @@ const Education = ({ data = [], onChange }) => {
                                                 <input
                                                     type="text"
                                                     value={item.institution}
-                                                    onChange={(e) => handleChange(item.id, 'institution', e.target.value)}
+                                                    onChange={(e) => handleChange(index, 'institution', e.target.value)}
                                                     placeholder={t('forms.education.schoolPlaceholder')}
                                                 />
                                             </div>
@@ -97,7 +97,7 @@ const Education = ({ data = [], onChange }) => {
                                                     <input
                                                         type="text"
                                                         value={item.degree}
-                                                        onChange={(e) => handleChange(item.id, 'degree', e.target.value)}
+                                                        onChange={(e) => handleChange(index, 'degree', e.target.value)}
                                                         placeholder={t('forms.education.degreePlaceholder')}
                                                     />
                                                 </div>
@@ -106,7 +106,7 @@ const Education = ({ data = [], onChange }) => {
                                                     <input
                                                         type="text"
                                                         value={item.year}
-                                                        onChange={(e) => handleChange(item.id, 'year', e.target.value)}
+                                                        onChange={(e) => handleChange(index, 'year', e.target.value)}
                                                         placeholder="Ej. 2016 - 2020"
                                                     />
                                                 </div>
