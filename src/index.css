@@ -398,13 +398,6 @@ h6 {
   background: rgba(239, 68, 68, 0.15);
 }
 
-/* Remove old styles that moved to header */
-.nav-icon.lang-toggle,
-.auth-user-badge {
-  display: none;
-}
-
-
 /* 2. Secondary Sidebar (Form Content, White) */
 .secondary-sidebar {
   width: 400px;
@@ -455,6 +448,7 @@ h6 {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  position: relative;
 }
 
 /* Panels */
@@ -604,7 +598,7 @@ textarea:focus {
   justify-content: center;
 }
 
-/* A4 Page Preview container (It has a fixed aspect ratio and white bg for print) */
+/* A4 Page Preview container */
 .a4-page {
   width: 210mm;
   min-height: 297mm;
@@ -615,10 +609,8 @@ textarea:focus {
   border-radius: 4px;
   transform-origin: top center;
   position: relative;
-  /* Use CSS variables for padding levels, fallback to 0 if not set so inner template padding works or we override wrapper */
   padding: var(--cv-padding-y, 0) var(--cv-padding-x, 0) !important;
   box-sizing: border-box;
-  /* Add scale logic in React based on container width if needed, or leave to CSS */
 }
 
 /* Print Specific */
@@ -681,22 +673,139 @@ textarea:focus {
   gap: var(--space-2);
 }
 
-/* ========================================= */
-/* FLOATING ACTION BAR (Mobile only)        */
-/* ========================================= */
-/* Hidden on desktop */
-.mobile-floating-actions {
-  display: none;
-}
-
-/* Close-preview button hidden on desktop */
-.btn-close-preview {
-  display: none;
-}
-
 /* Settings panel padding */
 .settings-panel {
   padding-top: var(--space-2);
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  border-radius: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #0f172a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* CV Completion Guide & Progress Bar */
+.completion-guide-container {
+  background: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.completion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.completion-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.completion-percentage {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--accent-color);
+}
+
+.progress-bar-wrapper {
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #3b82f6);
+  border-radius: 9999px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-bar-fill.complete {
+  background: linear-gradient(90deg, #10b981, #34d399);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.completion-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 0.5rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+}
+
+.tip-icon.info {
+  color: #64748b;
+}
+
+.tip-icon.success {
+  color: #10b981;
+}
+
+.tip-text {
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.logout-btn {
+  color: #ef4444;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+}
+
+.logout-btn:hover {
+  opacity: 0.8;
 }
 
 /* ========================================= */
@@ -728,15 +837,12 @@ textarea:focus {
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
     z-index: 40;
     order: 2;
-    /* Put at bottom of app-container */
   }
 
   .primary-sidebar .brand {
     display: none;
-    /* Hide brand on mobile sidebar */
   }
 
-  /* Floating Controls Mobile */
   .floating-controls-top {
     top: 10px;
     right: 10px;
@@ -745,18 +851,7 @@ textarea:focus {
 
   .floating-controls-bottom {
     bottom: 80px;
-    /* Above mobile tab bar */
     left: 10px;
-  }
-
-  .floating-download .btn-text {
-    display: none;
-  }
-
-  .floating-download {
-    padding: 0 !important;
-    width: 40px !important;
-    justify-content: center;
   }
 
   .nav-top {
@@ -768,7 +863,6 @@ textarea:focus {
 
   .nav-bottom {
     display: none;
-    /* Hide social links on mobile bottom bar */
   }
 
   .nav-icon {
@@ -791,7 +885,6 @@ textarea:focus {
     border-radius: 4px 4px 0 0;
   }
 
-  /* 2. Secondary Sidebar (Form Panel full width) */
   .secondary-sidebar {
     width: 100%;
     flex: 1;
@@ -799,420 +892,49 @@ textarea:focus {
     overflow: hidden;
   }
 
+  .sidebar-header {
+    padding: var(--space-4);
+  }
+
   .sidebar-content {
     padding: var(--space-4);
   }
 
-  /* 3. Preview Container: Overlay */
   .preview-container {
     display: none;
     position: fixed;
-    inset: 0;
-    z-index: 150;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    padding: var(--space-4);
     background-color: var(--bg-primary);
-    overflow: auto;
-    padding: var(--space-8) var(--space-4) var(--space-4);
   }
 
   .preview-container.mobile-preview-open {
     display: flex;
-    flex-direction: column;
   }
 
-  /* Show the close button inside the modal */
-  .preview-container.mobile-preview-open .btn-close-preview {
+  .btn-close-preview {
     display: flex;
-    align-self: flex-end;
-    margin-bottom: var(--space-4);
-    background: var(--sidebar-primary-bg);
-    color: #ffffff;
-    border: none;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: var(--shadow-md);
-    flex-shrink: 0;
-    transition: background 0.2s;
-  }
-
-  .preview-container.mobile-preview-open .btn-close-preview:hover {
-    background: var(--accent-color);
-  }
-
-  /* Scaler Wrapper helps contain the giant A4 inside the small viewport */
-  .preview-scaler {
-    width: max-content;
-    margin: 0 auto;
-    zoom: 0.8;
-  }
-
-  /* Adjust A4 box shadows for mobile */
-  .a4-page {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  }
-}
-
-/* Extra media queries for smaller screens to continue zooming down the A4 page */
-@media (max-width: 768px) {
-  .preview-scaler {
-    zoom: 0.7;
-  }
-}
-
-@media (max-width: 600px) {
-  .preview-scaler {
-    zoom: 0.55;
-  }
-}
-
-@media (max-width: 450px) {
-  .preview-scaler {
-    zoom: 0.42;
-  }
-}
-
-@media (max-width: 380px) {
-  .preview-scaler {
-    zoom: 0.38;
-  }
-}
-
-/* Very Small Mobile Phones */
-@media (max-width: 480px) {
-  .nav-icon {
-    width: 32px;
-    height: 32px;
-  }
-
-  .nav-icon svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .brand {
-    font-size: 1rem;
-    margin-right: var(--space-2);
-  }
-
-}
-
-/* ========================================= */
-/* REACT DATEPICKER CUSTOMIZATION            */
-/* ========================================= */
-.react-datepicker-wrapper,
-.react-datepicker__input-container {
-  display: block;
-  width: 100%;
-}
-
-.react-datepicker {
-  font-family: var(--font-sans) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--shadow-lg) !important;
-  background-color: var(--bg-secondary) !important;
-}
-
-.react-datepicker__header {
-  background-color: var(--bg-primary) !important;
-  border-bottom: 1px solid var(--glass-border) !important;
-  border-top-left-radius: var(--radius-md) !important;
-  border-top-right-radius: var(--radius-md) !important;
-  padding-top: 10px !important;
-}
-
-.react-datepicker__month-text {
-  border-radius: var(--radius-sm) !important;
-  padding: 4px;
-}
-
-.react-datepicker__month-text:hover {
-  background-color: #f1f5f9 !important;
-}
-
-.react-datepicker__month-text--keyboard-selected,
-.react-datepicker__month-text--selected {
-  background-color: var(--accent-color) !important;
-  color: white !important;
-}
-
-.react-datepicker__navigation-icon::before {
-  border-color: var(--text-secondary) !important;
-}
-
-.react-datepicker__navigation:hover *::before {
-  border-color: var(--accent-color) !important;
-}
-
-.react-datepicker__current-month {
-  color: var(--text-primary) !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-}
-
-/* Make drag handle look interactive */
-.drag-handle {
-  cursor: grab;
-}
-
-.drag-handle:active {
-  cursor: grabbing;
-}
-
-/* ========================================= */
-/* SAVE NOTIFICATION                        */
-/* ========================================= */
-.save-status-indicator {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: #0f172a;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  z-index: 9999;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(20px);
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.save-status-indicator.show {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
-}
-
-.save-status-indicator .check-icon {
-  color: #10b981;
-  font-weight: bold;
-}
-
-@media (max-width: 850px) {
-  .save-status-indicator {
-    bottom: 90px;
+    position: absolute;
+    top: 20px;
     right: 20px;
-  }
-}
-
-/* AUTH MODAL STYLES */
-.auth-modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(15, 23, 42, 0.75);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10000;
-  animation: fadeIn 0.2s ease-out;
-}
-
-.auth-modal {
-  background: white;
-  width: 100%;
-  max-width: 420px;
-  padding: 2.5rem;
-  border-radius: 1.5rem;
-  position: relative;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  animation: slideUp 0.3s ease-out;
-}
-
-.auth-close {
-  position: absolute;
-  top: 1.25rem;
-  right: 1.25rem;
-  background: #f1f5f9;
-  border: none;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: #64748b;
-  transition: all 0.2s;
-}
-
-.auth-close:hover {
-  background: #e2e8f0;
-  color: #0f172a;
-}
-
-.auth-header {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.auth-header h2 {
-  font-size: 1.75rem;
-  font-weight: 800;
-  color: #0f172a;
-  margin-bottom: 0.5rem;
-}
-
-.auth-header p {
-  color: #64748b;
-  font-size: 0.95rem;
-}
-
-.auth-message {
-  padding: 0.75rem 1rem;
-  border-radius: 0.75rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-align: center;
-}
-
-.auth-message.error {
-  background: #fef2f2;
-  color: #dc2626;
-  border: 1px solid #fee2e2;
-}
-
-.auth-message.success {
-  background: #f0fdf4;
-  color: #16a34a;
-  border: 1px solid #dcfce7;
-}
-
-.auth-field {
-  margin-bottom: 1.25rem;
-}
-
-.auth-field label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #334155;
-  margin-bottom: 0.5rem;
-}
-
-.auth-field input {
-  width: 100%;
-  padding: 0.875rem 1rem;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.75rem;
-  font-size: 1rem;
-  transition: all 0.2s;
-}
-
-.auth-field input:focus {
-  outline: none;
-  border-color: #3b82f6;
-  background: white;
-  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-}
-
-.auth-submit {
-  width: 100%;
-  padding: 1rem;
-  background: #0f172a;
-  color: white;
-  border: none;
-  border-radius: 0.75rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1.5rem;
-}
-
-.auth-submit:hover {
-  background: #1e293b;
-  transform: translateY(-1px);
-}
-
-.auth-submit:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
-.auth-footer {
-  margin-top: 2rem;
-  text-align: center;
-  font-size: 0.9rem;
-  color: #64748b;
-}
-
-.auth-footer button {
-  background: none;
-  border: none;
-  color: #3b82f6;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 0 4px;
-}
-
-.auth-footer button:hover {
-  text-decoration: underline;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
+    z-index: 1010;
+    background: white;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--glass-border);
   }
 
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(20px);
-    opacity: 0;
+  .preview-scaler {
+    transform: scale(0.45);
+    transform-origin: top center;
+    width: 210mm;
+    margin-bottom: 2rem;
   }
 
-  to {
-    transform: translateY(0);
-    opacity: 1;
+  .form-row {
+    grid-template-columns: 1fr;
   }
-}
-
-.auth-user-badge {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 8px 12px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  color: white;
-  font-size: 0.8rem;
-  margin-bottom: 20px;
-}
-
-.logout-btn {
-  color: #ef4444;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-weight: 600;
-}
-
-.logout-btn:hover {
-  opacity: 0.8;
 }

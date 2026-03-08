@@ -132,5 +132,33 @@
             "month": "month",
             "months": "months"
         }
+    },
+    "auth": {
+        "loginTitle": "Welcome Back",
+        "loginSubtitle": "Log in to save your CVs in the cloud",
+        "registerTitle": "Create your account",
+        "registerSubtitle": "Save and access your resumes from anywhere",
+        "email": "Email",
+        "password": "Password",
+        "loginBtn": "Log In",
+        "registerBtn": "Register",
+        "noAccount": "Don't have an account?",
+        "hasAccount": "Already have an account?",
+        "signup": "Create one now",
+        "signin": "Log in",
+        "registerSuccess": "Account created! You can now log in.",
+        "logout": "Log Out"
+    },
+    "completion": {
+        "title": "CV Progress",
+        "tipDefault": "Let's create an amazing CV!",
+        "tipName": "Add your full name to identify yourself.",
+        "tipEmail": "Your email is vital for being contacted.",
+        "tipSummary": "Write a brief professional summary to stand out.",
+        "tipExperience": "Add at least one work experience.",
+        "tipEducation": "Your academic background is important.",
+        "tipSkills": "Skills help recruiters filter your profile.",
+        "tipFull": "Your CV looks great! It's ready to download.",
+        "fieldsMissing": "Remaining fields to improve:"
     }
 }

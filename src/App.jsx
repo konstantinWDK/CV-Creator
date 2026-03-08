@@ -3,6 +3,7 @@ import { Download, Save, Plus, Trash2, User, Briefcase, GraduationCap, Code, Lin
 import { getSavedCVs, saveCV, deleteCV, getDefaultCV, getSampleCV, exportAllData, importData } from './utils/storage';
 import CVForm from './components/CVForm';
 import CVPreview from './components/CVPreview';
+import CVCompletionBar from './components/CVCompletionBar';
 import AuthModal from './components/auth/AuthModal';
 import { useAuth } from './context/AuthContext';
 import html2pdf from 'html2pdf.js';
@@ -356,6 +357,7 @@ function App() {
         {/* Secondary Sidebar (Form Content) */}
         <div className="secondary-sidebar">
           <div className="sidebar-content">
+            <CVCompletionBar data={currentCV} />
             {activeTab === 'settings' ? (
               <div className="settings-panel">
                 <h2 className="panel-title">{t('settings.title')}</h2>

@@ -148,5 +148,17 @@
         "signin": "Inicia sesión",
         "registerSuccess": "¡Cuenta creada! Ya puedes iniciar sesión.",
         "logout": "Cerrar Sesión"
+    },
+    "completion": {
+        "title": "Progreso de tu CV",
+        "tipDefault": "¡Vamos a crear un CV increíble!",
+        "tipName": "Añade tu nombre completo para identificarte.",
+        "tipEmail": "Tu correo electrónico es vital para que te contacten.",
+        "tipSummary": "Escribe un breve resumen profesional para destacar.",
+        "tipExperience": "Añade al menos una experiencia laboral.",
+        "tipEducation": "Tu formación académica es importante.",
+        "tipSkills": "Las habilidades ayudan a filtrar tu perfil.",
+        "tipFull": "¡Tu CV se ve genial! Está listo para descargar.",
+        "fieldsMissing": "Campos restantes para mejorar:"
     }
 }
