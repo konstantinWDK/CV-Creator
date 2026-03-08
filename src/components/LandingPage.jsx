@@ -195,46 +195,54 @@ const LandingPage = () => {
                     </p>
                 </div>
 
-                {/* Slider abajo */}
+                {/* Nombre de la plantilla arriba */}
+                <div className="template-name-badge">
+                    {templates[currentTemplate].label}
+                </div>
+
+                {/* Slider */}
                 <div className="slider-wrapper">
-                    <div className="template-slider">
-                        <Link
-                            to={`/app?demo=true&template=${templates[currentTemplate].id}`}
-                            className="template-slide"
-                        >
-                            <div className="template-preview-wrapper">
-                                <CurrentTemplateComponent data={getCurrentTemplateData()} />
-                            </div>
-                            <div className="template-slide-overlay">
-                                <span>{t('landing.templateTry')} →</span>
-                            </div>
-                        </Link>
-                        
-                        {/* Controles del slider */}
-                        <button className="slider-btn slider-btn-prev" onClick={prevTemplate} aria-label="Previous template">
-                            <ChevronLeft size={28} />
-                        </button>
-                        <button className="slider-btn slider-btn-next" onClick={nextTemplate} aria-label="Next template">
-                            <ChevronRight size={28} />
-                        </button>
-                        
-                        {/* Indicadores de puntos */}
-                        <div className="slider-dots">
-                            {templates.map((_, index) => (
-                                <button
-                                    key={index}
-                                    className={`slider-dot ${index === currentTemplate ? 'active' : ''}`}
-                                    onClick={() => setCurrentTemplate(index)}
-                                    aria-label={`Go to template ${index + 1}`}
-                                />
-                            ))}
+                    <Link
+                        to={`/app?demo=true&template=${templates[currentTemplate].id}`}
+                        className="template-slider"
+                    >
+                        <div className="template-preview-wrapper">
+                            <CurrentTemplateComponent data={getCurrentTemplateData()} />
                         </div>
-                        
-                        {/* Nombre de la plantilla actual */}
-                        <div className="template-name-badge">
-                            {templates[currentTemplate].label}
+                        <div className="template-slide-overlay">
+                            <span>{t('landing.templateTry')} →</span>
                         </div>
+                    </Link>
+                </div>
+
+                {/* Controles del slider en línea */}
+                <div className="slider-controls">
+                    <button className="slider-btn slider-btn-prev" onClick={prevTemplate} aria-label="Previous template">
+                        <ChevronLeft size={24} />
+                    </button>
+                    
+                    {/* Indicadores de puntos */}
+                    <div className="slider-dots">
+                        {templates.map((_, index) => (
+                            <button
+                                key={index}
+                                className={`slider-dot ${index === currentTemplate ? 'active' : ''}`}
+                                onClick={() => setCurrentTemplate(index)}
+                                aria-label={`Go to template ${index + 1}`}
+                            />
+                        ))}
                     </div>
+                    
+                    <button className="slider-btn slider-btn-next" onClick={nextTemplate} aria-label="Next template">
+                        <ChevronRight size={24} />
+                    </button>
+                    
+                    <Link 
+                        to={`/app?demo=true&template=${templates[currentTemplate].id}`}
+                        className="slider-use-template-btn"
+                    >
+                        {t('landing.templateTry')}
+                    </Link>
                 </div>
 
                 {/* Features debajo del slider */}

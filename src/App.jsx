@@ -390,24 +390,24 @@ const CVCreator = () => {
           <div className="fab-actions">
             <button className="fab-action new" onClick={() => { handleCreateNew(); setShowFab(false); }} title={t('app.createNew')}>
               <Plus size={18} />
-              <span className="fab-label">{t('app.createNew')}</span>
+              <span className="fab-label">Nuevo</span>
             </button>
             <button className="fab-action save" onClick={() => { handleSave(); setShowFab(false); }} title={t('app.save')}>
               <Save size={18} />
-              <span className="fab-label">{t('app.save')}</span>
+              <span className="fab-label">Guardar</span>
             </button>
             <button className="fab-action pdf" onClick={() => { handleDownloadPDF(); setShowFab(false); }} title={t('app.downloadPdf')}>
               <Download size={18} />
-              <span className="fab-label">{t('app.downloadPdf')}</span>
+              <span className="fab-label">Descargar</span>
             </button>
             <button className="fab-action preview" onClick={() => { setShowMobilePreview(true); setShowFab(false); }} title={t('app.viewCv')}>
               <Eye size={18} />
-              <span className="fab-label">{t('app.viewCv')}</span>
+              <span className="fab-label">Ver</span>
             </button>
             {cvs.some(c => c.id === currentCV.id) && (
               <button className="fab-action danger" onClick={() => { handleDelete(currentCV.id); setShowFab(false); }} title={t('app.deleteCv')}>
                 <Trash2 size={18} />
-                <span className="fab-label">{t('app.deleteCv')}</span>
+                <span className="fab-label">Borrar</span>
               </button>
             )}
           </div>

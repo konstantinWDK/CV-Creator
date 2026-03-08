@@ -916,8 +916,12 @@ textarea:focus {
     width: 100%;
     height: 100%;
     z-index: 1000;
-    padding: var(--space-4);
-    background-color: var(--bg-primary);
+    padding: 80px 40px 40px 40px;
+    background-color: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto;
   }
 
   .preview-container.mobile-preview-open {
@@ -932,14 +936,38 @@ textarea:focus {
     z-index: 1010;
     background: white;
     box-shadow: var(--shadow-lg);
-    border: 1px solid var(--glass-border);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-close-preview:hover {
+    transform: scale(1.1);
+    background: var(--danger);
+    color: white;
   }
 
   .preview-scaler {
-    transform: scale(0.45);
+    transform: scale(0.55);
     transform-origin: top center;
     width: 210mm;
     margin-bottom: 2rem;
+  }
+
+  .preview-scaler > div {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Aumentar padding horizontal en móvil para el CV preview */
+  .preview-scaler .a4-page {
+    --cv-padding-x: 18mm !important;
+    --cv-padding-y: 14mm !important;
   }
 
   .form-row {
@@ -1291,13 +1319,13 @@ textarea:focus {
 
   /* Main FAB circle button (the + / X toggle) */
   .fab-main {
-    width: 56px;
-    height: 56px;
+    width: 48px;
+    height: 48px;
     border-radius: 50%;
     background: var(--accent-color, #ee7c1b);
     color: white;
     border: none;
-    box-shadow: 0 6px 20px rgba(238, 124, 27, 0.4);
+    box-shadow: 0 4px 15px rgba(238, 124, 27, 0.4);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1306,9 +1334,14 @@ textarea:focus {
     flex-shrink: 0;
   }
 
+  .fab-main svg {
+    width: 20px;
+    height: 20px;
+  }
+
   .mobile-fab-container.fab-open .fab-main {
     background: #334155;
     transform: rotate(45deg);
-    box-shadow: 0 6px 20px rgba(51, 65, 85, 0.4);
+    box-shadow: 0 4px 15px rgba(51, 65, 85, 0.4);
   }
 }
