@@ -409,6 +409,163 @@ html:has(.landing-container) {
     display: inline-flex;
 }
 
+/* ================================
+   Save & Export Block — Dark Card
+   ================================ */
+.save-export-block {
+    padding: 80px 5%;
+    background: #0f172a;
+    color: white;
+}
+
+.save-export-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+}
+
+.save-export-image img {
+    width: 100%;
+    border-radius: 24px;
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+}
+
+.save-export-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.save-export-content h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: white;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.save-export-content p {
+    color: #94a3b8;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.save-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.save-pill {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    backdrop-filter: blur(4px);
+}
+
+/* ================================
+   QR Code Block — Orange Accent
+   ================================ */
+.qr-block {
+    padding: 80px 5%;
+    background: linear-gradient(135deg, #fff7ed 0%, #fff 60%);
+    border-top: 3px solid var(--primary);
+}
+
+.qr-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+}
+
+.qr-image img {
+    width: 100%;
+    border-radius: 24px;
+    box-shadow: 0 20px 40px rgba(238, 124, 27, 0.15);
+}
+
+.qr-icon-badge {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    background: var(--primary);
+    padding: 0.6rem 0.9rem;
+    border-radius: 16px;
+    filter: grayscale(1) brightness(10);
+    line-height: 1;
+}
+
+.qr-content h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+    color: var(--text-main);
+}
+
+.qr-content p {
+    color: var(--text-muted);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.qr-points-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.qr-point {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    background: white;
+    border: 1px solid #fed7aa;
+    border-radius: 14px;
+    padding: 0.9rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-main);
+    box-shadow: 0 2px 8px rgba(238, 124, 27, 0.08);
+}
+
+.qr-point span {
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+
+    .save-export-inner,
+    .qr-inner {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+    }
+
+    .save-export-content h2,
+    .qr-content h2 {
+        font-size: 1.8rem;
+    }
+
+    .qr-points-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .seo-content-block {
     padding: 100px 5% 50px;
     background: #f8fafc;

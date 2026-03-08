@@ -174,46 +174,48 @@ const LandingPage = () => {
                 </div>
             </section>
 
-            {/* Save & Export Block */}
-            <section className="benefit-block">
-                <div className="benefit-container">
-                    <div className="benefit-text">
-                        <h2>{t('landing.saveTitle')}</h2>
-                        <p>{t('landing.saveDesc')}</p>
-                        <ul className="benefit-list">
-                            <li>✓ {t('landing.savePoint1')}</li>
-                            <li>✓ {t('landing.savePoint2')}</li>
-                            <li>✓ {t('landing.savePoint3')}</li>
-                            <li>✓ {t('landing.savePoint4')}</li>
-                        </ul>
-                    </div>
-                    <div className="benefit-image">
+            {/* Save & Export Block — Dark ambient card */}
+            <section className="save-export-block">
+                <div className="save-export-inner">
+                    <div className="save-export-image">
                         <img
                             src="/assets/save-export-person.png"
                             alt="Professional saving and exporting her resume"
                         />
                     </div>
+                    <div className="save-export-content">
+                        <div className="save-export-label">☁️ {i18n.language === 'es' ? 'Tu trabajo, siempre seguro' : 'Your work, always safe'}</div>
+                        <h2>{t('landing.saveTitle')}</h2>
+                        <p>{t('landing.saveDesc')}</p>
+                        <div className="save-pills">
+                            <span className="save-pill">✓ {t('landing.savePoint1')}</span>
+                            <span className="save-pill">✓ {t('landing.savePoint2')}</span>
+                            <span className="save-pill">✓ {t('landing.savePoint3')}</span>
+                            <span className="save-pill">✓ {t('landing.savePoint4')}</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            {/* QR Code Block */}
-            <section className="benefit-block alt-bg">
-                <div className="benefit-container reverse">
-                    <div className="benefit-image">
+            {/* QR Code Block — Orange accent highlight */}
+            <section className="qr-block">
+                <div className="qr-inner">
+                    <div className="qr-content">
+                        <div className="qr-icon-badge">⬛</div>
+                        <h2>{t('landing.qrTitle')}</h2>
+                        <p>{t('landing.qrDesc')}</p>
+                        <div className="qr-points-grid">
+                            <div className="qr-point"><span>📎</span>{t('landing.qrPoint1')}</div>
+                            <div className="qr-point"><span>📱</span>{t('landing.qrPoint2')}</div>
+                            <div className="qr-point"><span>🖨️</span>{t('landing.qrPoint3')}</div>
+                            <div className="qr-point"><span>🚀</span>{t('landing.qrPoint4')}</div>
+                        </div>
+                    </div>
+                    <div className="qr-image">
                         <img
                             src="/assets/qr-cv-person.png"
                             alt="Recruiter scanning QR code on a printed resume"
                         />
-                    </div>
-                    <div className="benefit-text">
-                        <h2>{t('landing.qrTitle')}</h2>
-                        <p>{t('landing.qrDesc')}</p>
-                        <ul className="benefit-list">
-                            <li>✓ {t('landing.qrPoint1')}</li>
-                            <li>✓ {t('landing.qrPoint2')}</li>
-                            <li>✓ {t('landing.qrPoint3')}</li>
-                            <li>✓ {t('landing.qrPoint4')}</li>
-                        </ul>
                     </div>
                 </div>
             </section>
