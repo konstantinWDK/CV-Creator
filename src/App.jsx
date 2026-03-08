@@ -264,6 +264,9 @@ const CVCreator = () => {
 
       if (!response.ok) {
         const data = await response.json().catch(() => ({}));
+        if (response.status === 429) {
+          throw new Error(data.message || 'Límite diario alcanzado');
+        }
         throw new Error(data.message || `Server Error (${response.status})`);
       }
 
