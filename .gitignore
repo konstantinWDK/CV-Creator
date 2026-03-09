@@ -7,6 +7,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Deployment
+.env.deploy
+deploy.cjs
 node_modules
 dist
 dist-ssr
@@ -22,3 +25,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Security & Server
+.env
+server/node_modules
+server/.env

@@ -86,9 +86,172 @@ h6 {
 /* Base App Layout - Double Sidebar */
 .app-container {
   display: flex;
+  flex-direction: row;
+  /* Horizontal: Sidebar | Content */
   height: 100vh;
+  min-height: 100dvh;
   width: 100vw;
   overflow: hidden;
+}
+
+.main-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+  /* Base for floating children */
+}
+
+/* Floating Controls */
+.floating-controls-top {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 100;
+}
+
+.floating-controls-bottom {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 100;
+  background: white;
+  padding: 8px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--glass-border);
+}
+
+.floating-download {
+  background: var(--accent-color) !important;
+  color: white !important;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px !important;
+  width: auto !important;
+  height: 40px !important;
+  border-radius: var(--radius-lg) !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.floating-auth {
+  background: white;
+  box-shadow: var(--shadow-md);
+}
+
+.lang-toggle-btn {
+  background: white;
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  font-weight: 700;
+  font-size: 0.75rem;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lang-toggle-btn:hover {
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+  box-shadow: var(--shadow-md);
+}
+
+.login-btn-header {
+  background: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+
+.login-btn-header:hover {
+  background: var(--accent-gradient-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 6px 6px 16px;
+  background: white;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.user-email {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.logout-icon-btn {
+  background: #f8fafc;
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.logout-icon-btn:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: #fef2f2;
+}
+
+.floating-controls-bottom .nav-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.floating-controls-bottom .nav-icon:hover {
+  background: white;
+  color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.floating-controls-bottom .nav-icon.danger:hover {
+  color: var(--danger);
+  border-color: var(--danger);
+  background: #fef2f2;
 }
 
 /* 1. Primary Sidebar (Icons only, Black/Dark Grey) */
@@ -110,8 +273,8 @@ h6 {
   font-weight: 800;
   color: var(--accent-color);
   font-size: 1.5rem;
-  margin-bottom: var(--space-8);
   user-select: none;
+  margin-bottom: var(--space-8);
 }
 
 .nav-top,
@@ -136,6 +299,20 @@ h6 {
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
+}
+
+.nav-label {
+  display: none;
+}
+
+.ai-nav {
+  color: var(--accent-color) !important;
+  opacity: 0.8;
+}
+
+.ai-nav.active {
+  opacity: 1;
+  background: rgba(234, 88, 12, 0.1) !important;
 }
 
 /* Tooltip (Bocadillo) */
@@ -232,14 +409,9 @@ h6 {
   background: rgba(234, 88, 12, 0.15);
 }
 
-.nav-icon.action.danger {
-  color: #ef4444;
-}
-
 .nav-icon.action.danger:hover {
   background: rgba(239, 68, 68, 0.15);
 }
-
 
 /* 2. Secondary Sidebar (Form Content, White) */
 .secondary-sidebar {
@@ -291,6 +463,7 @@ h6 {
   display: flex;
   justify-content: center;
   align-items: flex-start;
+  position: relative;
 }
 
 /* Panels */
@@ -440,7 +613,11 @@ textarea:focus {
   justify-content: center;
 }
 
-/* A4 Page Preview container (It has a fixed aspect ratio and white bg for print) */
+.btn-close-preview {
+  display: none;
+}
+
+/* A4 Page Preview container */
 .a4-page {
   width: 210mm;
   min-height: 297mm;
@@ -451,10 +628,8 @@ textarea:focus {
   border-radius: 4px;
   transform-origin: top center;
   position: relative;
-  /* Use CSS variables for padding levels, fallback to 0 if not set so inner template padding works or we override wrapper */
   padding: var(--cv-padding-y, 0) var(--cv-padding-x, 0) !important;
   box-sizing: border-box;
-  /* Add scale logic in React based on container width if needed, or leave to CSS */
 }
 
 /* Print Specific */
@@ -517,30 +692,145 @@ textarea:focus {
   gap: var(--space-2);
 }
 
-/* ========================================= */
-/* FLOATING ACTION BAR (Mobile only)        */
-/* ========================================= */
-/* Hidden on desktop */
-.mobile-floating-actions {
-  display: none;
-}
-
-/* Close-preview button hidden on desktop */
-.btn-close-preview {
-  display: none;
-}
-
 /* Settings panel padding */
 .settings-panel {
   padding-top: var(--space-2);
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  border-radius: 1rem;
+  animation: fadeIn 0.3s ease;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #0f172a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* CV Completion Guide & Progress Bar */
+.completion-guide-container {
+  background: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.completion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.completion-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.completion-percentage {
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--accent-color);
+}
+
+.progress-bar-wrapper {
+  height: 8px;
+  background: #f1f5f9;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #3b82f6);
+  border-radius: 9999px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-bar-fill.complete {
+  background: linear-gradient(90deg, #10b981, #34d399);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
+}
+
+.completion-tip {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 0.5rem;
+  background: #f8fafc;
+  border-radius: 0.5rem;
+}
+
+.tip-icon.info {
+  color: #64748b;
+}
+
+.tip-icon.success {
+  color: #10b981;
+}
+
+.tip-text {
+  font-size: 0.8rem;
+  color: #475569;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.logout-btn {
+  color: #ef4444;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+}
+
+.logout-btn:hover {
+  opacity: 0.8;
 }
 
 /* ========================================= */
 /* MOBILE RESPONSIVE LAYOUT                 */
 /* ========================================= */
 @media (max-width: 850px) {
-
-  /* Prevent scrolling body, everything is handled inside containers */
   body {
     overflow: hidden;
   }
@@ -549,111 +839,80 @@ textarea:focus {
     flex-direction: column;
     height: 100vh;
     height: 100dvh;
-    /* For mobile browsers */
   }
 
-  /* Hide duplicated desktop actions on mobile */
-  .nav-icon.hide-mobile {
-    display: none !important;
+  /* Main Layout */
+  .main-layout {
+    flex-direction: column-reverse;
+    flex: 1;
   }
 
-  /* Show floating action bar */
-  .mobile-floating-actions {
-    display: flex;
+  /* 1. Primary Sidebar (Bottom Tab Bar) */
+  .primary-sidebar {
+    width: 100%;
+    height: 72px;
     flex-direction: row;
-    align-items: center;
-    gap: 10px;
+    padding: 0 var(--space-2);
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 40;
+    order: 2;
+  }
+
+  .primary-sidebar .brand {
+    display: none;
+  }
+
+  .floating-controls-top {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    top: 10px;
+    right: 10px;
+    gap: 8px;
     z-index: 200;
   }
 
-  .fab-btn {
-    width: 38px;
-    height: 38px;
-    border-radius: 50%;
-    border: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.22);
-    transition: transform 0.18s ease, box-shadow 0.18s ease;
-  }
-
-  .fab-btn:active {
-    transform: scale(0.93);
-  }
-
-  .fab-new {
-    background-color: var(--accent-color);
-    color: #ffffff;
-  }
-
-  .fab-save {
-    background-color: #10b981;
-    color: #ffffff;
-  }
-
-  .fab-preview {
-    background-color: var(--sidebar-primary-bg);
-    color: #94a3b8;
-    width: 46px;
-    height: 46px;
-    box-shadow: 0 5px 16px rgba(15, 23, 42, 0.4);
-  }
-
-  .fab-preview.active {
-    background-color: var(--accent-color);
-    color: #ffffff;
-  }
-
-  /* 1. Primary Sidebar (Horizontal Top/Bottom Nav) */
-  .primary-sidebar {
-    width: 100%;
-    height: 60px;
-    flex-direction: row;
-    padding: 0 var(--space-4);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 40;
-  }
-
-  .brand {
-    margin-bottom: 0;
-    margin-right: var(--space-4);
-    font-size: 1.25rem;
+  .floating-controls-bottom {
+    bottom: 80px;
+    left: 10px;
   }
 
   .nav-top {
     flex-direction: row;
-    justify-content: flex-start;
-    gap: var(--space-2);
-    width: auto;
+    justify-content: space-around;
+    width: 100%;
+    gap: 0;
   }
 
   .nav-bottom {
-    flex-direction: row;
-    justify-content: flex-end;
-    gap: var(--space-2);
-    width: auto;
-    margin-top: 0;
+    display: none;
   }
 
-  /* Fix tooltip bounds and disable them cleanly on small screens */
+  .nav-icon {
+    width: auto;
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0;
+    border-radius: 0;
+  }
+
+  .nav-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
   .nav-icon::after,
   .nav-icon::before {
     display: none !important;
   }
 
-  .nav-icon {
-    width: 40px;
-    height: 40px;
-  }
-
   .nav-icon.active>span.active-indicator {
     left: 50%;
-    bottom: -8px;
+    bottom: 2px;
     top: auto;
     transform: translateX(-50%);
     width: 20px;
@@ -661,196 +920,455 @@ textarea:focus {
     border-radius: 4px 4px 0 0;
   }
 
-  /* Override external links layout */
-  .nav-bottom a {
-    margin-top: 0 !important;
-  }
-
-  /* 2. Secondary Sidebar (Form Panel full width) */
   .secondary-sidebar {
     width: 100%;
     flex: 1;
-    /* Takes all remaining space once navbar is accounted for */
     border-right: none;
-    border-bottom: 1px solid var(--glass-border);
-    flex-shrink: 0;
     overflow: hidden;
   }
 
   .sidebar-header {
     padding: var(--space-4);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
   }
 
   .sidebar-content {
     padding: var(--space-4);
+    padding-top: 60px;
+    /* avoid overlap with fixed floating-controls-top */
+  }
+
+  .preview-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    padding: 80px 40px 40px 40px;
+    background-color: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    justify-content: center;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  .preview-container.mobile-preview-open {
+    display: flex;
+  }
+
+  .btn-close-preview {
+    display: flex;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 1010;
+    background: white;
+    box-shadow: var(--shadow-lg);
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-close-preview:hover {
+    transform: scale(1.1);
+    background: var(--danger);
+    color: white;
+  }
+
+  .preview-scaler {
+    transform: scale(0.55);
+    transform-origin: top center;
+    width: 210mm;
+    margin-bottom: 2rem;
+  }
+
+  .preview-scaler>div {
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Aumentar padding horizontal en móvil para el CV preview */
+  .preview-scaler .a4-page {
+    --cv-padding-x: 18mm !important;
+    --cv-padding-y: 14mm !important;
   }
 
   .form-row {
     grid-template-columns: 1fr;
-    gap: var(--space-4);
+  }
+}
+
+/* Save Status Indicator - Premium Floating Toast */
+.save-status-indicator {
+  position: fixed;
+  bottom: 85px;
+  right: 30px;
+  background: #0f172a;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  z-index: 2000;
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+.save-status-indicator.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.save-status-indicator .check-icon {
+  background: #10b981;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+}
+
+/* Auth Modal Styles - Premium Minimalist */
+.auth-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3000;
+  padding: 20px;
+  animation: fadeIn 0.3s ease;
+}
+
+.auth-modal {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  border-radius: 24px;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  transform: translateY(0);
+  animation: slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
   }
 
-  /* 3. Preview Container: HIDDEN by default on mobile */
-  .preview-container {
-    display: none;
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.auth-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #f1f5f9;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.auth-close:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+  transform: rotate(90deg);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.auth-header h2 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.auth-header p {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.auth-message {
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.auth-message.error {
+  background: #fef2f2;
+  color: #ef4444;
+  border: 1px solid #fee2e2;
+}
+
+.auth-message.success {
+  background: #f0fdf4;
+  color: #10b981;
+  border: 1px solid #dcfce7;
+}
+
+.auth-field {
+  margin-bottom: 20px;
+}
+
+.auth-field label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #475569;
+  margin-bottom: 8px;
+  padding-left: 4px;
+}
+
+.auth-field input {
+  width: 100%;
+  background: #f8fafc;
+  border: 2px solid transparent;
+  padding: 14px 16px;
+  border-radius: 14px;
+  font-size: 1rem;
+  transition: all 0.2s;
+}
+
+.auth-field input:focus {
+  background: white;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.1);
+}
+
+.auth-submit {
+  width: 100%;
+  background: #0f172a;
+  color: white;
+  border: none;
+  padding: 16px;
+  border-radius: 14px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.auth-submit:hover {
+  background: #1e293b;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.auth-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  margin-top: 24px;
+  text-align: center;
+}
+
+.auth-footer p {
+  font-size: 0.9rem;
+  color: #64748b;
+}
+
+.auth-footer button {
+  background: none;
+  border: none;
+  color: var(--accent-color);
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0 4px;
+}
+
+.auth-footer button:hover {
+  text-decoration: underline;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+@media (max-width: 480px) {
+  .auth-modal {
+    padding: 30px 20px;
+    border-radius: 20px;
+  }
+}
+
+/* ========================
+   Speed Dial FAB (Mobile)
+   ======================== */
+
+/* Desktop-only class: hides the element on mobile */
+.desktop-only {
+  display: flex;
+}
+
+/* Mobile FAB Container */
+.mobile-fab-container {
+  display: none;
+  /* hidden on desktop */
+}
+
+@media (max-width: 768px) {
+
+  /* Hide the old desktop floating controls on mobile */
+  .floating-controls-bottom.desktop-only {
+    display: none !important;
+  }
+
+  /* Show the Speed Dial FAB on mobile */
+  .mobile-fab-container {
+    display: flex;
+    align-items: center;
     position: fixed;
-    inset: 0;
-    z-index: 150;
-    background-color: var(--bg-primary);
-    overflow: auto;
-    padding: var(--space-8) var(--space-4) var(--space-4);
+    bottom: 90px;
+    /* above the bottom nav */
+    right: 16px;
+    z-index: 500;
+    flex-direction: row;
+    /* actions grow to the left, main FAB on the right */
+    gap: 10px;
+  }
+
+  /* The action items row (hidden by default) */
+  .fab-actions {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(20px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  /* When FAB is open, show action items */
+  .mobile-fab-container.fab-open .fab-actions {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(0);
+  }
+
+  /* Individual action button */
+  .fab-action {
+    display: flex;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
-  }
-
-  /* Show when Eye is toggled */
-  .preview-container.mobile-preview-open {
-    display: flex;
-    flex-direction: column;
-  }
-
-  /* Show the close button inside the modal */
-  .preview-container.mobile-preview-open .btn-close-preview {
-    display: flex;
-    align-self: flex-end;
-    margin-bottom: var(--space-4);
-    background: var(--sidebar-primary-bg);
-    color: #ffffff;
+    background: white;
+    color: #334155;
     border: none;
-    width: 42px;
-    height: 42px;
     border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: all 0.2s;
+    padding: 0;
+  }
+
+  .fab-action:hover,
+  .fab-action:active {
+    transform: scale(1.05);
+  }
+
+  .fab-action.save {
+    color: #2563eb;
+  }
+
+  .fab-action.pdf {
+    color: #16a34a;
+  }
+
+  .fab-action.preview {
+    color: #7c3aed;
+  }
+
+  .fab-action.new {
+    color: #ea580c;
+  }
+
+  .fab-action.danger {
+    color: #dc2626;
+  }
+
+
+  /* Main FAB circle button (the + / X toggle) */
+  .ai-fab {
+    background: linear-gradient(135deg, #ea580c, #f97316) !important;
+    color: white !important;
+  }
+
+
+
+  .fab-main {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--accent-color, #ee7c1b);
+    color: white;
+    border: none;
+    box-shadow: 0 4px 15px rgba(238, 124, 27, 0.4);
+    display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: var(--shadow-md);
+    transition: all 0.25s ease;
     flex-shrink: 0;
-    transition: background 0.2s;
   }
 
-  .preview-container.mobile-preview-open .btn-close-preview:hover {
-    background: var(--accent-color);
+  .fab-main svg {
+    width: 20px;
+    height: 20px;
   }
 
-  /* Scaler Wrapper helps contain the giant A4 inside the small viewport */
-  .preview-scaler {
-    width: max-content;
-    margin: 0 auto;
-    zoom: 0.8;
+  .mobile-fab-container.fab-open .fab-main {
+    background: #334155;
+    transform: rotate(45deg);
+    box-shadow: 0 4px 15px rgba(51, 65, 85, 0.4);
   }
-
-  /* Adjust A4 box shadows for mobile */
-  .a4-page {
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  }
-}
-
-/* Extra media queries for smaller screens to continue zooming down the A4 page */
-@media (max-width: 768px) {
-  .preview-scaler {
-    zoom: 0.7;
-  }
-}
-
-@media (max-width: 600px) {
-  .preview-scaler {
-    zoom: 0.55;
-  }
-}
-
-@media (max-width: 450px) {
-  .preview-scaler {
-    zoom: 0.42;
-  }
-}
-
-@media (max-width: 380px) {
-  .preview-scaler {
-    zoom: 0.38;
-  }
-}
-
-/* Very Small Mobile Phones */
-@media (max-width: 480px) {
-  .nav-icon {
-    width: 32px;
-    height: 32px;
-  }
-
-  .nav-icon svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .brand {
-    font-size: 1rem;
-    margin-right: var(--space-2);
-  }
-
-}
-
-/* ========================================= */
-/* REACT DATEPICKER CUSTOMIZATION            */
-/* ========================================= */
-.react-datepicker-wrapper,
-.react-datepicker__input-container {
-  display: block;
-  width: 100%;
-}
-
-.react-datepicker {
-  font-family: var(--font-sans) !important;
-  border: 1px solid var(--glass-border) !important;
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--shadow-lg) !important;
-  background-color: var(--bg-secondary) !important;
-}
-
-.react-datepicker__header {
-  background-color: var(--bg-primary) !important;
-  border-bottom: 1px solid var(--glass-border) !important;
-  border-top-left-radius: var(--radius-md) !important;
-  border-top-right-radius: var(--radius-md) !important;
-  padding-top: 10px !important;
-}
-
-.react-datepicker__month-text {
-  border-radius: var(--radius-sm) !important;
-  padding: 4px;
-}
-
-.react-datepicker__month-text:hover {
-  background-color: #f1f5f9 !important;
-}
-
-.react-datepicker__month-text--keyboard-selected,
-.react-datepicker__month-text--selected {
-  background-color: var(--accent-color) !important;
-  color: white !important;
-}
-
-.react-datepicker__navigation-icon::before {
-  border-color: var(--text-secondary) !important;
-}
-
-.react-datepicker__navigation:hover *::before {
-  border-color: var(--accent-color) !important;
-}
-
-.react-datepicker__current-month {
-  color: var(--text-primary) !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-}
-
-/* Make drag handle look interactive */
-.drag-handle {
-  cursor: grab;
-}
-
-.drag-handle:active {
-  cursor: grabbing;
 }

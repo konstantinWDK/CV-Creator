@@ -2,8 +2,10 @@ import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Phone, Mail, MapPin, Globe, Github, Linkedin, Calendar } from 'lucide-react';
 import { formatPeriod, calculateDuration } from '../../utils/formatDate';
+import { useTranslation } from 'react-i18next';
 
 const ProfessionalTemplate = ({ data }) => {
+    const { t } = useTranslation();
     const { personalInfo, experience, education, skills } = data;
 
     return (
@@ -17,9 +19,9 @@ const ProfessionalTemplate = ({ data }) => {
                         margin: 0;
                     }
                     
-                    /* Header Area */
+                    /* Header Area - Usa variables de padding */
                     .professional-template .header-wrapper {
-                        padding: 12mm 15mm 0mm 15mm;
+                        padding: var(--cv-padding-y, 12mm) var(--cv-padding-x, 15mm) 0mm var(--cv-padding-x, 15mm);
                         margin-bottom: 6mm;
                     }
                     .professional-template .main-name {
@@ -49,11 +51,11 @@ const ProfessionalTemplate = ({ data }) => {
                         color: #2563eb; /* Primary Blue */
                     }
 
-                    /* Main Layout */
+                    /* Main Layout - Usa variables de padding */
                     .professional-template .content-columns {
                         display: flex;
                         flex: 1;
-                        padding: 0 15mm 15mm 15mm;
+                        padding: 0 var(--cv-padding-x, 15mm) var(--cv-padding-y, 15mm) var(--cv-padding-x, 15mm);
                         gap: 8mm;
                     }
 
@@ -115,7 +117,7 @@ const ProfessionalTemplate = ({ data }) => {
                         font-size: 0.85rem;
                         line-height: 1.5;
                         color: #374151;
-                        word-break: break-word;
+                        word-break: normal;
                         overflow-wrap: break-word;
                     }
                     .professional-template .description-text p {
@@ -195,7 +197,7 @@ const ProfessionalTemplate = ({ data }) => {
             <div className="header-wrapper">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                     <div style={{ flex: 1 }}>
-                        <h1 className="main-name">{personalInfo.fullName || 'NOMBRE Y APELLIDOS'}</h1>
+                        <h1 className="main-name">{personalInfo.fullName || t('forms.personalInfo.fullNamePlaceholder')}</h1>
 
                         <div className="contact-row">
                             {personalInfo.phone && (
@@ -244,7 +246,7 @@ const ProfessionalTemplate = ({ data }) => {
                     {/* Experience section */}
                     {experience && experience.length > 0 && (
                         <div style={{ marginBottom: '25px' }}>
-                            <h2 className="left-section-title">Experiencia</h2>
+                            <h2 className="left-section-title">{t('preview.experience')}</h2>
                             <div style={{ paddingTop: '5px' }}>
                                 {experience.map(exp => (
                                     <div key={exp.id} className="timeline-item">
@@ -273,7 +275,7 @@ const ProfessionalTemplate = ({ data }) => {
                     {/* Education section */}
                     {education && education.length > 0 && (
                         <div>
-                            <h2 className="left-section-title">Educación</h2>
+                            <h2 className="left-section-title">{t('preview.education')}</h2>
                             <div style={{ paddingTop: '5px' }}>
                                 {education.map(edu => (
                                     <div key={edu.id} className="timeline-item" style={{ marginBottom: '15px' }}>
@@ -298,7 +300,7 @@ const ProfessionalTemplate = ({ data }) => {
                     {/* Summary */}
                     {personalInfo.summary && (
                         <div>
-                            <h2 className="right-section-title">Perfil Profesional</h2>
+                            <h2 className="right-section-title">{t('forms.personalInfo.summary')}</h2>
                             <div className="summary-text" dangerouslySetInnerHTML={{ __html: personalInfo.summary.replace(/\n/g, '<br />') }} />
                         </div>
                     )}
@@ -306,7 +308,7 @@ const ProfessionalTemplate = ({ data }) => {
                     {/* Skills */}
                     {skills && skills.length > 0 && (
                         <div>
-                            <h2 className="right-section-title">Habilidades</h2>
+                            <h2 className="right-section-title">{t('preview.skills')}</h2>
                             <div className="skills-grid">
                                 {skills.map(skill => (
                                     <span key={skill.id} className="skill-tag">{skill.name}</span>
@@ -322,7 +324,7 @@ const ProfessionalTemplate = ({ data }) => {
                             {(!personalInfo.qrCodeType || personalInfo.qrCodeType === 'link') && <Globe size={18} color="#64748b" />}
                             {personalInfo.qrCodeType === 'github' && <Github size={18} color="#64748b" />}
                             {personalInfo.qrCodeType === 'linkedin' && <Linkedin size={18} color="#64748b" />}
-                            <span style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>Escanear Enlace</span>
+                            <span style={{ fontSize: '0.7rem', color: '#64748b', marginTop: '4px', fontWeight: 600 }}>{t('preview.scanLink')}</span>
                         </div>
                     )}
                 </div>

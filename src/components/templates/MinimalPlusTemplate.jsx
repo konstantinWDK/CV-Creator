@@ -2,8 +2,10 @@ import React from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { Globe, Github, Linkedin } from 'lucide-react';
 import { formatPeriod, calculateDuration } from '../../utils/formatDate';
+import { useTranslation } from 'react-i18next';
 
 const MinimalPlusTemplate = ({ data }) => {
+    const { t } = useTranslation();
     const { personalInfo, experience, education, skills } = data;
 
     return (
@@ -57,7 +59,7 @@ const MinimalPlusTemplate = ({ data }) => {
                         line-height: 1.45;
                     }
                     .minimal-plus .description-text {
-                        word-break: break-word;
+                        word-break: normal;
                         overflow-wrap: break-word;
                     }
                     /* Styling the 'highlight' look from the image */
@@ -75,14 +77,14 @@ const MinimalPlusTemplate = ({ data }) => {
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '25px' }}>
                 <div style={{ flex: 1 }}>
                     <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#475569', textTransform: 'uppercase', margin: 0, letterSpacing: '1px' }}>
-                        {personalInfo.fullName || 'TU NOMBRE AQUÍ'}
+                        {personalInfo.fullName || t('forms.personalInfo.fullNamePlaceholder')}
                     </h1>
                 </div>
                 <div style={{ textAlign: 'right', fontSize: '0.85rem', color: '#64748b', display: 'flex', flexDirection: 'column', gap: '3px' }}>
-                    {personalInfo.email && <div><strong>Email:</strong> {personalInfo.email}</div>}
-                    {personalInfo.phone && <div><strong>Teléfono:</strong> {personalInfo.phone}</div>}
-                    {personalInfo.address && <div><strong>Ubicación:</strong> {personalInfo.address}</div>}
-                    {personalInfo.website && <div><strong>Portfolio:</strong> {personalInfo.website}</div>}
+                    {personalInfo.email && <div><strong>{t('forms.personalInfo.email')}:</strong> {personalInfo.email}</div>}
+                    {personalInfo.phone && <div><strong>{t('forms.personalInfo.phone')}:</strong> {personalInfo.phone}</div>}
+                    {personalInfo.address && <div><strong>{t('forms.personalInfo.address')}:</strong> {personalInfo.address}</div>}
+                    {personalInfo.website && <div><strong>{t('forms.personalInfo.website')}:</strong> {personalInfo.website}</div>}
                 </div>
                 {personalInfo.photo && (
                     <div style={{ marginLeft: '15px' }}>
@@ -107,7 +109,7 @@ const MinimalPlusTemplate = ({ data }) => {
             {/* Experience */}
             {experience && experience.length > 0 && (
                 <div style={{ marginBottom: '25px' }}>
-                    <h2 className="section-title">Experiencia Relevante</h2>
+                    <h2 className="section-title">{t('preview.experience')}</h2>
                     {experience.map(exp => (
                         <div key={exp.id} style={{ marginBottom: '18px' }}>
                             <div style={{ display: 'flex', alignItems: 'baseline', flexWrap: 'wrap', gap: '6px' }}>
@@ -129,7 +131,7 @@ const MinimalPlusTemplate = ({ data }) => {
             {/* Education */}
             {education && education.length > 0 && (
                 <div style={{ marginBottom: '25px' }}>
-                    <h2 className="section-title">Formación Académica</h2>
+                    <h2 className="section-title">{t('preview.education')}</h2>
                     {education.map(edu => (
                         <div key={edu.id} style={{ marginBottom: '12px' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
@@ -146,7 +148,7 @@ const MinimalPlusTemplate = ({ data }) => {
             <div style={{ display: 'flex', gap: '30px', marginTop: 'auto' }}>
                 {skills && skills.length > 0 && (
                     <div style={{ flex: 1 }}>
-                        <h2 className="section-title" style={{ fontSize: '1.1rem' }}>Aptitudes</h2>
+                        <h2 className="section-title" style={{ fontSize: '1.1rem' }}>{t('preview.skills')}</h2>
                         <ul style={{ listStyleType: 'none', padding: 0, margin: 0 }}>
                             {/* Grouping skills visually as comma separated per line for compactness, or just bullet points */}
                             <li style={{ fontSize: '0.9rem', color: '#475569', lineHeight: 1.5 }}>

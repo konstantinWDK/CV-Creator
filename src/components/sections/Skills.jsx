@@ -3,8 +3,10 @@ import { X, GripVertical } from 'lucide-react';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { SortableContext, sortableKeyboardCoordinates, rectSortingStrategy } from '@dnd-kit/sortable';
 import { SortableItem } from '../ui/SortableItem';
+import { useTranslation } from 'react-i18next';
 
 const Skills = ({ data = [], onChange }) => {
+    const { t } = useTranslation();
     const [newSkill, setNewSkill] = useState('');
 
     const sensors = useSensors(
@@ -32,8 +34,8 @@ const Skills = ({ data = [], onChange }) => {
         setNewSkill('');
     };
 
-    const handleRemove = (id) => {
-        onChange(data.filter(item => item.id !== id));
+    const handleRemove = (index) => {
+        onChange(data.filter((_, i) => i !== index));
     };
 
     const handleDragEnd = (event) => {
@@ -50,18 +52,18 @@ const Skills = ({ data = [], onChange }) => {
 
     return (
         <div className="glass-panel">
-            <h2 className="panel-title">Habilidades</h2>
+            <h2 className="panel-title">{t('forms.skills.title')}</h2>
 
             <form onSubmit={handleAdd} style={{ display: 'flex', gap: '10px', marginBottom: '1rem' }}>
                 <input
                     type="text"
                     value={newSkill}
                     onChange={(e) => setNewSkill(e.target.value)}
-                    placeholder="Ej. JavaScript, React, Diseño UI..."
+                    placeholder={t('forms.skills.skillNamePlaceholder')}
                     style={{ flexGrow: 1 }}
                 />
                 <button type="submit" className="btn btn-primary" style={{ padding: '0.5rem 1rem' }}>
-                    Añadir
+                    {t('forms.skills.add')}
                 </button>
             </form>
 
@@ -88,7 +90,7 @@ const Skills = ({ data = [], onChange }) => {
                                                 {...attributes}
                                                 {...listeners}
                                                 style={{ cursor: 'grab', display: 'flex', alignItems: 'center', opacity: 0.5 }}
-                                                title="Arrastrar"
+                                                title={t('forms.experience.dragHelp')}
                                             >
                                                 <GripVertical size={14} />
                                             </div>
@@ -97,7 +99,7 @@ const Skills = ({ data = [], onChange }) => {
                                                 type="button"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
-                                                    handleRemove(skill.id);
+                                                    handleRemove(index);
                                                 }}
                                                 style={{
                                                     background: 'transparent',
@@ -109,7 +111,7 @@ const Skills = ({ data = [], onChange }) => {
                                                     padding: '2px',
                                                     borderRadius: '50%'
                                                 }}
-                                                title="Eliminar"
+                                                title={t('forms.skills.delete')}
                                             >
                                                 <X size={14} />
                                             </button>
@@ -121,7 +123,7 @@ const Skills = ({ data = [], onChange }) => {
                     </SortableContext>
                 </DndContext>
             </div>
-            {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '10px' }}>No hay habilidades añadidas.</p>}
+            {data.length === 0 && <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginTop: '10px' }}>{t('forms.skills.noSkills')}</p>}
         </div>
     );
 };
