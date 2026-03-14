@@ -47,8 +47,8 @@ const Experience = ({ data = [], onChange }) => {
         ]);
     };
 
-    const handleRemove = (id) => {
-        onChange(data.filter(item => item.id !== id));
+    const handleRemove = (index) => {
+        onChange(data.filter((_, i) => i !== index));
     };
 
     const handleChange = (index, field, value) => {
@@ -114,7 +114,7 @@ const Experience = ({ data = [], onChange }) => {
                                                 </button>
                                                 <button
                                                     className="btn btn-danger btn-icon-only"
-                                                    onClick={() => handleRemove(item.id)}
+                                                    onClick={() => handleRemove(index)}
                                                     title={t('forms.experience.delete')}
                                                 >
                                                     <Trash2 size={16} />

@@ -25,8 +25,8 @@ const Education = ({ data = [], onChange }) => {
         ]);
     };
 
-    const handleRemove = (id) => {
-        onChange(data.filter(item => item.id !== id));
+    const handleRemove = (index) => {
+        onChange(data.filter((_, i) => i !== index));
     };
 
     const handleChange = (index, field, value) => {
@@ -75,7 +75,7 @@ const Education = ({ data = [], onChange }) => {
                                                 </button>
                                                 <button
                                                     className="btn btn-danger btn-icon-only"
-                                                    onClick={() => handleRemove(item.id)}
+                                                    onClick={() => handleRemove(index)}
                                                     title={t('forms.education.delete')}
                                                 >
                                                     <Trash2 size={16} />
